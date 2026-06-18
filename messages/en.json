@@ -1,0 +1,114 @@
+{
+  "meta": {
+    "title": "Siba Osman — Nutrition Specialist",
+    "description": "Personalized nutrition plans to help you achieve your health goals with dietitian Siba Osman."
+  },
+  "nav": {
+    "home": "Home",
+    "services": "Services",
+    "contact": "Contact"
+  },
+  "hero": {
+    "greeting": "Hi, I'm Siba Osman",
+    "title": "Your Journey to Better Health Starts Here",
+    "subtitle": "As a dedicated nutrition specialist, I create personalized plans that fit your lifestyle, helping you reach your health goals with confidence and support every step of the way.",
+    "cta": "View Plans"
+  },
+  "howItWorks": {
+    "title": "What You Get",
+    "steps": [
+      {
+        "title": "Personalized Plans",
+        "description": "Custom nutrition plans tailored to your body, lifestyle, and goals."
+      },
+      {
+        "title": "Ongoing Support",
+        "description": "Regular follow-ups and adjustments to keep you on track."
+      },
+      {
+        "title": "Expert Guidance",
+        "description": "Evidence-based advice from a certified nutrition specialist."
+      },
+      {
+        "title": "Lasting Results",
+        "description": "Build sustainable habits for long-term health and wellness."
+      }
+    ]
+  },
+  "plans": {
+    "title": "Choose Your Plan",
+    "subtitle": "Find the perfect plan for your health journey.",
+    "cta": "See All Plans",
+    "subscribe": "Subscribe",
+    "mostPopular": "Most Popular",
+    "perMonth": "/ month"
+  },
+  "ctaSection": {
+    "title": "Ready to Transform Your Health?",
+    "subtitle": "Get in touch today and let's start your personalized nutrition journey.",
+    "cta": "Contact Me"
+  },
+  "services": {
+    "title": "Subscription Plans",
+    "subtitle": "Choose the plan that best fits your needs. Every plan includes personalized nutrition guidance from Siba Osman.",
+    "subscribe": "Subscribe Now",
+    "features": "What's Included"
+  },
+  "subscribeForm": {
+    "title": "Subscribe to {tier}",
+    "name": "Full Name",
+    "namePlaceholder": "Enter your full name",
+    "email": "Email Address",
+    "emailPlaceholder": "you@example.com",
+    "phone": "Phone Number",
+    "phonePlaceholder": "+90 5XX XXX XX XX",
+    "message": "Note (optional)",
+    "messagePlaceholder": "Any special requirements or questions?",
+    "discountCode": "Discount Code",
+    "discountCodePlaceholder": "Enter code",
+    "apply": "Apply",
+    "submit": "Complete Subscription",
+    "submitting": "Submitting...",
+    "originalPrice": "Original Price",
+    "discount": "Discount",
+    "finalPrice": "Total",
+    "success": "Thank you for subscribing!",
+    "successMessage": "We've received your subscription request. We'll be in touch shortly to get you started.",
+    "backToPlans": "Back to Plans",
+    "invalidCode": "Invalid or expired discount code.",
+    "codeApplied": "Discount code applied!"
+  },
+  "contact": {
+    "title": "Get in Touch",
+    "subtitle": "Have a question or want to learn more? Send me a message and I'll get back to you as soon as possible.",
+    "name": "Full Name",
+    "namePlaceholder": "Enter your full name",
+    "email": "Email Address",
+    "emailPlaceholder": "you@example.com",
+    "phone": "Phone Number (optional)",
+    "phonePlaceholder": "+90 5XX XXX XX XX",
+    "message": "Message",
+    "messagePlaceholder": "Tell me about your health goals...",
+    "submit": "Send Message",
+    "submitting": "Sending...",
+    "success": "Message Sent!",
+    "successMessage": "Thank you for reaching out. I'll get back to you as soon as possible.",
+    "sendAnother": "Send Another Message"
+  },
+  "footer": {
+    "tagline": "Personalized nutrition for a healthier you.",
+    "rights": "All rights reserved.",
+    "quickLinks": "Quick Links"
+  },
+  "validation": {
+    "nameRequired": "Name is required.",
+    "nameInvalid": "Name can only contain letters, spaces, hyphens, and apostrophes.",
+    "emailRequired": "Email is required.",
+    "emailInvalid": "Please enter a valid email address.",
+    "phoneInvalid": "Please enter a valid phone number.",
+    "messageRequired": "Message is required.",
+    "messageTooLong": "Message must be under 1000 characters.",
+    "rateLimited": "Too many submissions. Please try again in a few minutes.",
+    "genericError": "Something went wrong. Please try again."
+  }
+}
