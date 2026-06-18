@@ -10,9 +10,9 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
             <img
-              src="/logo.jpeg"
+              src="/logo1.png"
               alt="Siba Osman"
-              className="h-12 w-auto brightness-200 mb-4"
+              className="h-12 w-auto brightness-0 invert mb-4"
             />
             <p className="text-cream/70 text-sm">{t('footer.tagline')}</p>
           </div>

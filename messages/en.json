@@ -15,23 +15,31 @@
     "cta": "View Plans"
   },
   "howItWorks": {
-    "title": "What You Get",
-    "steps": [
+    "title": "Our Services",
+    "services": [
       {
-        "title": "Personalized Plans",
-        "description": "Custom nutrition plans tailored to your body, lifestyle, and goals."
+        "title": "Nutrition Strategies",
+        "description": "Tailored eating plans based on your body composition, lifestyle, and personal health goals."
+      },
+      {
+        "title": "Meal Planning",
+        "description": "Weekly meal plans with recipes you'll actually enjoy — no cookie-cutter diets."
+      },
+      {
+        "title": "Vitamins & Supplements",
+        "description": "Evidence-based guidance on what your body actually needs — no guesswork."
+      },
+      {
+        "title": "Fitness & Wellness",
+        "description": "Holistic guidance that pairs nutrition with movement for complete wellbeing."
+      },
+      {
+        "title": "Body Composition",
+        "description": "Track real progress with body measurements, not just the scale."
       },
       {
         "title": "Ongoing Support",
-        "description": "Regular follow-ups and adjustments to keep you on track."
-      },
-      {
-        "title": "Expert Guidance",
-        "description": "Evidence-based advice from a certified nutrition specialist."
-      },
-      {
-        "title": "Lasting Results",
-        "description": "Build sustainable habits for long-term health and wellness."
+        "description": "Regular check-ins to adjust your plan as your body and goals evolve."
       }
     ]
   },
