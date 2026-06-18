@@ -33,12 +33,14 @@ const ACTION_LABELS: Record<string, string> = {
   delete_tier: 'Deleted pricing tier',
   deactivate_tier: 'Deactivated pricing tier',
   set_popular: 'Set tier as most popular',
+  resend_email: 'Resent confirmation email',
 };
 
 const TARGET_LABELS: Record<string, string> = {
   subscription: 'Subscription',
   subscription_tier: 'Pricing Tier',
   discount_code: 'Discount Code',
+  contact_message: 'Contact Message',
 };
 
 function formatAction(action: string): string {

@@ -18,8 +18,8 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const email = request.nextUrl.searchParams.get('email') || '';
-  const phone = request.nextUrl.searchParams.get('phone') || '';
+  const email = (request.nextUrl.searchParams.get('email') || '').slice(0, 254);
+  const phone = (request.nextUrl.searchParams.get('phone') || '').slice(0, 20);
 
   if (!email && !phone) {
     return NextResponse.json({ results: [] });

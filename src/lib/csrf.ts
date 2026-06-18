@@ -6,10 +6,13 @@ const COOKIE_NAME = '__csrf';
 const TOKEN_EXPIRY = 60 * 60 * 1000;
 
 if (!CSRF_SECRET && process.env.NODE_ENV === 'production') {
-  console.error('FATAL: CSRF_SECRET environment variable is not set in production!');
+  throw new Error('FATAL: CSRF_SECRET environment variable is not set in production!');
 }
 
 function sign(payload: string): string {
+  if (!CSRF_SECRET && process.env.NODE_ENV === 'production') {
+    throw new Error('CSRF_SECRET is required in production');
+  }
   return createHmac('sha256', CSRF_SECRET || 'dev-csrf-secret-change-me').update(payload).digest('hex');
 }
 

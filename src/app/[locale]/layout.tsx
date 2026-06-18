@@ -33,15 +33,24 @@ export default async function LocaleLayout({
 
   const messages = await getMessages();
 
+  const dir = locale === 'ar' ? 'rtl' : 'ltr';
+
   return (
-    <div
-      dir={locale === 'ar' ? 'rtl' : 'ltr'}
-      lang={locale}
-      className="bg-cream text-foreground flex flex-col min-h-screen"
-    >
-      <NextIntlClientProvider messages={messages}>
-        {children}
-      </NextIntlClientProvider>
-    </div>
+    <>
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `document.documentElement.lang="${locale}";document.documentElement.dir="${dir}";`,
+        }}
+      />
+      <div
+        dir={dir}
+        lang={locale}
+        className="bg-cream text-foreground flex flex-col min-h-screen"
+      >
+        <NextIntlClientProvider messages={messages}>
+          {children}
+        </NextIntlClientProvider>
+      </div>
+    </>
   );
 }

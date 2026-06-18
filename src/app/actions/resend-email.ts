@@ -49,23 +49,17 @@ export async function resendContactEmail(contactId: string) {
   const supabase = createServiceClient();
   const { data: contact } = await supabase
     .from('contact_messages')
-    .select('id, name, email, phone, locale')
+    .select('id, name, email, phone, message, locale')
     .eq('id', contactId)
     .single();
 
   if (!contact) throw new Error('Contact not found');
 
-  const { data: fullContact } = await supabase
-    .from('contact_messages')
-    .select('message')
-    .eq('id', contactId)
-    .single();
-
   const sent = await sendContactEmails({
     name: contact.name,
     email: contact.email,
     phone: contact.phone || '',
-    message: fullContact?.message || '',
+    message: contact.message || '',
     locale: contact.locale as 'en' | 'ar',
   });
 
