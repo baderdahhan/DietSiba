@@ -10,7 +10,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
             <img
-              src="/logo.png"
+              src="/logo.jpeg"
               alt="Siba Osman"
               className="h-12 w-auto brightness-200 mb-4"
             />
