@@ -1,6 +1,8 @@
 'use server';
 
 import { createServiceClient } from '@/lib/supabase/server';
+import { checkRateLimit, recordRequest, hashIp } from '@/lib/rate-limit';
+import { getClientIp } from '@/lib/get-ip';
 
 export type DiscountValidationResult = {
   valid: boolean;
@@ -13,6 +15,13 @@ export async function validateDiscountCode(
   code: string
 ): Promise<DiscountValidationResult> {
   if (!code.trim()) return { valid: false };
+
+  const ipHash = hashIp(getClientIp());
+  const { allowed } = await checkRateLimit(ipHash, 'discount_check');
+  if (!allowed) {
+    return { valid: false, error: 'rateLimited' };
+  }
+  await recordRequest(ipHash, 'discount_check');
 
   const supabase = createServiceClient();
   const normalizedCode = code.trim().toUpperCase();

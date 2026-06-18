@@ -51,8 +51,8 @@ export function subscriptionConfirmationEmail(
   return {
     subject:
       locale === 'ar'
-        ? `شكراً لاشتراكك في خطة ${safeTier}`
-        : `Thank you for subscribing to ${safeTier}`,
+        ? `شكراً لاشتراكك في خطة ${data.tierName}`
+        : `Thank you for subscribing to ${data.tierName}`,
     html: baseTemplate(content, dir),
   };
 }
@@ -72,7 +72,7 @@ export function subscriptionAdminNotification(data: {
 </table>`;
 
   return {
-    subject: `New subscription: ${escapeHtml(data.tierName)} – ${escapeHtml(data.name)}`,
+    subject: `New subscription: ${data.tierName} – ${data.name}`,
     html: baseTemplate(content),
   };
 }
@@ -119,7 +119,7 @@ export function contactAdminNotification(data: {
 ${data.message ? `<div style="margin-top:16px;padding:12px;background:${COLORS.cream};border-radius:6px;font-size:14px;white-space:pre-wrap;">${escapeHtml(data.message)}</div>` : ''}`;
 
   return {
-    subject: `New contact: ${escapeHtml(data.name)}`,
+    subject: `New contact: ${data.name}`,
     html: baseTemplate(content),
   };
 }

@@ -236,15 +236,7 @@ export async function setPopularTier(id: string) {
 
   const supabase = createServiceClient();
 
-  await supabase
-    .from('subscription_tiers')
-    .update({ is_popular: false })
-    .neq('id', id);
-
-  const { error } = await supabase
-    .from('subscription_tiers')
-    .update({ is_popular: true })
-    .eq('id', id);
+  const { error } = await supabase.rpc('set_popular_tier', { p_tier_id: id });
 
   if (error) throw new Error('Failed to set popular tier');
 

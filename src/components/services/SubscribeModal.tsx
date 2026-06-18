@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
+import { isValidPhoneNumber } from 'libphonenumber-js';
 import { subscribeAction } from '@/app/actions/subscribe';
 import { validateDiscountCode } from '@/app/actions/discount';
 import { getCsrfToken } from '@/app/actions/csrf';
@@ -201,7 +202,7 @@ export function SubscribeModal({
                   {...register('email', {
                     required: tv('emailRequired'),
                     pattern: {
-                      value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                      value: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/,
                       message: tv('emailInvalid'),
                     },
                   })}
@@ -221,6 +222,8 @@ export function SubscribeModal({
                   type="tel"
                   {...register('phone', {
                     required: tv('phoneInvalid'),
+                    validate: (val) =>
+                      isValidPhoneNumber(val, 'TR') || tv('phoneInvalid'),
                   })}
                   placeholder={ts('phonePlaceholder')}
                   className="w-full px-3 py-2.5 rounded-lg border border-border bg-cream/50 text-sm focus:outline-none focus:ring-2 focus:ring-green/30 focus:border-green"

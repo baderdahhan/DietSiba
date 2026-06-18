@@ -154,7 +154,7 @@ function TierEditCard({ tier }: { tier: Tier }) {
         name: { en: nameEn, ar: nameAr },
         price: parseFloat(price),
         currency,
-        features: features.filter((f) => f.en.trim() || f.ar.trim()),
+        features: features.filter((f) => f.en.trim() && f.ar.trim()),
       });
       setSaved(true);
       setTimeout(() => setSaved(false), 2000);

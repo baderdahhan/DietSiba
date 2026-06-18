@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslations, useLocale } from 'next-intl';
+import { isValidPhoneNumber } from 'libphonenumber-js';
 import { contactAction } from '@/app/actions/contact';
 import { getCsrfToken } from '@/app/actions/csrf';
 
@@ -163,7 +164,7 @@ export default function ContactPage() {
                 {...register('email', {
                   required: tv('emailRequired'),
                   pattern: {
-                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                    value: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/,
                     message: tv('emailInvalid'),
                   },
                 })}
@@ -181,7 +182,10 @@ export default function ContactPage() {
               </label>
               <input
                 type="tel"
-                {...register('phone')}
+                {...register('phone', {
+                  validate: (val) =>
+                    !val || isValidPhoneNumber(val, 'TR') || tv('phoneInvalid'),
+                })}
                 placeholder={t('phonePlaceholder')}
                 className="w-full px-3 py-2.5 rounded-lg border border-border bg-cream/50 text-sm focus:outline-none focus:ring-2 focus:ring-green/30 focus:border-green"
               />
