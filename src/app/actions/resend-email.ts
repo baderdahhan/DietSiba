@@ -23,13 +23,15 @@ export async function resendSubscriptionEmail(subscriptionId: string) {
   const tierData = sub.subscription_tiers as unknown as { name: { en: string; ar: string } } | null;
   const tierName = tierData?.name?.[sub.locale as 'en' | 'ar'] || tierData?.name?.en || 'Plan';
 
-  await sendSubscriptionEmails({
+  const sent = await sendSubscriptionEmails({
     name: sub.name,
     email: sub.email,
     phone: sub.phone,
     tierName,
     locale: sub.locale as 'en' | 'ar',
   });
+
+  if (!sent) throw new Error('Failed to send email');
 
   await supabase
     .from('subscriptions')
@@ -53,12 +55,21 @@ export async function resendContactEmail(contactId: string) {
 
   if (!contact) throw new Error('Contact not found');
 
-  await sendContactEmails({
+  const { data: fullContact } = await supabase
+    .from('contact_messages')
+    .select('message')
+    .eq('id', contactId)
+    .single();
+
+  const sent = await sendContactEmails({
     name: contact.name,
     email: contact.email,
     phone: contact.phone || '',
+    message: fullContact?.message || '',
     locale: contact.locale as 'en' | 'ar',
   });
+
+  if (!sent) throw new Error('Failed to send email');
 
   await supabase
     .from('contact_messages')

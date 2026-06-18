@@ -55,7 +55,10 @@ export async function createDiscountCode(data: {
     value: z.number().positive(),
     maxUses: z.number().int().positive().nullable(),
     expiresAt: z.string().nullable(),
-  }).safeParse(data);
+  }).refine(
+    (d) => d.discountType !== 'percentage' || d.value <= 100,
+    { message: 'Percentage discount cannot exceed 100%', path: ['value'] }
+  ).safeParse(data);
 
   if (!parsed.success) throw new Error('Invalid input');
 
@@ -141,6 +144,13 @@ export async function updateTier(
   revalidatePricing();
 }
 
+const createTierSchema = z.object({
+  nameEn: z.string().trim().min(1).max(100),
+  nameAr: z.string().trim().min(1).max(100),
+  price: z.number().positive(),
+  currency: z.string().trim().min(1).max(10),
+});
+
 export async function createTier(data: {
   nameEn: string;
   nameAr: string;
@@ -149,8 +159,11 @@ export async function createTier(data: {
 }) {
   const admin = await requireAdmin();
 
+  const parsed = createTierSchema.safeParse(data);
+  if (!parsed.success) throw new Error('Invalid input');
+
   const supabase = createServiceClient();
-  const slug = data.nameEn.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+  const slug = parsed.data.nameEn.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
 
   const { data: maxOrder } = await supabase
     .from('subscription_tiers')
@@ -161,15 +174,15 @@ export async function createTier(data: {
 
   const { error } = await supabase.from('subscription_tiers').insert({
     slug,
-    name: { en: data.nameEn, ar: data.nameAr },
-    price: data.price,
-    currency: data.currency,
+    name: { en: parsed.data.nameEn, ar: parsed.data.nameAr },
+    price: parsed.data.price,
+    currency: parsed.data.currency,
     features: [],
     sort_order: (maxOrder?.sort_order ?? -1) + 1,
   });
 
   if (error) throw new Error('Failed to create tier: ' + error.message);
-  await logAudit(admin.email!, 'create_tier', 'subscription_tier', undefined, { name: data.nameEn, price: data.price });
+  await logAudit(admin.email!, 'create_tier', 'subscription_tier', undefined, { name: parsed.data.nameEn, price: parsed.data.price });
   revalidatePricing();
 }
 
@@ -209,17 +222,18 @@ export async function setPopularTier(id: string) {
 
   const supabase = createServiceClient();
 
-  await supabase
-    .from('subscription_tiers')
-    .update({ is_popular: false })
-    .neq('id', id);
-
   const { error } = await supabase
     .from('subscription_tiers')
     .update({ is_popular: true })
     .eq('id', id);
 
   if (error) throw new Error('Failed to set popular tier');
+
+  await supabase
+    .from('subscription_tiers')
+    .update({ is_popular: false })
+    .neq('id', id);
+
   await logAudit(admin.email!, 'set_popular', 'subscription_tier', id);
   revalidatePricing();
 }

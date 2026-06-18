@@ -32,28 +32,39 @@ export async function GET(request: NextRequest) {
   const results: HistoryEntry[] = [];
   const seen = new Set<string>();
 
-  const subQuery = supabase
+  const subBase = supabase
     .from('subscriptions')
     .select('id, created_at, subscription_tiers(name)')
     .order('created_at', { ascending: false });
 
-  const contactQuery = supabase
+  const contactBase = supabase
     .from('contact_messages')
     .select('id, created_at')
     .order('created_at', { ascending: false });
 
-  if (emailNorm && phoneNorm) {
-    subQuery.or('email_normalized.eq."' + emailNorm.replace(/"/g, '') + '",phone_normalized.eq."' + phoneNorm.replace(/"/g, '') + '"');
-    contactQuery.or('email_normalized.eq."' + emailNorm.replace(/"/g, '') + '",phone_normalized.eq."' + phoneNorm.replace(/"/g, '') + '"');
-  } else if (emailNorm) {
-    subQuery.eq('email_normalized', emailNorm);
-    contactQuery.eq('email_normalized', emailNorm);
-  } else {
-    subQuery.eq('phone_normalized', phoneNorm);
-    contactQuery.eq('phone_normalized', phoneNorm);
-  }
+  let subsResult;
+  let contactsResult;
 
-  const [subsResult, contactsResult] = await Promise.all([subQuery, contactQuery]);
+  if (emailNorm && phoneNorm) {
+    const [subsByEmail, subsByPhone, contactsByEmail, contactsByPhone] = await Promise.all([
+      supabase.from('subscriptions').select('id, created_at, subscription_tiers(name)').eq('email_normalized', emailNorm).order('created_at', { ascending: false }),
+      supabase.from('subscriptions').select('id, created_at, subscription_tiers(name)').eq('phone_normalized', phoneNorm).order('created_at', { ascending: false }),
+      supabase.from('contact_messages').select('id, created_at').eq('email_normalized', emailNorm).order('created_at', { ascending: false }),
+      supabase.from('contact_messages').select('id, created_at').eq('phone_normalized', phoneNorm).order('created_at', { ascending: false }),
+    ]);
+    subsResult = { data: [...(subsByEmail.data || []), ...(subsByPhone.data || [])] };
+    contactsResult = { data: [...(contactsByEmail.data || []), ...(contactsByPhone.data || [])] };
+  } else if (emailNorm) {
+    [subsResult, contactsResult] = await Promise.all([
+      subBase.eq('email_normalized', emailNorm),
+      contactBase.eq('email_normalized', emailNorm),
+    ]);
+  } else {
+    [subsResult, contactsResult] = await Promise.all([
+      subBase.eq('phone_normalized', phoneNorm),
+      contactBase.eq('phone_normalized', phoneNorm),
+    ]);
+  }
 
   if (subsResult.data) {
     for (const s of subsResult.data as unknown as SubRow[]) {

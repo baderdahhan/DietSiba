@@ -108,7 +108,9 @@ export function SubscribeModal({
         setSuccess(true);
       } else if (result.fieldErrors) {
         Object.entries(result.fieldErrors).forEach(([field, msg]) => {
-          setError(field as keyof FormValues, { message: msg });
+          let translated = msg;
+          try { translated = tv(msg); } catch { /* use raw message as fallback */ }
+          setError(field as keyof FormValues, { message: translated });
         });
       } else {
         const errorKey = result.error || 'genericError';

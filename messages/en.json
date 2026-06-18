@@ -107,7 +107,8 @@
   "footer": {
     "tagline": "Personalized nutrition for a healthier you.",
     "rights": "All rights reserved.",
-    "quickLinks": "Quick Links"
+    "quickLinks": "Quick Links",
+    "role": "Nutrition Specialist"
   },
   "validation": {
     "nameRequired": "Name is required.",

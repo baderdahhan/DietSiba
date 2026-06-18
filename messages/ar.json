@@ -107,7 +107,8 @@
   "footer": {
     "tagline": "تغذية مخصصة لصحة أفضل.",
     "rights": "جميع الحقوق محفوظة.",
-    "quickLinks": "روابط سريعة"
+    "quickLinks": "روابط سريعة",
+    "role": "أخصائية تغذية"
   },
   "validation": {
     "nameRequired": "الاسم مطلوب.",

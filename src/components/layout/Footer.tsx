@@ -56,7 +56,7 @@ export function Footer() {
             <p className="text-sm text-cream/70">
               Siba Osman
               <br />
-              أخصائية تغذية
+              {t('footer.role')}
             </p>
           </div>
         </div>

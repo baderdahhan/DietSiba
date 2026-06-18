@@ -1,5 +1,7 @@
 import { useTranslations } from 'next-intl';
+import { getLocale, getTranslations } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
+import { createServiceClient } from '@/lib/supabase/server';
 
 function HeroSection() {
   const t = useTranslations('hero');
@@ -103,14 +105,18 @@ function ServicesSection() {
   );
 }
 
-function PlansTeaser() {
-  const t = useTranslations('plans');
+async function PlansTeaser() {
+  const t = await getTranslations('plans');
+  const locale = await getLocale();
 
-  const tiers = [
-    { name: 'Silver', nameAr: 'فضي', price: '500' },
-    { name: 'Gold', nameAr: 'ذهبي', price: '800' },
-    { name: 'Diamond', nameAr: 'ماسي', price: '1200' },
-  ];
+  const supabase = createServiceClient();
+  const { data: tiers } = await supabase
+    .from('subscription_tiers')
+    .select('slug, name, price, currency, is_popular')
+    .eq('is_active', true)
+    .order('sort_order');
+
+  const tierList = tiers || [];
 
   return (
     <section className="bg-cream py-20 sm:py-24">
@@ -122,41 +128,44 @@ function PlansTeaser() {
           <p className="text-muted max-w-lg mx-auto">{t('subtitle')}</p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-          {tiers.map((tier, i) => (
-            <div
-              key={tier.name}
-              className={`relative bg-white rounded-lg p-6 shadow-sm border transition-shadow hover:shadow-md ${
-                i === 1
-                  ? 'border-gold ring-2 ring-gold/20'
-                  : 'border-border'
-              }`}
-            >
-              {i === 1 && (
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gold text-white text-xs font-medium px-3 py-1 rounded-full">
-                  {t('mostPopular')}
-                </span>
-              )}
-              <h3 className="font-heading text-xl text-green text-center mb-2">
-                {tier.name}
-              </h3>
-              <p className="text-center text-3xl font-heading text-green font-semibold mb-1">
-                {tier.price} <span className="text-sm text-muted font-body">TRY</span>
-              </p>
-              <p className="text-center text-xs text-muted mb-6">
-                {t('perMonth')}
-              </p>
-              <Link
-                href="/services"
-                className={`block text-center py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                  i === 1
-                    ? 'bg-green text-cream hover:bg-green-dark'
-                    : 'border border-green text-green hover:bg-green hover:text-cream'
+          {tierList.map((tier) => {
+            const tierName = tier.name[locale as 'en' | 'ar'] || tier.name.en;
+            return (
+              <div
+                key={tier.slug}
+                className={`relative bg-white rounded-lg p-6 shadow-sm border transition-shadow hover:shadow-md ${
+                  tier.is_popular
+                    ? 'border-gold ring-2 ring-gold/20'
+                    : 'border-border'
                 }`}
               >
-                {t('viewDetails')}
-              </Link>
-            </div>
-          ))}
+                {tier.is_popular && (
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gold text-white text-xs font-medium px-3 py-1 rounded-full">
+                    {t('mostPopular')}
+                  </span>
+                )}
+                <h3 className="font-heading text-xl text-green text-center mb-2">
+                  {tierName}
+                </h3>
+                <p className="text-center text-3xl font-heading text-green font-semibold mb-1">
+                  {tier.price} <span className="text-sm text-muted font-body">{tier.currency}</span>
+                </p>
+                <p className="text-center text-xs text-muted mb-6">
+                  {t('perMonth')}
+                </p>
+                <Link
+                  href="/services"
+                  className={`block text-center py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                    tier.is_popular
+                      ? 'bg-green text-cream hover:bg-green-dark'
+                      : 'border border-green text-green hover:bg-green hover:text-cream'
+                  }`}
+                >
+                  {t('viewDetails')}
+                </Link>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
@@ -184,7 +193,7 @@ function CTASection() {
   );
 }
 
-export default function HomePage() {
+export default async function HomePage() {
   return (
     <>
       <HeroSection />

@@ -65,18 +65,13 @@ export async function contactAction(
       return { success: false, error: 'genericError' };
     }
 
-    let emailSent = false;
-    try {
-      await sendContactEmails({
-        name: data.name,
-        email: data.email,
-        phone: data.phone || '',
-        locale: data.locale,
-      });
-      emailSent = true;
-    } catch (e) {
-      console.error('Email send failed (non-blocking):', e);
-    }
+    const emailSent = await sendContactEmails({
+      name: data.name,
+      email: data.email,
+      phone: data.phone || '',
+      message: data.message,
+      locale: data.locale,
+    });
 
     if (inserted?.id) {
       await supabase

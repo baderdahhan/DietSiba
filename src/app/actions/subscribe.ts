@@ -86,19 +86,13 @@ export async function subscribeAction(
     const tierName =
       tier?.name?.[data.locale as keyof typeof tier.name] || 'Plan';
 
-    let emailSent = false;
-    try {
-      await sendSubscriptionEmails({
-        name: data.name,
-        email: data.email,
-        phone: data.phone,
-        tierName,
-        locale: data.locale,
-      });
-      emailSent = true;
-    } catch (e) {
-      console.error('Email send failed (non-blocking):', e);
-    }
+    const emailSent = await sendSubscriptionEmails({
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+      tierName,
+      locale: data.locale,
+    });
 
     if (subId) {
       await supabase

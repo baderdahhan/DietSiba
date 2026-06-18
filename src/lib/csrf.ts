@@ -36,7 +36,8 @@ export function generateCsrfToken(): string {
       maxAge: 3600,
     });
   } catch {
-    // cookies() can throw in some server component contexts
+    console.error('CSRF: Failed to set cookie — form submissions will fail for this session');
+    return '';
   }
 
   return token;

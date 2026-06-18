@@ -40,7 +40,7 @@ export function ContactsTable({ contacts }: { contacts: Contact[] }) {
             </div>
             <p className="text-xs text-gray-500 mb-1">{contact.email}</p>
             <p className="text-xs text-gray-400 italic">
-              {contact.message.split(/\s+/).slice(0, 5).join(' ')}...
+              {(() => { const words = contact.message.split(/\s+/); return words.length > 5 ? words.slice(0, 5).join(' ') + '...' : words.join(' '); })()}
             </p>
           </div>
         ))}
@@ -82,7 +82,7 @@ export function ContactsTable({ contacts }: { contacts: Contact[] }) {
                   <td className="px-4 py-3 text-gray-600">{contact.email}</td>
                   <td className="px-4 py-3 text-gray-600 hidden md:table-cell">{contact.phone || '—'}</td>
                   <td className="px-4 py-3 text-gray-500 text-xs italic">
-                    {contact.message.split(/\s+/).slice(0, 3).join(' ')}...
+                    {(() => { const words = contact.message.split(/\s+/); return words.length > 3 ? words.slice(0, 3).join(' ') + '...' : words.join(' '); })()}
                   </td>
                   <td className="px-4 py-3 text-gray-500 text-xs whitespace-nowrap hidden lg:table-cell">
                     {new Date(contact.created_at).toLocaleDateString()}
