@@ -153,18 +153,10 @@ function PlansTeaser() {
                     : 'border border-green text-green hover:bg-green hover:text-cream'
                 }`}
               >
-                {t('subscribe')}
+                {t('viewDetails')}
               </Link>
             </div>
           ))}
-        </div>
-        <div className="text-center mt-10">
-          <Link
-            href="/services"
-            className="text-green font-medium text-sm hover:text-green-dark transition-colors underline underline-offset-4 decoration-gold"
-          >
-            {t('cta')} →
-          </Link>
         </div>
       </div>
     </section>
