@@ -123,7 +123,92 @@ export async function updateTier(
     .eq('id', tierId);
 
   if (error) throw new Error('Failed to update tier');
+  revalidatePricing();
+}
+
+export async function createTier(data: {
+  nameEn: string;
+  nameAr: string;
+  price: number;
+  currency: string;
+}) {
+  await requireAdmin();
+
+  const supabase = createServiceClient();
+  const slug = data.nameEn.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+
+  const { data: maxOrder } = await supabase
+    .from('subscription_tiers')
+    .select('sort_order')
+    .order('sort_order', { ascending: false })
+    .limit(1)
+    .single();
+
+  const { error } = await supabase.from('subscription_tiers').insert({
+    slug,
+    name: { en: data.nameEn, ar: data.nameAr },
+    price: data.price,
+    currency: data.currency,
+    features: [],
+    sort_order: (maxOrder?.sort_order ?? -1) + 1,
+  });
+
+  if (error) throw new Error('Failed to create tier: ' + error.message);
+  revalidatePricing();
+}
+
+export async function deleteTier(id: string) {
+  await requireAdmin();
+  z.string().uuid().parse(id);
+
+  const supabase = createServiceClient();
+
+  const { count } = await supabase
+    .from('subscriptions')
+    .select('id', { count: 'exact', head: true })
+    .eq('tier_id', id);
+
+  if (count && count > 0) {
+    const { error } = await supabase
+      .from('subscription_tiers')
+      .update({ is_active: false })
+      .eq('id', id);
+    if (error) throw new Error('Failed to deactivate tier');
+  } else {
+    const { error } = await supabase
+      .from('subscription_tiers')
+      .delete()
+      .eq('id', id);
+    if (error) throw new Error('Failed to delete tier');
+  }
+
+  revalidatePricing();
+}
+
+export async function setPopularTier(id: string) {
+  await requireAdmin();
+  z.string().uuid().parse(id);
+
+  const supabase = createServiceClient();
+
+  await supabase
+    .from('subscription_tiers')
+    .update({ is_popular: false })
+    .neq('id', id);
+
+  const { error } = await supabase
+    .from('subscription_tiers')
+    .update({ is_popular: true })
+    .eq('id', id);
+
+  if (error) throw new Error('Failed to set popular tier');
+  revalidatePricing();
+}
+
+function revalidatePricing() {
   revalidatePath('/admin/pricing');
   revalidatePath('/en/services');
   revalidatePath('/ar/services');
+  revalidatePath('/en');
+  revalidatePath('/ar');
 }

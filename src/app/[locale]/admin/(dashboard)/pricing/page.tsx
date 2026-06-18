@@ -5,7 +5,7 @@ async function getTiers() {
   const supabase = createServiceClient();
   const { data, error } = await supabase
     .from('subscription_tiers')
-    .select('*')
+    .select('id, slug, name, price, currency, features, is_popular, is_active, sort_order')
     .order('sort_order');
 
   if (error) return [];

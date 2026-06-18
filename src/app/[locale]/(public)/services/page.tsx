@@ -10,6 +10,7 @@ type Tier = {
   currency: string;
   features: Array<{ en: string; ar: string }>;
   sort_order: number;
+  is_popular: boolean;
 };
 
 async function getTiers(): Promise<Tier[]> {
@@ -43,12 +44,12 @@ export default async function ServicesPage({
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-          {tiers.map((tier, i) => (
+          {tiers.map((tier) => (
             <TierCard
               key={tier.id}
               tier={tier}
               locale={locale}
-              isPopular={i === 1}
+              isPopular={tier.is_popular}
             />
           ))}
         </div>
