@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { updatePaymentStatus } from '@/app/actions/admin';
+import { Modal } from '@/components/ui/Modal';
 
 type Subscription = {
   id: string;
@@ -159,11 +160,7 @@ function SubscriptionDetail({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm" onClick={onClose}>
-      <div
-        className="bg-white w-full max-w-lg rounded-xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col"
-        onClick={(e) => e.stopPropagation()}
-      >
+    <Modal onClose={onClose} title="Subscription Detail">
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 bg-gray-50/50">
           <div>
             <h2 className="text-base font-semibold text-gray-900">{subscription.name}</h2>
@@ -266,7 +263,6 @@ function SubscriptionDetail({
             )}
           </div>
         </div>
-      </div>
-    </div>
+    </Modal>
   );
 }

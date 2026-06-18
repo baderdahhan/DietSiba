@@ -32,7 +32,7 @@ export const phoneOptionalSchema = z
 export const messageSchema = z
   .string()
   .trim()
-  .max(1000, 'messageTooLong')
+  .max(500, 'messageTooLong')
   .optional()
   .default('');
 

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { Modal } from '@/components/ui/Modal';
 
 type Contact = {
   id: string;
@@ -63,14 +64,7 @@ export function ContactsTable({ contacts }: { contacts: Contact[] }) {
       </div>
 
       {selected && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm"
-          onClick={() => setSelectedId(null)}
-        >
-          <div
-            className="bg-white w-full max-w-lg rounded-xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col"
-            onClick={(e) => e.stopPropagation()}
-          >
+        <Modal onClose={() => setSelectedId(null)} title="Contact Detail">
             <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 bg-gray-50/50">
               <div>
                 <h2 className="text-base font-semibold text-gray-900">{selected.name}</h2>
@@ -115,8 +109,7 @@ export function ContactsTable({ contacts }: { contacts: Contact[] }) {
                 </div>
               </div>
             </div>
-          </div>
-        </div>
+        </Modal>
       )}
     </div>
   );

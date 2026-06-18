@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { createServiceClient } from '@/lib/supabase/server';
 import { getAdminUser } from '@/lib/supabase/admin';
 import { revalidatePath } from 'next/cache';
+import { logAudit } from '@/lib/audit';
 
 async function requireAdmin() {
   let user = null;
@@ -17,7 +18,7 @@ async function requireAdmin() {
 }
 
 export async function updatePaymentStatus(subscriptionId: string, status: string) {
-  await requireAdmin();
+  const admin = await requireAdmin();
   const parsed = z.object({
     id: z.string().uuid(),
     status: z.enum(['pending', 'paid', 'failed', 'cancelled']),
@@ -35,6 +36,7 @@ export async function updatePaymentStatus(subscriptionId: string, status: string
     .eq('id', parsed.data.id);
 
   if (error) throw new Error('Failed to update status');
+  await logAudit(admin.email!, 'update_payment_status', 'subscription', parsed.data.id, { status: parsed.data.status });
   revalidatePath('/admin/subscriptions');
 }
 
@@ -45,7 +47,7 @@ export async function createDiscountCode(data: {
   maxUses: number | null;
   expiresAt: string | null;
 }) {
-  await requireAdmin();
+  const admin = await requireAdmin();
 
   const parsed = z.object({
     code: z.string().trim().min(1).max(20),
@@ -67,11 +69,12 @@ export async function createDiscountCode(data: {
   });
 
   if (error) throw new Error('Failed to create discount code: ' + error.message);
+  await logAudit(admin.email!, 'create_discount', 'discount_code', undefined, { code: parsed.data.code.toUpperCase() });
   revalidatePath('/admin/discounts');
 }
 
 export async function toggleDiscountCode(id: string, isActive: boolean) {
-  await requireAdmin();
+  const admin = await requireAdmin();
   z.string().uuid().parse(id);
 
   const supabase = createServiceClient();
@@ -81,11 +84,12 @@ export async function toggleDiscountCode(id: string, isActive: boolean) {
     .eq('id', id);
 
   if (error) throw new Error('Failed to update discount code');
+  await logAudit(admin.email!, isActive ? 'activate_discount' : 'deactivate_discount', 'discount_code', id);
   revalidatePath('/admin/discounts');
 }
 
 export async function deleteDiscountCode(id: string) {
-  await requireAdmin();
+  const admin = await requireAdmin();
   z.string().uuid().parse(id);
 
   const supabase = createServiceClient();
@@ -95,8 +99,16 @@ export async function deleteDiscountCode(id: string) {
     .eq('id', id);
 
   if (error) throw new Error('Failed to delete discount code');
+  await logAudit(admin.email!, 'delete_discount', 'discount_code', id);
   revalidatePath('/admin/discounts');
 }
+
+const tierUpdateSchema = z.object({
+  name: z.object({ en: z.string().min(1).max(100), ar: z.string().min(1).max(100) }),
+  price: z.number().positive(),
+  currency: z.string().min(1).max(10),
+  features: z.array(z.object({ en: z.string().max(200), ar: z.string().max(200) })),
+});
 
 export async function updateTier(
   tierId: string,
@@ -107,22 +119,25 @@ export async function updateTier(
     features: Array<{ en: string; ar: string }>;
   }
 ) {
-  await requireAdmin();
+  const admin = await requireAdmin();
   z.string().uuid().parse(tierId);
+  const parsed = tierUpdateSchema.safeParse(data);
+  if (!parsed.success) throw new Error('Invalid input');
 
   const supabase = createServiceClient();
   const { error } = await supabase
     .from('subscription_tiers')
     .update({
-      name: data.name,
-      price: data.price,
-      currency: data.currency,
-      features: data.features,
+      name: parsed.data.name,
+      price: parsed.data.price,
+      currency: parsed.data.currency,
+      features: parsed.data.features,
       updated_at: new Date().toISOString(),
     })
     .eq('id', tierId);
 
   if (error) throw new Error('Failed to update tier');
+  await logAudit(admin.email!, 'update_tier', 'subscription_tier', tierId, { name: data.name.en, price: data.price });
   revalidatePricing();
 }
 
@@ -132,7 +147,7 @@ export async function createTier(data: {
   price: number;
   currency: string;
 }) {
-  await requireAdmin();
+  const admin = await requireAdmin();
 
   const supabase = createServiceClient();
   const slug = data.nameEn.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
@@ -154,11 +169,12 @@ export async function createTier(data: {
   });
 
   if (error) throw new Error('Failed to create tier: ' + error.message);
+  await logAudit(admin.email!, 'create_tier', 'subscription_tier', undefined, { name: data.nameEn, price: data.price });
   revalidatePricing();
 }
 
 export async function deleteTier(id: string) {
-  await requireAdmin();
+  const admin = await requireAdmin();
   z.string().uuid().parse(id);
 
   const supabase = createServiceClient();
@@ -174,19 +190,21 @@ export async function deleteTier(id: string) {
       .update({ is_active: false })
       .eq('id', id);
     if (error) throw new Error('Failed to deactivate tier');
+    await logAudit(admin.email!, 'deactivate_tier', 'subscription_tier', id);
   } else {
     const { error } = await supabase
       .from('subscription_tiers')
       .delete()
       .eq('id', id);
     if (error) throw new Error('Failed to delete tier');
+    await logAudit(admin.email!, 'delete_tier', 'subscription_tier', id);
   }
 
   revalidatePricing();
 }
 
 export async function setPopularTier(id: string) {
-  await requireAdmin();
+  const admin = await requireAdmin();
   z.string().uuid().parse(id);
 
   const supabase = createServiceClient();
@@ -202,6 +220,7 @@ export async function setPopularTier(id: string) {
     .eq('id', id);
 
   if (error) throw new Error('Failed to set popular tier');
+  await logAudit(admin.email!, 'set_popular', 'subscription_tier', id);
   revalidatePricing();
 }
 

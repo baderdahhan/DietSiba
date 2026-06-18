@@ -19,7 +19,7 @@ export async function checkRateLimit(
 
   const { count, error } = await supabase
     .from('request_throttle')
-    .select('*', { count: 'exact', head: true })
+    .select('id', { count: 'exact', head: true })
     .eq('ip_hash', ipHash)
     .eq('endpoint', endpoint)
     .gte('created_at', windowStart);
@@ -45,4 +45,9 @@ export async function recordRequest(
     ip_hash: ipHash,
     endpoint,
   });
+
+  // Probabilistic cleanup — ~10% of requests trigger old entry purge
+  if (Math.random() < 0.1) {
+    Promise.resolve(supabase.rpc('cleanup_request_throttle')).catch(() => {});
+  }
 }

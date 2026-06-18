@@ -1,12 +1,23 @@
-import { createHmac, randomBytes } from 'crypto';
+import { createHmac, randomBytes, timingSafeEqual } from 'crypto';
 import { cookies } from 'next/headers';
 
-const CSRF_SECRET = process.env.CSRF_SECRET || 'dev-csrf-secret-change-me';
+const CSRF_SECRET = process.env.CSRF_SECRET || '';
 const COOKIE_NAME = '__csrf';
-const TOKEN_EXPIRY = 60 * 60 * 1000; // 1 hour
+const TOKEN_EXPIRY = 60 * 60 * 1000;
+
+if (!CSRF_SECRET && process.env.NODE_ENV === 'production') {
+  console.error('FATAL: CSRF_SECRET environment variable is not set in production!');
+}
 
 function sign(payload: string): string {
-  return createHmac('sha256', CSRF_SECRET).update(payload).digest('hex');
+  return createHmac('sha256', CSRF_SECRET || 'dev-csrf-secret-change-me').update(payload).digest('hex');
+}
+
+function constantTimeCompare(a: string, b: string): boolean {
+  if (a.length !== b.length) return false;
+  const bufA = Buffer.from(a);
+  const bufB = Buffer.from(b);
+  return timingSafeEqual(bufA, bufB);
 }
 
 export function generateCsrfToken(): string {
@@ -36,7 +47,7 @@ export function validateCsrfToken(token: string): boolean {
     const cookieStore = cookies();
     const cookieToken = cookieStore.get(COOKIE_NAME)?.value;
 
-    if (!cookieToken || cookieToken !== token) {
+    if (!cookieToken || !constantTimeCompare(cookieToken, token)) {
       return false;
     }
 
@@ -46,7 +57,7 @@ export function validateCsrfToken(token: string): boolean {
     const [nonce, timestamp, signature] = parts;
     const expectedSig = sign(`${nonce}.${timestamp}`);
 
-    if (signature !== expectedSig) return false;
+    if (!constantTimeCompare(signature, expectedSig)) return false;
 
     const ts = parseInt(timestamp, 10);
     if (isNaN(ts) || Date.now() - ts > TOKEN_EXPIRY) return false;

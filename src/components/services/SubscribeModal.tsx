@@ -7,6 +7,7 @@ import { subscribeAction } from '@/app/actions/subscribe';
 import { validateDiscountCode } from '@/app/actions/discount';
 import { getCsrfToken } from '@/app/actions/csrf';
 import { Link } from '@/i18n/navigation';
+import { Modal } from '@/components/ui/Modal';
 
 type Tier = {
   id: string;
@@ -125,8 +126,7 @@ export function SubscribeModal({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-      <div className="bg-white rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+    <Modal onClose={onClose} title={ts('title', { tier: tierName })}>
         <div className="p-6">
           <div className="flex items-center justify-between mb-6">
             <h2 className="font-heading text-2xl text-green">
@@ -234,7 +234,7 @@ export function SubscribeModal({
                 </label>
                 <textarea
                   {...register('message', {
-                    maxLength: { value: 1000, message: tv('messageTooLong') },
+                    maxLength: { value: 500, message: tv('messageTooLong') },
                   })}
                   rows={3}
                   placeholder={ts('messagePlaceholder')}
@@ -312,7 +312,6 @@ export function SubscribeModal({
             </form>
           )}
         </div>
-      </div>
-    </div>
+    </Modal>
   );
 }

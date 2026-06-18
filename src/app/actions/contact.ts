@@ -1,11 +1,11 @@
 'use server';
 
-import { headers } from 'next/headers';
 import { contactFormSchema, normalizeEmail, normalizePhone } from '@/lib/validation';
 import { validateCsrfToken } from '@/lib/csrf';
 import { checkRateLimit, recordRequest, hashIp } from '@/lib/rate-limit';
 import { isSpamSubmission } from '@/lib/spam';
 import { createServiceClient } from '@/lib/supabase/server';
+import { getClientIp } from '@/lib/get-ip';
 import { sendContactEmails } from '@/lib/email/send';
 
 export type ContactResult = {
@@ -39,9 +39,7 @@ export async function contactAction(
       return { success: true };
     }
 
-    const headerList = headers();
-    const ip = headerList.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
-    const ipHash = hashIp(ip);
+    const ipHash = hashIp(getClientIp());
 
     const { allowed } = await checkRateLimit(ipHash, 'contact');
     if (!allowed) {
@@ -52,7 +50,7 @@ export async function contactAction(
 
     const supabase = createServiceClient();
 
-    const { error } = await supabase.from('contact_messages').insert({
+    const { data: inserted, error } = await supabase.from('contact_messages').insert({
       name: data.name,
       email: data.email,
       phone: data.phone || null,
@@ -60,13 +58,14 @@ export async function contactAction(
       locale: data.locale,
       email_normalized: normalizeEmail(data.email),
       phone_normalized: normalizePhone(data.phone || ''),
-    });
+    }).select('id').single();
 
     if (error) {
       console.error('Contact insert error:', error);
       return { success: false, error: 'genericError' };
     }
 
+    let emailSent = false;
     try {
       await sendContactEmails({
         name: data.name,
@@ -74,8 +73,16 @@ export async function contactAction(
         phone: data.phone || '',
         locale: data.locale,
       });
+      emailSent = true;
     } catch (e) {
       console.error('Email send failed (non-blocking):', e);
+    }
+
+    if (inserted?.id) {
+      await supabase
+        .from('contact_messages')
+        .update({ email_sent: emailSent })
+        .eq('id', inserted.id);
     }
 
     return { success: true };

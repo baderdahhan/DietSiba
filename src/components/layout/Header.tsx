@@ -51,6 +51,7 @@ export function Header() {
               onClick={() => setMenuOpen(!menuOpen)}
               className="p-2 text-foreground/70 hover:text-green transition-colors"
               aria-label="Toggle menu"
+              aria-expanded={menuOpen}
             >
               <svg
                 className="w-6 h-6"
