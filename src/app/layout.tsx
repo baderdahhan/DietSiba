@@ -11,8 +11,8 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: 'Siba Osman — Nutrition Specialist',
   icons: {
-    icon: '/logo1.png',
-    apple: '/logo1.png',
+    icon: '/logo.jpeg',
+    apple: '/logo.jpeg',
   },
 };
 
