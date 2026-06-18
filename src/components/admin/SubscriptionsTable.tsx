@@ -33,12 +33,12 @@ export function SubscriptionsTable({
 
   return (
     <div>
-      <div className="flex gap-2 mb-4">
+      <div className="flex gap-2 mb-4 overflow-x-auto pb-1">
         {['all', 'pending', 'paid', 'failed', 'cancelled'].map((f) => (
           <button
             key={f}
             onClick={() => setFilter(f)}
-            className={`px-3 py-1.5 rounded text-xs font-medium transition-colors capitalize ${
+            className={`px-3 py-1.5 rounded text-xs font-medium transition-colors capitalize shrink-0 ${
               filter === f
                 ? 'bg-green text-white'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
@@ -56,11 +56,11 @@ export function SubscriptionsTable({
               <tr className="bg-gray-50 border-b border-gray-200">
                 <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">Name</th>
                 <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">Email</th>
-                <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">Phone</th>
+                <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase hidden sm:table-cell">Phone</th>
                 <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">Tier</th>
-                <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">Price</th>
+                <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase hidden sm:table-cell">Price</th>
                 <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">Status</th>
-                <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">Date</th>
+                <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase hidden md:table-cell">Date</th>
               </tr>
             </thead>
             <tbody>
@@ -72,15 +72,11 @@ export function SubscriptionsTable({
                 >
                   <td className="px-4 py-3">{sub.name}</td>
                   <td className="px-4 py-3 text-gray-600">{sub.email}</td>
-                  <td className="px-4 py-3 text-gray-600">{sub.phone}</td>
-                  <td className="px-4 py-3">
-                    {sub.subscription_tiers?.name?.en || '—'}
-                  </td>
-                  <td className="px-4 py-3">{sub.price_charged} TRY</td>
-                  <td className="px-4 py-3">
-                    <StatusBadge status={sub.payment_status} />
-                  </td>
-                  <td className="px-4 py-3 text-gray-500 text-xs">
+                  <td className="px-4 py-3 text-gray-600 hidden sm:table-cell">{sub.phone}</td>
+                  <td className="px-4 py-3">{sub.subscription_tiers?.name?.en || '—'}</td>
+                  <td className="px-4 py-3 hidden sm:table-cell">{sub.price_charged} TRY</td>
+                  <td className="px-4 py-3"><StatusBadge status={sub.payment_status} /></td>
+                  <td className="px-4 py-3 text-gray-500 text-xs hidden md:table-cell">
                     {new Date(sub.created_at).toLocaleDateString()}
                   </td>
                 </tr>
@@ -163,72 +159,106 @@ function SubscriptionDetail({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-end bg-black/30">
-      <div className="bg-white h-full w-full max-w-md shadow-xl overflow-y-auto">
-        <div className="p-6">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-lg font-semibold">Subscription Detail</h2>
-            <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm" onClick={onClose}>
+      <div
+        className="bg-white w-full max-w-lg rounded-xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 bg-gray-50/50">
+          <div>
+            <h2 className="text-base font-semibold text-gray-900">{subscription.name}</h2>
+            <p className="text-xs text-gray-500 mt-0.5">
+              {subscription.subscription_tiers?.name?.en || '—'} &middot; {new Date(subscription.created_at).toLocaleDateString()}
+            </p>
+          </div>
+          <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-gray-200 text-gray-400 hover:text-gray-600 transition-colors">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <div className="overflow-y-auto flex-1 px-6 py-5">
+          <div className="grid grid-cols-2 gap-4 text-sm">
+            <div>
+              <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Email</p>
+              <p className="text-gray-700 break-all">{subscription.email}</p>
+            </div>
+            <div>
+              <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Phone</p>
+              <p className="text-gray-700">{subscription.phone}</p>
+            </div>
+            <div>
+              <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Price</p>
+              <p className="text-gray-700 font-medium">{subscription.price_charged} TRY</p>
+            </div>
+            <div>
+              <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Status</p>
+              <StatusBadge status={subscription.payment_status} />
+            </div>
+            <div>
+              <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Language</p>
+              <p className="text-gray-700 uppercase">{subscription.locale}</p>
+            </div>
+            <div>
+              <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Date</p>
+              <p className="text-gray-700">{new Date(subscription.created_at).toLocaleString()}</p>
+            </div>
           </div>
 
-          <dl className="space-y-3 text-sm">
-            <div><dt className="text-gray-500">Name</dt><dd className="font-medium">{subscription.name}</dd></div>
-            <div><dt className="text-gray-500">Email</dt><dd>{subscription.email}</dd></div>
-            <div><dt className="text-gray-500">Phone</dt><dd>{subscription.phone}</dd></div>
-            <div><dt className="text-gray-500">Tier</dt><dd>{subscription.subscription_tiers?.name?.en}</dd></div>
-            <div><dt className="text-gray-500">Price</dt><dd>{subscription.price_charged} TRY</dd></div>
-            <div><dt className="text-gray-500">Status</dt><dd><StatusBadge status={subscription.payment_status} /></dd></div>
-            {subscription.message && (
-              <div><dt className="text-gray-500">Message</dt><dd className="text-gray-700">{subscription.message}</dd></div>
-            )}
-            <div><dt className="text-gray-500">Language</dt><dd className="uppercase">{subscription.locale}</dd></div>
-            <div>
-              <dt className="text-gray-500">Date</dt>
-              <dd>{new Date(subscription.created_at).toLocaleString()}</dd>
+          {subscription.message && (
+            <div className="mt-5">
+              <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Message</p>
+              <p className="text-gray-700 text-sm bg-gray-50 rounded-lg p-3 whitespace-pre-wrap leading-relaxed">
+                {subscription.message}
+              </p>
             </div>
-          </dl>
+          )}
 
-          <div className="mt-6 pt-4 border-t border-gray-200">
-            <p className="text-xs text-gray-500 mb-3">Update Payment Status</p>
+          <div className="mt-6 pt-4 border-t border-gray-100">
+            <p className="text-xs text-gray-400 uppercase tracking-wider mb-3">Payment Status</p>
             <div className="flex gap-2 flex-wrap">
-              {['paid', 'failed', 'cancelled', 'pending'].map((status) => (
+              {['paid', 'pending', 'failed', 'cancelled'].map((status) => (
                 <button
                   key={status}
                   onClick={() => handleStatusChange(status)}
                   disabled={updating || subscription.payment_status === status}
-                  className={`px-3 py-1.5 rounded text-xs font-medium capitalize transition-colors disabled:opacity-40 ${
+                  className={`px-3 py-1.5 rounded-lg text-xs font-medium capitalize transition-colors disabled:opacity-30 ${
                     status === 'paid'
                       ? 'bg-green-600 text-white hover:bg-green-700'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      : status === 'failed'
+                      ? 'bg-red-50 text-red-600 hover:bg-red-100'
+                      : status === 'cancelled'
+                      ? 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      : 'bg-amber-50 text-amber-600 hover:bg-amber-100'
                   }`}
                 >
-                  Mark {status}
+                  {status}
                 </button>
               ))}
             </div>
           </div>
 
-          <div className="mt-6 pt-4 border-t border-gray-200">
+          <div className="mt-5 pt-4 border-t border-gray-100">
             <button
               onClick={handleCheckHistory}
               disabled={checkingHistory}
-              className="text-xs text-blue-600 hover:underline disabled:opacity-50"
+              className="text-xs font-medium text-blue-600 hover:text-blue-700 disabled:opacity-50"
             >
-              {checkingHistory ? 'Checking...' : 'Check History'}
+              {checkingHistory ? 'Checking...' : 'Check submission history'}
             </button>
             {history && (
-              <div className="mt-3 space-y-2">
+              <div className="mt-3 space-y-1.5">
                 {history.length === 0 ? (
                   <p className="text-xs text-gray-400">No prior submissions found.</p>
                 ) : (
                   history.map((h, i) => (
-                    <div key={i} className="text-xs bg-gray-50 rounded p-2">
-                      <span className="font-medium">{h.type}</span> —{' '}
-                      {h.tier || 'contact'} — {new Date(h.created_at).toLocaleDateString()}
+                    <div key={i} className="text-xs bg-gray-50 rounded-lg px-3 py-2 flex items-center justify-between">
+                      <span>
+                        <span className="font-medium capitalize">{h.type}</span>
+                        {h.tier && <span className="text-gray-400"> &middot; {h.tier}</span>}
+                      </span>
+                      <span className="text-gray-400">{new Date(h.created_at).toLocaleDateString()}</span>
                     </div>
                   ))
                 )}

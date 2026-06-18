@@ -116,7 +116,7 @@
     "emailInvalid": "Please enter a valid email address.",
     "phoneInvalid": "Please enter a valid phone number.",
     "messageRequired": "Message is required.",
-    "messageTooLong": "Message must be under 1000 characters.",
+    "messageTooLong": "Message must be under 500 characters.",
     "rateLimited": "Too many submissions. Please try again in a few minutes.",
     "genericError": "Something went wrong. Please try again."
   }

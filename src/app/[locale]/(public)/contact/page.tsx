@@ -195,7 +195,7 @@ export default function ContactPage() {
               <textarea
                 {...register('message', {
                   required: tv('messageRequired'),
-                  maxLength: { value: 1000, message: tv('messageTooLong') },
+                  maxLength: { value: 500, message: tv('messageTooLong') },
                 })}
                 rows={5}
                 placeholder={t('messagePlaceholder')}

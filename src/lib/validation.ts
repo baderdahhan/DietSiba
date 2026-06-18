@@ -40,7 +40,7 @@ export const messageRequiredSchema = z
   .string()
   .trim()
   .min(1, 'messageRequired')
-  .max(1000, 'messageTooLong');
+  .max(500, 'messageTooLong');
 
 export const discountCodeSchema = z
   .string()
