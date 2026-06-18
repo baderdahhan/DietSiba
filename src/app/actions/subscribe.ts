@@ -19,12 +19,16 @@ export async function subscribeAction(
   formData: unknown
 ): Promise<SubscribeResult> {
   try {
+    console.log('[SUB] Step 1: CSRF check');
     if (!validateCsrfToken(csrfToken)) {
+      console.log('[SUB] CSRF FAILED');
       return { success: false, error: 'Invalid request. Please refresh and try again.' };
     }
 
+    console.log('[SUB] Step 2: Zod validation');
     const parsed = subscribeFormSchema.safeParse(formData);
     if (!parsed.success) {
+      console.log('[SUB] Zod FAILED:', parsed.error.issues);
       const fieldErrors: Record<string, string> = {};
       for (const issue of parsed.error.issues) {
         const field = issue.path[0]?.toString();
@@ -35,7 +39,9 @@ export async function subscribeAction(
 
     const data = parsed.data;
 
+    console.log('[SUB] Step 3: Spam check, honeypot:', JSON.stringify(data.honeypot), 'time:', Date.now() - data.formLoadedAt);
     if (isSpamSubmission(data.honeypot, data.formLoadedAt)) {
+      console.log('[SUB] SPAM detected');
       return { success: true };
     }
 
@@ -50,6 +56,7 @@ export async function subscribeAction(
 
     const supabase = createServiceClient();
 
+    console.log('[SUB] Step 4: DB insert');
     const { data: subId, error } = await supabase.rpc('create_subscription', {
       p_name: data.name,
       p_email: data.email,

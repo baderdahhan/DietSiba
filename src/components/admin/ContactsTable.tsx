@@ -21,17 +21,47 @@ export function ContactsTable({ contacts }: { contacts: Contact[] }) {
 
   return (
     <div>
-      <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+      {/* Mobile: card layout */}
+      <div className="sm:hidden space-y-3">
+        {contacts.map((contact) => (
+          <div
+            key={contact.id}
+            onClick={() => setSelectedId(contact.id)}
+            className="bg-white rounded-lg border border-gray-200 p-4 active:bg-gray-50 cursor-pointer"
+          >
+            <div className="flex items-center justify-between mb-1.5">
+              <div className="flex items-center gap-1.5">
+                <span className="font-medium text-sm">{contact.name}</span>
+                {!contact.email_sent && (
+                  <span className="w-2 h-2 rounded-full bg-red-400 shrink-0" />
+                )}
+              </div>
+              <span className="text-xs text-gray-400">{new Date(contact.created_at).toLocaleDateString()}</span>
+            </div>
+            <p className="text-xs text-gray-500 mb-1">{contact.email}</p>
+            <p className="text-xs text-gray-400 italic">
+              {contact.message.split(/\s+/).slice(0, 5).join(' ')}...
+            </p>
+          </div>
+        ))}
+        {contacts.length === 0 && (
+          <div className="bg-white rounded-lg border border-gray-200 p-8 text-center text-gray-400 text-sm">
+            No contact messages yet.
+          </div>
+        )}
+      </div>
+
+      {/* Desktop: table layout */}
+      <div className="hidden sm:block bg-white rounded-lg border border-gray-200 overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="w-full text-base">
             <thead>
               <tr className="bg-gray-50 border-b border-gray-200">
-                <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">Name</th>
-                <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">Email</th>
-                <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase hidden sm:table-cell">Phone</th>
-                <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">Message</th>
-                <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase hidden sm:table-cell">Lang</th>
-                <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase hidden md:table-cell">Date</th>
+                <th className="text-left px-4 py-3 text-sm font-medium text-gray-500 uppercase">Name</th>
+                <th className="text-left px-4 py-3 text-sm font-medium text-gray-500 uppercase">Email</th>
+                <th className="text-left px-4 py-3 text-sm font-medium text-gray-500 uppercase hidden md:table-cell">Phone</th>
+                <th className="text-left px-4 py-3 text-sm font-medium text-gray-500 uppercase">Message</th>
+                <th className="text-left px-4 py-3 text-sm font-medium text-gray-500 uppercase hidden lg:table-cell">Date</th>
               </tr>
             </thead>
             <tbody>
@@ -50,19 +80,18 @@ export function ContactsTable({ contacts }: { contacts: Contact[] }) {
                     </div>
                   </td>
                   <td className="px-4 py-3 text-gray-600">{contact.email}</td>
-                  <td className="px-4 py-3 text-gray-600 hidden sm:table-cell">{contact.phone || '—'}</td>
+                  <td className="px-4 py-3 text-gray-600 hidden md:table-cell">{contact.phone || '—'}</td>
                   <td className="px-4 py-3 text-gray-500 text-xs italic">
                     {contact.message.split(/\s+/).slice(0, 3).join(' ')}...
                   </td>
-                  <td className="px-4 py-3 text-gray-500 uppercase text-xs hidden sm:table-cell">{contact.locale}</td>
-                  <td className="px-4 py-3 text-gray-500 text-xs whitespace-nowrap hidden md:table-cell">
+                  <td className="px-4 py-3 text-gray-500 text-xs whitespace-nowrap hidden lg:table-cell">
                     {new Date(contact.created_at).toLocaleDateString()}
                   </td>
                 </tr>
               ))}
               {contacts.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="px-4 py-8 text-center text-gray-400">
+                  <td colSpan={5} className="px-4 py-8 text-center text-gray-400">
                     No contact messages yet.
                   </td>
                 </tr>

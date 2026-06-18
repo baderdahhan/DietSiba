@@ -53,18 +53,56 @@ export function SubscriptionsTable({
         ))}
       </div>
 
-      <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+      {/* Mobile: card layout */}
+      <div className="sm:hidden space-y-3">
+        {filtered.map((sub) => (
+          <div
+            key={sub.id}
+            onClick={() => setSelectedId(sub.id)}
+            className="bg-white rounded-lg border border-gray-200 p-4 active:bg-gray-50 cursor-pointer"
+          >
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-1.5">
+                <span className="font-medium text-sm">{sub.name}</span>
+                {!sub.email_sent && (
+                  <span className="w-2 h-2 rounded-full bg-red-400 shrink-0" />
+                )}
+              </div>
+              <StatusBadge status={sub.payment_status} />
+            </div>
+            <div className="flex items-center justify-between text-xs text-gray-500">
+              <span>{sub.subscription_tiers?.name?.en || '—'} &middot; {sub.price_charged} TRY</span>
+              <span>{new Date(sub.created_at).toLocaleDateString()}</span>
+            </div>
+            {sub.discount_codes && (
+              <div className="mt-1.5">
+                <span className="inline-flex px-1.5 py-0.5 bg-purple-100 text-purple-700 text-[10px] font-mono rounded">
+                  {sub.discount_codes.code}
+                </span>
+              </div>
+            )}
+          </div>
+        ))}
+        {filtered.length === 0 && (
+          <div className="bg-white rounded-lg border border-gray-200 p-8 text-center text-gray-400 text-sm">
+            No subscriptions found.
+          </div>
+        )}
+      </div>
+
+      {/* Desktop: table layout */}
+      <div className="hidden sm:block bg-white rounded-lg border border-gray-200 overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="w-full text-base">
             <thead>
               <tr className="bg-gray-50 border-b border-gray-200">
-                <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">Name</th>
-                <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">Email</th>
-                <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase hidden sm:table-cell">Phone</th>
-                <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">Tier</th>
-                <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase hidden sm:table-cell">Price</th>
-                <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">Status</th>
-                <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase hidden md:table-cell">Date</th>
+                <th className="text-left px-4 py-3 text-sm font-medium text-gray-500 uppercase">Name</th>
+                <th className="text-left px-4 py-3 text-sm font-medium text-gray-500 uppercase">Email</th>
+                <th className="text-left px-4 py-3 text-sm font-medium text-gray-500 uppercase hidden md:table-cell">Phone</th>
+                <th className="text-left px-4 py-3 text-sm font-medium text-gray-500 uppercase">Tier</th>
+                <th className="text-left px-4 py-3 text-sm font-medium text-gray-500 uppercase">Price</th>
+                <th className="text-left px-4 py-3 text-sm font-medium text-gray-500 uppercase">Status</th>
+                <th className="text-left px-4 py-3 text-sm font-medium text-gray-500 uppercase hidden lg:table-cell">Date</th>
               </tr>
             </thead>
             <tbody>
@@ -83,11 +121,20 @@ export function SubscriptionsTable({
                     </div>
                   </td>
                   <td className="px-4 py-3 text-gray-600">{sub.email}</td>
-                  <td className="px-4 py-3 text-gray-600 hidden sm:table-cell">{sub.phone}</td>
+                  <td className="px-4 py-3 text-gray-600 hidden md:table-cell">{sub.phone}</td>
                   <td className="px-4 py-3">{sub.subscription_tiers?.name?.en || '—'}</td>
-                  <td className="px-4 py-3 hidden sm:table-cell">{sub.price_charged} TRY</td>
+                  <td className="px-4 py-3">
+                    <div className="flex items-center gap-1.5">
+                      {sub.price_charged} TRY
+                      {sub.discount_codes && (
+                        <span className="inline-flex px-1.5 py-0.5 bg-purple-100 text-purple-700 text-[10px] font-mono rounded" title={`Code: ${sub.discount_codes.code}`}>
+                          {sub.discount_codes.code}
+                        </span>
+                      )}
+                    </div>
+                  </td>
                   <td className="px-4 py-3"><StatusBadge status={sub.payment_status} /></td>
-                  <td className="px-4 py-3 text-gray-500 text-xs hidden md:table-cell">
+                  <td className="px-4 py-3 text-gray-500 text-xs hidden lg:table-cell">
                     {new Date(sub.created_at).toLocaleDateString()}
                   </td>
                 </tr>

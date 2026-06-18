@@ -127,21 +127,21 @@ export function SubscribeModal({
 
   return (
     <Modal onClose={onClose} title={ts('title', { tier: tierName })}>
-        <div className="p-6">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="font-heading text-2xl text-green">
-              {ts('title', { tier: tierName })}
-            </h2>
-            <button
-              onClick={onClose}
-              className="p-1 text-muted hover:text-foreground transition-colors"
-              aria-label="Close"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
+        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 shrink-0">
+          <h2 className="font-heading text-xl text-green">
+            {ts('title', { tier: tierName })}
+          </h2>
+          <button
+            onClick={onClose}
+            className="p-1.5 rounded-lg hover:bg-gray-100 text-muted hover:text-foreground transition-colors"
+            aria-label="Close"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        <div className="overflow-y-auto flex-1 p-6">
 
           {success ? (
             <div className="text-center py-8">
@@ -163,8 +163,8 @@ export function SubscribeModal({
           ) : (
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               {/* Honeypot - hidden from humans */}
-              <div className="absolute -left-[9999px]" aria-hidden="true">
-                <input type="text" {...register('honeypot')} tabIndex={-1} autoComplete="off" />
+              <div style={{ position: 'absolute', left: '-9999px', opacity: 0, height: 0, overflow: 'hidden' }} aria-hidden="true">
+                <input type="text" {...register('honeypot')} tabIndex={-1} autoComplete="off" name="website" />
               </div>
 
               <div>

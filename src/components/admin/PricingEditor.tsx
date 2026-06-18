@@ -184,9 +184,9 @@ function TierEditCard({ tier }: { tier: Tier }) {
   }
 
   return (
-    <div className={`bg-white rounded-lg border p-6 ${tier.is_popular ? 'border-gold ring-1 ring-gold/20' : 'border-gray-200'}`}>
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-3">
+    <div className={`bg-white rounded-lg border p-4 sm:p-6 ${tier.is_popular ? 'border-gold ring-1 ring-gold/20' : 'border-gray-200'}`}>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+        <div className="flex items-center gap-2 flex-wrap">
           <h3 className="font-semibold text-lg capitalize">{tier.slug}</h3>
           {tier.is_popular && (
             <span className="text-xs bg-gold/10 text-gold-dark px-2 py-0.5 rounded-full font-medium">
@@ -199,11 +199,11 @@ function TierEditCard({ tier }: { tier: Tier }) {
             </span>
           )}
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
           {!tier.is_popular && (
             <button
               onClick={handleSetPopular}
-              className="px-3 py-1.5 text-xs font-medium text-gold-dark border border-gold/30 rounded hover:bg-gold/10 transition-colors"
+              className="px-3 py-1.5 text-xs font-medium text-gold-dark border border-gold/30 rounded-lg hover:bg-gold/10 transition-colors"
             >
               Set as Popular
             </button>
@@ -276,13 +276,13 @@ function TierEditCard({ tier }: { tier: Tier }) {
         </div>
         <div className="space-y-2">
           {features.map((feature, i) => (
-            <div key={i} className="flex gap-2 items-center">
+            <div key={i} className="flex flex-col sm:flex-row gap-2">
               <input
                 type="text"
                 value={feature.en}
                 onChange={(e) => updateFeature(i, 'en', e.target.value)}
                 placeholder="English"
-                className="flex-1 px-3 py-1.5 border border-gray-300 rounded text-sm"
+                className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm"
               />
               <input
                 type="text"
@@ -290,11 +290,11 @@ function TierEditCard({ tier }: { tier: Tier }) {
                 onChange={(e) => updateFeature(i, 'ar', e.target.value)}
                 placeholder="العربية"
                 dir="rtl"
-                className="flex-1 px-3 py-1.5 border border-gray-300 rounded text-sm"
+                className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm"
               />
               <button
                 onClick={() => removeFeature(i)}
-                className="text-red-400 hover:text-red-600 shrink-0"
+                className="text-red-400 hover:text-red-600 shrink-0 self-end sm:self-center"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />

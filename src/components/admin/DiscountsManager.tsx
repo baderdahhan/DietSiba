@@ -52,8 +52,8 @@ export function DiscountsManager({ codes }: { codes: DiscountCode[] }) {
     window.location.reload();
   }
 
-  async function handleDelete(id: string, code: string) {
-    if (!confirm(`Delete discount code "${code}"? This cannot be undone.`)) return;
+  async function handleDelete(id: string, codeName: string) {
+    if (!confirm(`Delete discount code "${codeName}"? This cannot be undone.`)) return;
     await deleteDiscountCode(id);
     window.location.reload();
   }
@@ -62,52 +62,54 @@ export function DiscountsManager({ codes }: { codes: DiscountCode[] }) {
     <div>
       <button
         onClick={() => setShowForm(!showForm)}
-        className="mb-4 px-4 py-2 bg-green text-white text-sm rounded hover:bg-green-dark transition-colors"
+        className="mb-4 w-full sm:w-auto px-4 py-2.5 bg-green text-white text-sm rounded-lg hover:bg-green-dark transition-colors"
       >
-        {showForm ? 'Cancel' : 'Create New Code'}
+        {showForm ? 'Cancel' : '+ Create New Code'}
       </button>
 
       {showForm && (
-        <div className="bg-white rounded-lg border border-gray-200 p-4 mb-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div>
-            <label className="block text-xs font-medium text-gray-600 mb-1">Code</label>
-            <input
-              type="text"
-              value={code}
-              onChange={(e) => setCode(e.target.value.toUpperCase())}
-              placeholder="e.g. WELCOME20"
-              className="w-full px-3 py-2 border border-gray-300 rounded text-sm"
-            />
-          </div>
-          <div>
-            <label className="block text-xs font-medium text-gray-600 mb-1">Type</label>
-            <select
-              value={discountType}
-              onChange={(e) => setDiscountType(e.target.value as 'percentage' | 'fixed')}
-              className="w-full px-3 py-2 border border-gray-300 rounded text-sm"
-            >
-              <option value="percentage">Percentage (%)</option>
-              <option value="fixed">Fixed Amount</option>
-            </select>
-          </div>
-          <div>
-            <label className="block text-xs font-medium text-gray-600 mb-1">Value</label>
-            <input
-              type="number"
-              value={value}
-              onChange={(e) => setValue(e.target.value)}
-              placeholder={discountType === 'percentage' ? '20' : '100'}
-              className="w-full px-3 py-2 border border-gray-300 rounded text-sm"
-            />
-          </div>
-          <div>
-            <label className="block text-xs font-medium text-gray-600 mb-1">Max Uses (empty = unlimited)</label>
-            <input
-              type="number"
-              value={maxUses}
-              onChange={(e) => setMaxUses(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded text-sm"
-            />
+        <div className="bg-white rounded-lg border border-gray-200 p-4 mb-4 space-y-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label className="block text-xs font-medium text-gray-600 mb-1">Code</label>
+              <input
+                type="text"
+                value={code}
+                onChange={(e) => setCode(e.target.value.toUpperCase())}
+                placeholder="e.g. WELCOME20"
+                className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-gray-600 mb-1">Type</label>
+              <select
+                value={discountType}
+                onChange={(e) => setDiscountType(e.target.value as 'percentage' | 'fixed')}
+                className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm"
+              >
+                <option value="percentage">Percentage (%)</option>
+                <option value="fixed">Fixed Amount</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-gray-600 mb-1">Value</label>
+              <input
+                type="number"
+                value={value}
+                onChange={(e) => setValue(e.target.value)}
+                placeholder={discountType === 'percentage' ? '20' : '100'}
+                className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-gray-600 mb-1">Max Uses (empty = unlimited)</label>
+              <input
+                type="number"
+                value={maxUses}
+                onChange={(e) => setMaxUses(e.target.value)}
+                className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm"
+              />
+            </div>
           </div>
           <div>
             <label className="block text-xs font-medium text-gray-600 mb-1">Expires At (optional)</label>
@@ -115,33 +117,85 @@ export function DiscountsManager({ codes }: { codes: DiscountCode[] }) {
               type="datetime-local"
               value={expiresAt}
               onChange={(e) => setExpiresAt(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded text-sm"
+              className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm"
             />
           </div>
-          <div className="flex items-end">
-            <button
-              onClick={handleCreate}
-              disabled={creating}
-              className="px-4 py-2 bg-green text-white text-sm rounded hover:bg-green-dark transition-colors disabled:opacity-50"
-            >
-              {creating ? 'Creating...' : 'Create'}
-            </button>
-          </div>
+          <button
+            onClick={handleCreate}
+            disabled={creating}
+            className="w-full sm:w-auto px-4 py-2.5 bg-green text-white text-sm rounded-lg hover:bg-green-dark transition-colors disabled:opacity-50"
+          >
+            {creating ? 'Creating...' : 'Create'}
+          </button>
         </div>
       )}
 
-      <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+      {/* Mobile: card layout */}
+      <div className="sm:hidden space-y-3">
+        {codes.map((c) => (
+          <div key={c.id} className="bg-white rounded-lg border border-gray-200 p-4">
+            <div className="flex items-center justify-between mb-3">
+              <span className="font-mono font-semibold text-sm">{c.code}</span>
+              <span
+                className={`inline-flex px-2 py-0.5 rounded-full text-xs font-medium ${
+                  c.is_active ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'
+                }`}
+              >
+                {c.is_active ? 'Active' : 'Inactive'}
+              </span>
+            </div>
+            <div className="grid grid-cols-2 gap-2 text-xs text-gray-500 mb-3">
+              <div>
+                <span className="block text-gray-400">Discount</span>
+                {c.discount_type === 'percentage' ? `${c.value}%` : `${c.value} TRY`}
+              </div>
+              <div>
+                <span className="block text-gray-400">Uses</span>
+                {c.used_count}{c.max_uses !== null ? ` / ${c.max_uses}` : ' / ∞'}
+              </div>
+              {c.expires_at && (
+                <div>
+                  <span className="block text-gray-400">Expires</span>
+                  {new Date(c.expires_at).toLocaleDateString()}
+                </div>
+              )}
+            </div>
+            <div className="flex gap-3 pt-2 border-t border-gray-100">
+              <button
+                onClick={() => handleToggle(c.id, c.is_active)}
+                className="text-xs text-blue-600 font-medium"
+              >
+                {c.is_active ? 'Deactivate' : 'Activate'}
+              </button>
+              <button
+                onClick={() => handleDelete(c.id, c.code)}
+                className="text-xs text-red-500 font-medium"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        ))}
+        {codes.length === 0 && (
+          <div className="bg-white rounded-lg border border-gray-200 p-8 text-center text-gray-400 text-sm">
+            No discount codes yet.
+          </div>
+        )}
+      </div>
+
+      {/* Desktop: table layout */}
+      <div className="hidden sm:block bg-white rounded-lg border border-gray-200 overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="w-full text-base">
             <thead>
               <tr className="bg-gray-50 border-b border-gray-200">
-                <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">Code</th>
-                <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">Type</th>
-                <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">Value</th>
-                <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">Uses</th>
-                <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">Expires</th>
-                <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">Status</th>
-                <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">Action</th>
+                <th className="text-left px-4 py-3 text-sm font-medium text-gray-500 uppercase">Code</th>
+                <th className="text-left px-4 py-3 text-sm font-medium text-gray-500 uppercase">Type</th>
+                <th className="text-left px-4 py-3 text-sm font-medium text-gray-500 uppercase">Value</th>
+                <th className="text-left px-4 py-3 text-sm font-medium text-gray-500 uppercase">Uses</th>
+                <th className="text-left px-4 py-3 text-sm font-medium text-gray-500 uppercase">Expires</th>
+                <th className="text-left px-4 py-3 text-sm font-medium text-gray-500 uppercase">Status</th>
+                <th className="text-left px-4 py-3 text-sm font-medium text-gray-500 uppercase">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -167,19 +221,21 @@ export function DiscountsManager({ codes }: { codes: DiscountCode[] }) {
                       {c.is_active ? 'Active' : 'Inactive'}
                     </span>
                   </td>
-                  <td className="px-4 py-3 flex gap-2">
-                    <button
-                      onClick={() => handleToggle(c.id, c.is_active)}
-                      className="text-xs text-blue-600 hover:underline"
-                    >
-                      {c.is_active ? 'Deactivate' : 'Activate'}
-                    </button>
-                    <button
-                      onClick={() => handleDelete(c.id, c.code)}
-                      className="text-xs text-red-500 hover:underline"
-                    >
-                      Delete
-                    </button>
+                  <td className="px-4 py-3">
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => handleToggle(c.id, c.is_active)}
+                        className="text-xs text-blue-600 hover:underline"
+                      >
+                        {c.is_active ? 'Deactivate' : 'Activate'}
+                      </button>
+                      <button
+                        onClick={() => handleDelete(c.id, c.code)}
+                        className="text-xs text-red-500 hover:underline"
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}

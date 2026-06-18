@@ -31,7 +31,7 @@ export function generateCsrfToken(): string {
     cookies().set(COOKIE_NAME, token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      sameSite: 'lax',
       path: '/',
       maxAge: 3600,
     });

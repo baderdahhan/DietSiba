@@ -125,8 +125,8 @@ export default function ContactPage() {
             className="bg-white rounded-lg shadow-sm border border-border p-6 sm:p-8 space-y-5"
           >
             {/* Honeypot */}
-            <div className="absolute -left-[9999px]" aria-hidden="true">
-              <input type="text" {...register('honeypot')} tabIndex={-1} autoComplete="off" />
+            <div style={{ position: 'absolute', left: '-9999px', opacity: 0, height: 0, overflow: 'hidden' }} aria-hidden="true">
+              <input type="text" {...register('honeypot')} tabIndex={-1} autoComplete="off" name="website" />
             </div>
 
             <div>

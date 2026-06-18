@@ -45,9 +45,11 @@ export const messageRequiredSchema = z
 export const discountCodeSchema = z
   .string()
   .trim()
-  .toUpperCase()
-  .transform((val) => val === '' ? '' : val)
-  .refine((val) => val === '' || /^[A-Z0-9_\-]{3,20}$/.test(val), 'Invalid discount code');
+  .transform((val) => {
+    if (val === '') return '';
+    return val.toUpperCase();
+  })
+  .refine((val) => val === '' || /^[A-Z0-9_\-]{2,20}$/.test(val), 'Invalid discount code');
 
 export const subscribeFormSchema = z.object({
   name: nameSchema,
