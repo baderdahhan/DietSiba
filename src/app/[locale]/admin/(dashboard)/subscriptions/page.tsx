@@ -5,14 +5,25 @@ async function getSubscriptions() {
   const supabase = createServiceClient();
   const { data, error } = await supabase
     .from('subscriptions')
-    .select('*, subscription_tiers(name, slug)')
+    .select('id, name, email, phone, message, price_charged, payment_status, locale, created_at, subscription_tiers(name, slug)')
     .order('created_at', { ascending: false });
 
   if (error) {
     console.error('Error fetching subscriptions:', error);
     return [];
   }
-  return data || [];
+  return (data || []) as unknown as Array<{
+    id: string;
+    name: string;
+    email: string;
+    phone: string;
+    message: string | null;
+    price_charged: number;
+    payment_status: string;
+    locale: string;
+    created_at: string;
+    subscription_tiers: { name: { en: string; ar: string }; slug: string } | null;
+  }>;
 }
 
 export default async function SubscriptionsPage() {

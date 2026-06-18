@@ -9,17 +9,6 @@ type HistoryEntry = {
   created_at: string;
 };
 
-type SubRow = {
-  id: string;
-  created_at: string;
-  subscription_tiers: { name: { en: string } } | null;
-};
-
-type ContactRow = {
-  id: string;
-  created_at: string;
-};
-
 export async function GET(request: NextRequest) {
   const user = await getAdminUser();
   if (!user) {
@@ -38,53 +27,65 @@ export async function GET(request: NextRequest) {
   const phoneNorm = normalizePhone(phone);
 
   const results: HistoryEntry[] = [];
+  const seen = new Set<string>();
+
+  const queries = [];
 
   if (emailNorm) {
-    const { data: subs } = await supabase
-      .from('subscriptions')
-      .select('id, created_at, subscription_tiers(name)')
-      .eq('email_normalized', emailNorm)
-      .order('created_at', { ascending: false });
-
-    (subs as unknown as SubRow[])?.forEach((s) => {
-      results.push({
-        type: 'subscription',
-        tier: s.subscription_tiers?.name?.en || null,
-        created_at: s.created_at,
-      });
-    });
-
-    const { data: contacts } = await supabase
-      .from('contact_messages')
-      .select('id, created_at')
-      .eq('email_normalized', emailNorm)
-      .order('created_at', { ascending: false });
-
-    (contacts as unknown as ContactRow[])?.forEach((c) => {
-      results.push({
-        type: 'contact',
-        tier: null,
-        created_at: c.created_at,
-      });
-    });
+    queries.push(
+      supabase
+        .from('subscriptions')
+        .select('id, created_at, subscription_tiers(name)')
+        .or(`email_normalized.eq.${emailNorm}${phoneNorm ? `,phone_normalized.eq.${phoneNorm}` : ''}`)
+        .order('created_at', { ascending: false }),
+      supabase
+        .from('contact_messages')
+        .select('id, created_at')
+        .or(`email_normalized.eq.${emailNorm}${phoneNorm ? `,phone_normalized.eq.${phoneNorm}` : ''}`)
+        .order('created_at', { ascending: false })
+    );
+  } else if (phoneNorm) {
+    queries.push(
+      supabase
+        .from('subscriptions')
+        .select('id, created_at, subscription_tiers(name)')
+        .eq('phone_normalized', phoneNorm)
+        .order('created_at', { ascending: false }),
+      supabase
+        .from('contact_messages')
+        .select('id, created_at')
+        .eq('phone_normalized', phoneNorm)
+        .order('created_at', { ascending: false })
+    );
   }
 
-  if (phoneNorm) {
-    const { data: phoneSubs } = await supabase
-      .from('subscriptions')
-      .select('id, created_at, subscription_tiers(name)')
-      .eq('phone_normalized', phoneNorm)
-      .order('created_at', { ascending: false });
+  const queryResults = await Promise.all(queries);
 
-    (phoneSubs as unknown as SubRow[])?.forEach((s) => {
-      if (!results.find((r) => r.type === 'subscription' && r.created_at === s.created_at)) {
+  type SubRow = { id: string; created_at: string; subscription_tiers: { name: { en: string } } | null };
+  type ContactRow = { id: string; created_at: string };
+
+  if (queryResults[0]?.data) {
+    for (const s of queryResults[0].data as unknown as SubRow[]) {
+      const key = `sub-${s.id}`;
+      if (!seen.has(key)) {
+        seen.add(key);
         results.push({
           type: 'subscription',
           tier: s.subscription_tiers?.name?.en || null,
           created_at: s.created_at,
         });
       }
-    });
+    }
+  }
+
+  if (queryResults[1]?.data) {
+    for (const c of queryResults[1].data as unknown as ContactRow[]) {
+      const key = `contact-${c.id}`;
+      if (!seen.has(key)) {
+        seen.add(key);
+        results.push({ type: 'contact', tier: null, created_at: c.created_at });
+      }
+    }
   }
 
   results.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());

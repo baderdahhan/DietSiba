@@ -18,6 +18,7 @@ export async function subscribeAction(
   csrfToken: string,
   formData: unknown
 ): Promise<SubscribeResult> {
+  try {
   if (!validateCsrfToken(csrfToken)) {
     return { success: false, error: 'Invalid request. Please refresh and try again.' };
   }
@@ -93,4 +94,8 @@ export async function subscribeAction(
   }
 
   return { success: true };
+  } catch (e) {
+    console.error('Subscribe action crashed:', e);
+    return { success: false, error: 'Something went wrong. Please try again.' };
+  }
 }

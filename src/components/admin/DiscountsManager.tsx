@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { createDiscountCode, toggleDiscountCode } from '@/app/actions/admin';
+import { createDiscountCode, toggleDiscountCode, deleteDiscountCode } from '@/app/actions/admin';
 
 type DiscountCode = {
   id: string;
@@ -49,6 +49,12 @@ export function DiscountsManager({ codes }: { codes: DiscountCode[] }) {
 
   async function handleToggle(id: string, current: boolean) {
     await toggleDiscountCode(id, !current);
+    window.location.reload();
+  }
+
+  async function handleDelete(id: string, code: string) {
+    if (!confirm(`Delete discount code "${code}"? This cannot be undone.`)) return;
+    await deleteDiscountCode(id);
     window.location.reload();
   }
 
@@ -161,12 +167,18 @@ export function DiscountsManager({ codes }: { codes: DiscountCode[] }) {
                       {c.is_active ? 'Active' : 'Inactive'}
                     </span>
                   </td>
-                  <td className="px-4 py-3">
+                  <td className="px-4 py-3 flex gap-2">
                     <button
                       onClick={() => handleToggle(c.id, c.is_active)}
                       className="text-xs text-blue-600 hover:underline"
                     >
                       {c.is_active ? 'Deactivate' : 'Activate'}
+                    </button>
+                    <button
+                      onClick={() => handleDelete(c.id, c.code)}
+                      className="text-xs text-red-500 hover:underline"
+                    >
+                      Delete
                     </button>
                   </td>
                 </tr>

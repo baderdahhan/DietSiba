@@ -14,7 +14,7 @@ async function getContacts(): Promise<ContactMessage[]> {
   const supabase = createServiceClient();
   const { data, error } = await supabase
     .from('contact_messages')
-    .select('*')
+    .select('id, name, email, phone, message, locale, created_at')
     .order('created_at', { ascending: false });
 
   if (error) return [];

@@ -27,16 +27,14 @@ export const phoneOptionalSchema = z
   .refine(
     (val) => val === '' || isValidPhoneNumber(val, 'TR'),
     'phoneInvalid'
-  )
-  .optional()
-  .or(z.literal(''));
+  );
 
 export const messageSchema = z
   .string()
   .trim()
   .max(1000, 'messageTooLong')
   .optional()
-  .or(z.literal(''));
+  .default('');
 
 export const messageRequiredSchema = z
   .string()
@@ -48,9 +46,8 @@ export const discountCodeSchema = z
   .string()
   .trim()
   .toUpperCase()
-  .regex(/^[A-Z0-9_\-]{3,20}$/)
-  .optional()
-  .or(z.literal(''));
+  .transform((val) => val === '' ? '' : val)
+  .refine((val) => val === '' || /^[A-Z0-9_\-]{3,20}$/.test(val), 'Invalid discount code');
 
 export const subscribeFormSchema = z.object({
   name: nameSchema,
@@ -60,7 +57,7 @@ export const subscribeFormSchema = z.object({
   tierId: z.string().uuid(),
   discountCode: discountCodeSchema,
   locale: z.enum(['en', 'ar']),
-  honeypot: z.literal(''),
+  honeypot: z.string(),
   formLoadedAt: z.number(),
 });
 
@@ -70,7 +67,7 @@ export const contactFormSchema = z.object({
   phone: phoneOptionalSchema,
   message: messageRequiredSchema,
   locale: z.enum(['en', 'ar']),
-  honeypot: z.literal(''),
+  honeypot: z.string(),
   formLoadedAt: z.number(),
 });
 

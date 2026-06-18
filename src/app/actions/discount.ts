@@ -10,8 +10,7 @@ export type DiscountValidationResult = {
 };
 
 export async function validateDiscountCode(
-  code: string,
-  _tierId: string
+  code: string
 ): Promise<DiscountValidationResult> {
   if (!code.trim()) return { valid: false };
 
@@ -20,7 +19,7 @@ export async function validateDiscountCode(
 
   const { data, error } = await supabase
     .from('discount_codes')
-    .select('*')
+    .select('id, discount_type, value, max_uses, used_count, expires_at')
     .eq('code', normalizedCode)
     .eq('is_active', true)
     .single();

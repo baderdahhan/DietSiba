@@ -1,28 +1,38 @@
 'use server';
 
+import { z } from 'zod';
 import { createServiceClient } from '@/lib/supabase/server';
 import { getAdminUser } from '@/lib/supabase/admin';
 import { revalidatePath } from 'next/cache';
 
 async function requireAdmin() {
-  const user = await getAdminUser();
+  let user = null;
+  try {
+    user = await getAdminUser();
+  } catch {
+    throw new Error('Unauthorized');
+  }
   if (!user) throw new Error('Unauthorized');
   return user;
 }
 
 export async function updatePaymentStatus(subscriptionId: string, status: string) {
   await requireAdmin();
-  const validStatuses = ['pending', 'paid', 'failed', 'cancelled'];
-  if (!validStatuses.includes(status)) throw new Error('Invalid status');
+  const parsed = z.object({
+    id: z.string().uuid(),
+    status: z.enum(['pending', 'paid', 'failed', 'cancelled']),
+  }).safeParse({ id: subscriptionId, status });
+
+  if (!parsed.success) throw new Error('Invalid input');
 
   const supabase = createServiceClient();
   const { error } = await supabase
     .from('subscriptions')
     .update({
-      payment_status: status,
-      payment_provider: status === 'paid' ? 'manual' : undefined,
+      payment_status: parsed.data.status,
+      payment_provider: parsed.data.status === 'paid' ? 'manual' : undefined,
     })
-    .eq('id', subscriptionId);
+    .eq('id', parsed.data.id);
 
   if (error) throw new Error('Failed to update status');
   revalidatePath('/admin/subscriptions');
@@ -37,13 +47,23 @@ export async function createDiscountCode(data: {
 }) {
   await requireAdmin();
 
+  const parsed = z.object({
+    code: z.string().trim().min(1).max(20),
+    discountType: z.enum(['percentage', 'fixed']),
+    value: z.number().positive(),
+    maxUses: z.number().int().positive().nullable(),
+    expiresAt: z.string().nullable(),
+  }).safeParse(data);
+
+  if (!parsed.success) throw new Error('Invalid input');
+
   const supabase = createServiceClient();
   const { error } = await supabase.from('discount_codes').insert({
-    code: data.code.trim().toUpperCase(),
-    discount_type: data.discountType,
-    value: data.value,
-    max_uses: data.maxUses,
-    expires_at: data.expiresAt || null,
+    code: parsed.data.code.toUpperCase(),
+    discount_type: parsed.data.discountType,
+    value: parsed.data.value,
+    max_uses: parsed.data.maxUses,
+    expires_at: parsed.data.expiresAt || null,
   });
 
   if (error) throw new Error('Failed to create discount code: ' + error.message);
@@ -52,6 +72,7 @@ export async function createDiscountCode(data: {
 
 export async function toggleDiscountCode(id: string, isActive: boolean) {
   await requireAdmin();
+  z.string().uuid().parse(id);
 
   const supabase = createServiceClient();
   const { error } = await supabase
@@ -60,6 +81,20 @@ export async function toggleDiscountCode(id: string, isActive: boolean) {
     .eq('id', id);
 
   if (error) throw new Error('Failed to update discount code');
+  revalidatePath('/admin/discounts');
+}
+
+export async function deleteDiscountCode(id: string) {
+  await requireAdmin();
+  z.string().uuid().parse(id);
+
+  const supabase = createServiceClient();
+  const { error } = await supabase
+    .from('discount_codes')
+    .delete()
+    .eq('id', id);
+
+  if (error) throw new Error('Failed to delete discount code');
   revalidatePath('/admin/discounts');
 }
 
@@ -73,6 +108,7 @@ export async function updateTier(
   }
 ) {
   await requireAdmin();
+  z.string().uuid().parse(tierId);
 
   const supabase = createServiceClient();
   const { error } = await supabase

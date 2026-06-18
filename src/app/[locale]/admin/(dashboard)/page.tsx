@@ -1,5 +1,7 @@
 import { createServiceClient } from '@/lib/supabase/server';
 
+export const revalidate = 30;
+
 async function getStats() {
   const supabase = createServiceClient();
   const now = new Date();
@@ -10,26 +12,26 @@ async function getStats() {
     await Promise.all([
       supabase
         .from('subscriptions')
-        .select('*', { count: 'exact', head: true })
+        .select('id', { count: 'exact', head: true })
         .gte('created_at', todayStart),
       supabase
         .from('subscriptions')
-        .select('*', { count: 'exact', head: true })
+        .select('id', { count: 'exact', head: true })
         .gte('created_at', weekStart),
       supabase
         .from('subscriptions')
-        .select('*', { count: 'exact', head: true }),
+        .select('id', { count: 'exact', head: true }),
       supabase
         .from('subscriptions')
-        .select('*', { count: 'exact', head: true })
+        .select('id', { count: 'exact', head: true })
         .eq('payment_status', 'pending'),
       supabase
         .from('contact_messages')
-        .select('*', { count: 'exact', head: true })
+        .select('id', { count: 'exact', head: true })
         .gte('created_at', weekStart),
       supabase
         .from('discount_codes')
-        .select('*', { count: 'exact', head: true })
+        .select('id', { count: 'exact', head: true })
         .eq('is_active', true),
     ]);
 

@@ -84,7 +84,7 @@ export function SubscribeModal({
   async function handleApplyDiscount() {
     if (!discountCodeValue.trim()) return;
     setDiscountChecking(true);
-    const result = await validateDiscountCode(discountCodeValue, tier.id);
+    const result = await validateDiscountCode(discountCodeValue);
     setDiscountResult(result);
     setDiscountChecking(false);
   }
@@ -93,26 +93,32 @@ export function SubscribeModal({
     setSubmitting(true);
     setServerError('');
 
-    const result = await subscribeAction(csrfToken, {
-      ...values,
-      tierId: tier.id,
-      locale,
-      formLoadedAt,
-    });
-
-    if (result.success) {
-      setSuccess(true);
-    } else if (result.fieldErrors) {
-      Object.entries(result.fieldErrors).forEach(([field, msg]) => {
-        setError(field as keyof FormValues, { message: msg });
+    try {
+      const result = await subscribeAction(csrfToken, {
+        ...values,
+        tierId: tier.id,
+        locale,
+        formLoadedAt,
       });
-    } else {
-      const errorKey = result.error || 'genericError';
-      try {
-        setServerError(tv(errorKey));
-      } catch {
-        setServerError(result.error || tv('genericError'));
+
+      if (!result) {
+        setServerError(tv('genericError'));
+      } else if (result.success) {
+        setSuccess(true);
+      } else if (result.fieldErrors) {
+        Object.entries(result.fieldErrors).forEach(([field, msg]) => {
+          setError(field as keyof FormValues, { message: msg });
+        });
+      } else {
+        const errorKey = result.error || 'genericError';
+        try {
+          setServerError(tv(errorKey));
+        } catch {
+          setServerError(result.error || tv('genericError'));
+        }
       }
+    } catch {
+      setServerError(tv('genericError'));
     }
 
     setSubmitting(false);

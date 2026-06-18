@@ -139,18 +139,26 @@ function SubscriptionDetail({
 
   async function handleStatusChange(status: string) {
     setUpdating(true);
-    await updatePaymentStatus(subscription.id, status);
-    setUpdating(false);
-    window.location.reload();
+    try {
+      await updatePaymentStatus(subscription.id, status);
+      window.location.reload();
+    } catch {
+      setUpdating(false);
+    }
   }
 
   async function handleCheckHistory() {
     setCheckingHistory(true);
-    const res = await fetch(
-      `/api/admin/check-history?email=${encodeURIComponent(subscription.email)}&phone=${encodeURIComponent(subscription.phone)}`
-    );
-    const data = await res.json();
-    setHistory(data.results || []);
+    try {
+      const res = await fetch(
+        `/api/admin/check-history?email=${encodeURIComponent(subscription.email)}&phone=${encodeURIComponent(subscription.phone)}`
+      );
+      if (!res.ok) throw new Error('Failed');
+      const data = await res.json();
+      setHistory(data.results || []);
+    } catch {
+      setHistory([]);
+    }
     setCheckingHistory(false);
   }
 

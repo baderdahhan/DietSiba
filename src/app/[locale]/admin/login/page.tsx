@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
-import { useRouter, usePathname } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import { useLocale } from 'next-intl';
 
 export default function AdminLoginPage() {
   const [email, setEmail] = useState('');
@@ -10,8 +11,7 @@ export default function AdminLoginPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const pathname = usePathname();
-  const locale = pathname.split('/')[1] || 'en';
+  const locale = useLocale();
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();

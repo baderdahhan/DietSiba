@@ -49,26 +49,32 @@ export default function ContactPage() {
     setSubmitting(true);
     setServerError('');
 
-    const result = await contactAction(csrfToken, {
-      ...values,
-      locale,
-      formLoadedAt,
-    });
-
-    if (result.success) {
-      setSuccess(true);
-      reset();
-    } else if (result.fieldErrors) {
-      Object.entries(result.fieldErrors).forEach(([field, msg]) => {
-        setError(field as keyof FormValues, { message: msg });
+    try {
+      const result = await contactAction(csrfToken, {
+        ...values,
+        locale,
+        formLoadedAt,
       });
-    } else {
-      const errorKey = result.error || 'genericError';
-      try {
-        setServerError(tv(errorKey));
-      } catch {
-        setServerError(result.error || tv('genericError'));
+
+      if (!result) {
+        setServerError(tv('genericError'));
+      } else if (result.success) {
+        setSuccess(true);
+        reset();
+      } else if (result.fieldErrors) {
+        Object.entries(result.fieldErrors).forEach(([field, msg]) => {
+          setError(field as keyof FormValues, { message: msg });
+        });
+      } else {
+        const errorKey = result.error || 'genericError';
+        try {
+          setServerError(tv(errorKey));
+        } catch {
+          setServerError(result.error || tv('genericError'));
+        }
       }
+    } catch {
+      setServerError(tv('genericError'));
     }
 
     setSubmitting(false);

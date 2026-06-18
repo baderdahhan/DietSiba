@@ -16,35 +16,43 @@ export function generateCsrfToken(): string {
   const signature = sign(payload);
   const token = `${payload}.${signature}`;
 
-  cookies().set(COOKIE_NAME, token, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict',
-    path: '/',
-    maxAge: 3600,
-  });
+  try {
+    cookies().set(COOKIE_NAME, token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      path: '/',
+      maxAge: 3600,
+    });
+  } catch {
+    // cookies() can throw in some server component contexts
+  }
 
   return token;
 }
 
 export function validateCsrfToken(token: string): boolean {
-  const cookieStore = cookies();
-  const cookieToken = cookieStore.get(COOKIE_NAME)?.value;
+  try {
+    const cookieStore = cookies();
+    const cookieToken = cookieStore.get(COOKIE_NAME)?.value;
 
-  if (!cookieToken || cookieToken !== token) {
+    if (!cookieToken || cookieToken !== token) {
+      return false;
+    }
+
+    const parts = token.split('.');
+    if (parts.length !== 3) return false;
+
+    const [nonce, timestamp, signature] = parts;
+    const expectedSig = sign(`${nonce}.${timestamp}`);
+
+    if (signature !== expectedSig) return false;
+
+    const ts = parseInt(timestamp, 10);
+    if (isNaN(ts) || Date.now() - ts > TOKEN_EXPIRY) return false;
+
+    return true;
+  } catch {
     return false;
   }
-
-  const parts = token.split('.');
-  if (parts.length !== 3) return false;
-
-  const [nonce, timestamp, signature] = parts;
-  const expectedSig = sign(`${nonce}.${timestamp}`);
-
-  if (signature !== expectedSig) return false;
-
-  const ts = parseInt(timestamp, 10);
-  if (isNaN(ts) || Date.now() - ts > TOKEN_EXPIRY) return false;
-
-  return true;
 }
