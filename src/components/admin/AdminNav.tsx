@@ -11,6 +11,7 @@ function getNavItems(locale: string) {
     { href: `/${locale}/admin/contacts`, label: 'Contacts' },
     { href: `/${locale}/admin/discounts`, label: 'Discounts' },
     { href: `/${locale}/admin/pricing`, label: 'Pricing' },
+    { href: `/${locale}/admin/audit-log`, label: 'Activity' },
   ];
 }
 

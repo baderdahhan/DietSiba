@@ -5,7 +5,7 @@ async function getSubscriptions() {
   const supabase = createServiceClient();
   const { data, error } = await supabase
     .from('subscriptions')
-    .select('id, name, email, phone, message, price_charged, payment_status, locale, created_at, subscription_tiers(name, slug)')
+    .select('id, name, email, phone, message, price_charged, payment_status, locale, created_at, email_sent, subscription_tiers(name, slug), discount_codes(code)')
     .order('created_at', { ascending: false });
 
   if (error) {
@@ -22,7 +22,9 @@ async function getSubscriptions() {
     payment_status: string;
     locale: string;
     created_at: string;
+    email_sent: boolean;
     subscription_tiers: { name: { en: string; ar: string }; slug: string } | null;
+    discount_codes: { code: string } | null;
   }>;
 }
 

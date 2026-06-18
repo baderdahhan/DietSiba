@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { updatePaymentStatus } from '@/app/actions/admin';
+import { resendSubscriptionEmail } from '@/app/actions/resend-email';
 import { Modal } from '@/components/ui/Modal';
 
 type Subscription = {
@@ -14,7 +15,9 @@ type Subscription = {
   payment_status: string;
   locale: string;
   created_at: string;
+  email_sent: boolean;
   subscription_tiers: { name: { en: string; ar: string }; slug: string } | null;
+  discount_codes: { code: string } | null;
 };
 
 export function SubscriptionsTable({
@@ -71,7 +74,14 @@ export function SubscriptionsTable({
                   onClick={() => setSelectedId(sub.id)}
                   className="border-b border-gray-100 hover:bg-gray-50 cursor-pointer"
                 >
-                  <td className="px-4 py-3">{sub.name}</td>
+                  <td className="px-4 py-3">
+                    <div className="flex items-center gap-1.5">
+                      {sub.name}
+                      {!sub.email_sent && (
+                        <span className="w-2 h-2 rounded-full bg-red-400 shrink-0" title="Email not sent" />
+                      )}
+                    </div>
+                  </td>
                   <td className="px-4 py-3 text-gray-600">{sub.email}</td>
                   <td className="px-4 py-3 text-gray-600 hidden sm:table-cell">{sub.phone}</td>
                   <td className="px-4 py-3">{sub.subscription_tiers?.name?.en || '—'}</td>
@@ -131,6 +141,8 @@ function SubscriptionDetail({
   onClose: () => void;
 }) {
   const [updating, setUpdating] = useState(false);
+  const [resending, setResending] = useState(false);
+  const [resendSuccess, setResendSuccess] = useState(false);
   const [checkingHistory, setCheckingHistory] = useState(false);
   const [history, setHistory] = useState<Array<{ type: string; tier: string | null; created_at: string }> | null>(null);
 
@@ -142,6 +154,17 @@ function SubscriptionDetail({
     } catch {
       setUpdating(false);
     }
+  }
+
+  async function handleResendEmail() {
+    setResending(true);
+    try {
+      await resendSubscriptionEmail(subscription.id);
+      setResendSuccess(true);
+    } catch {
+      alert('Failed to send email');
+    }
+    setResending(false);
   }
 
   async function handleCheckHistory() {
@@ -200,6 +223,45 @@ function SubscriptionDetail({
             <div>
               <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Date</p>
               <p className="text-gray-700">{new Date(subscription.created_at).toLocaleString()}</p>
+            </div>
+          </div>
+
+          {subscription.discount_codes && (
+            <div className="mt-4">
+              <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Discount Code</p>
+              <span className="inline-flex px-2 py-0.5 bg-purple-50 text-purple-700 text-xs font-mono rounded">
+                {subscription.discount_codes.code}
+              </span>
+            </div>
+          )}
+
+          <div className="mt-4">
+            <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Email Status</p>
+            <div className="flex items-center gap-2">
+              {subscription.email_sent || resendSuccess ? (
+                <span className="inline-flex items-center gap-1 text-xs text-green-600">
+                  <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  Sent
+                </span>
+              ) : (
+                <>
+                  <span className="inline-flex items-center gap-1 text-xs text-red-500">
+                    <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                    </svg>
+                    Not sent
+                  </span>
+                  <button
+                    onClick={handleResendEmail}
+                    disabled={resending}
+                    className="text-xs text-blue-600 hover:text-blue-700 font-medium disabled:opacity-50"
+                  >
+                    {resending ? 'Sending...' : 'Resend'}
+                  </button>
+                </>
+              )}
             </div>
           </div>
 

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Modal } from '@/components/ui/Modal';
+import { resendContactEmail } from '@/app/actions/resend-email';
 
 type Contact = {
   id: string;
@@ -11,6 +12,7 @@ type Contact = {
   message: string;
   locale: string;
   created_at: string;
+  email_sent: boolean;
 };
 
 export function ContactsTable({ contacts }: { contacts: Contact[] }) {
@@ -39,7 +41,14 @@ export function ContactsTable({ contacts }: { contacts: Contact[] }) {
                   onClick={() => setSelectedId(contact.id)}
                   className="border-b border-gray-100 hover:bg-gray-50 cursor-pointer"
                 >
-                  <td className="px-4 py-3">{contact.name}</td>
+                  <td className="px-4 py-3">
+                    <div className="flex items-center gap-1.5">
+                      {contact.name}
+                      {!contact.email_sent && (
+                        <span className="w-2 h-2 rounded-full bg-red-400 shrink-0" title="Email not sent" />
+                      )}
+                    </div>
+                  </td>
                   <td className="px-4 py-3 text-gray-600">{contact.email}</td>
                   <td className="px-4 py-3 text-gray-600 hidden sm:table-cell">{contact.phone || '—'}</td>
                   <td className="px-4 py-3 text-gray-500 text-xs italic">
@@ -64,53 +73,112 @@ export function ContactsTable({ contacts }: { contacts: Contact[] }) {
       </div>
 
       {selected && (
-        <Modal onClose={() => setSelectedId(null)} title="Contact Detail">
-            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 bg-gray-50/50">
-              <div>
-                <h2 className="text-base font-semibold text-gray-900">{selected.name}</h2>
-                <p className="text-xs text-gray-500 mt-0.5">
-                  {new Date(selected.created_at).toLocaleString()}
-                </p>
-              </div>
-              <button
-                onClick={() => setSelectedId(null)}
-                className="p-1.5 rounded-lg hover:bg-gray-200 text-gray-400 hover:text-gray-600 transition-colors"
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-
-            <div className="overflow-y-auto flex-1 px-6 py-5">
-              <div className="grid grid-cols-2 gap-4 text-sm">
-                <div>
-                  <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Email</p>
-                  <p className="text-gray-700 break-all">{selected.email}</p>
-                </div>
-                <div>
-                  <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Phone</p>
-                  <p className="text-gray-700">{selected.phone || '—'}</p>
-                </div>
-                <div>
-                  <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Language</p>
-                  <p className="text-gray-700 uppercase">{selected.locale}</p>
-                </div>
-                <div>
-                  <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Date</p>
-                  <p className="text-gray-700">{new Date(selected.created_at).toLocaleString()}</p>
-                </div>
-              </div>
-
-              <div className="mt-5">
-                <p className="text-xs text-gray-400 uppercase tracking-wider mb-2">Message</p>
-                <div className="bg-gray-50 rounded-lg p-4 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed break-all">
-                  {selected.message}
-                </div>
-              </div>
-            </div>
-        </Modal>
+        <ContactDetail
+          contact={selected}
+          onClose={() => setSelectedId(null)}
+        />
       )}
     </div>
+  );
+}
+
+function ContactDetail({
+  contact,
+  onClose,
+}: {
+  contact: Contact;
+  onClose: () => void;
+}) {
+  const [resending, setResending] = useState(false);
+  const [resendSuccess, setResendSuccess] = useState(false);
+
+  async function handleResendEmail() {
+    setResending(true);
+    try {
+      await resendContactEmail(contact.id);
+      setResendSuccess(true);
+    } catch {
+      alert('Failed to send email');
+    }
+    setResending(false);
+  }
+
+  return (
+    <Modal onClose={onClose} title="Contact Detail">
+      <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 bg-gray-50/50">
+        <div>
+          <h2 className="text-base font-semibold text-gray-900">{contact.name}</h2>
+          <p className="text-xs text-gray-500 mt-0.5">
+            {new Date(contact.created_at).toLocaleString()}
+          </p>
+        </div>
+        <button
+          onClick={onClose}
+          className="p-1.5 rounded-lg hover:bg-gray-200 text-gray-400 hover:text-gray-600 transition-colors"
+        >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <div className="overflow-y-auto flex-1 px-6 py-5">
+        <div className="grid grid-cols-2 gap-4 text-sm">
+          <div>
+            <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Email</p>
+            <p className="text-gray-700 break-all">{contact.email}</p>
+          </div>
+          <div>
+            <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Phone</p>
+            <p className="text-gray-700">{contact.phone || '—'}</p>
+          </div>
+          <div>
+            <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Language</p>
+            <p className="text-gray-700 uppercase">{contact.locale}</p>
+          </div>
+          <div>
+            <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Date</p>
+            <p className="text-gray-700">{new Date(contact.created_at).toLocaleString()}</p>
+          </div>
+        </div>
+
+        <div className="mt-4">
+          <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Email Status</p>
+          <div className="flex items-center gap-2">
+            {contact.email_sent || resendSuccess ? (
+              <span className="inline-flex items-center gap-1 text-xs text-green-600">
+                <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                </svg>
+                Sent
+              </span>
+            ) : (
+              <>
+                <span className="inline-flex items-center gap-1 text-xs text-red-500">
+                  <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                  </svg>
+                  Not sent
+                </span>
+                <button
+                  onClick={handleResendEmail}
+                  disabled={resending}
+                  className="text-xs text-blue-600 hover:text-blue-700 font-medium disabled:opacity-50"
+                >
+                  {resending ? 'Sending...' : 'Resend'}
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+
+        <div className="mt-5">
+          <p className="text-xs text-gray-400 uppercase tracking-wider mb-2">Message</p>
+          <div className="bg-gray-50 rounded-lg p-4 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed break-all">
+            {contact.message}
+          </div>
+        </div>
+      </div>
+    </Modal>
   );
 }
