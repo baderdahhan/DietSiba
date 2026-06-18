@@ -4,22 +4,25 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 
-const navItems = [
-  { href: '/admin', label: 'Dashboard' },
-  { href: '/admin/subscriptions', label: 'Subscriptions' },
-  { href: '/admin/contacts', label: 'Contacts' },
-  { href: '/admin/discounts', label: 'Discounts' },
-  { href: '/admin/pricing', label: 'Pricing' },
-];
+function getNavItems(locale: string) {
+  return [
+    { href: `/${locale}/admin`, label: 'Dashboard' },
+    { href: `/${locale}/admin/subscriptions`, label: 'Subscriptions' },
+    { href: `/${locale}/admin/contacts`, label: 'Contacts' },
+    { href: `/${locale}/admin/discounts`, label: 'Discounts' },
+    { href: `/${locale}/admin/pricing`, label: 'Pricing' },
+  ];
+}
 
-export function AdminNav({ email }: { email: string }) {
+export function AdminNav({ email, locale }: { email: string; locale: string }) {
   const pathname = usePathname();
   const router = useRouter();
+  const navItems = getNavItems(locale);
 
   async function handleLogout() {
     const supabase = createClient();
     await supabase.auth.signOut();
-    router.push('/admin/login');
+    router.push(`/${locale}/admin/login`);
     router.refresh();
   }
 
@@ -28,7 +31,7 @@ export function AdminNav({ email }: { email: string }) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-14">
           <div className="flex items-center gap-6">
-            <Link href="/admin" className="font-semibold text-green text-sm">
+            <Link href={`/${locale}/admin`} className="font-semibold text-green text-sm">
               Siba Admin
             </Link>
             <div className="hidden sm:flex items-center gap-1">

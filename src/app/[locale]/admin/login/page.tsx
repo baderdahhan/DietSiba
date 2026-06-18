@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 
 export default function AdminLoginPage() {
   const [email, setEmail] = useState('');
@@ -10,6 +10,8 @@ export default function AdminLoginPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
+  const locale = pathname.split('/')[1] || 'en';
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
@@ -28,13 +30,24 @@ export default function AdminLoginPage() {
       return;
     }
 
-    router.push('/admin');
+    router.push(`/${locale}/admin`);
     router.refresh();
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
+    <div className="min-h-screen flex items-center justify-center p-4 bg-gray-50">
       <div className="w-full max-w-sm">
+        <div className="text-center mb-4">
+          <a
+            href={`/${locale}`}
+            className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-green transition-colors"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Back to site
+          </a>
+        </div>
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
           <h1 className="text-xl font-semibold text-center mb-6 text-gray-900">
             Admin Login

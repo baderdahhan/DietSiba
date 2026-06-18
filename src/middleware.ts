@@ -7,8 +7,13 @@ const intlMiddleware = createMiddleware(routing);
 export default function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  if (pathname.startsWith('/admin')) {
+  if (pathname.startsWith('/api')) {
     return NextResponse.next();
+  }
+
+  // /admin shortcut → redirect to /en/admin/login
+  if (pathname === '/admin' || pathname === '/admin/') {
+    return NextResponse.redirect(new URL('/en/admin/login', request.url));
   }
 
   return intlMiddleware(request);
