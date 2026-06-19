@@ -108,7 +108,11 @@
     "tagline": "Personalized nutrition for a healthier you.",
     "rights": "All rights reserved.",
     "quickLinks": "Quick Links",
-    "role": "Nutrition Specialist"
+    "legal": "Legal",
+    "role": "Nutrition Specialist",
+    "privacy": "Privacy Policy",
+    "terms": "Distance Selling Agreement",
+    "returns": "Cancellation & Return Policy"
   },
   "validation": {
     "nameRequired": "Name is required.",

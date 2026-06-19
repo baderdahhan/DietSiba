@@ -1,0 +1,262 @@
+{
+  "meta": {
+    "title": "Siba Osman — Beslenme Uzmanı",
+    "description": "Diyetisyen Siba Osman ile sağlık hedeflerinize ulaşmanıza yardımcı olacak kişiselleştirilmiş beslenme planları."
+  },
+  "nav": {
+    "home": "Ana Sayfa",
+    "services": "Hizmetler",
+    "contact": "İletişim"
+  },
+  "hero": {
+    "greeting": "Merhaba, ben Siba Osman",
+    "title": "Daha Sağlıklı Bir Yaşama Yolculuğunuz Burada Başlıyor",
+    "subtitle": "Uzman bir beslenme danışmanı olarak, yaşam tarzınıza uygun kişiselleştirilmiş planlar hazırlıyor, sağlık hedeflerinize güvenle ulaşmanız için her adımda yanınızda oluyorum.",
+    "cta": "Planları Görüntüle"
+  },
+  "howItWorks": {
+    "title": "Hizmetlerimiz",
+    "services": [
+      {
+        "title": "Beslenme Stratejileri",
+        "description": "Vücut yapınıza, yaşam tarzınıza ve kişisel sağlık hedeflerinize göre hazırlanmış beslenme planları."
+      },
+      {
+        "title": "Öğün Planlama",
+        "description": "Gerçekten keyif alacağınız tariflerle haftalık öğün planları — kalıplaşmış diyetler yok."
+      },
+      {
+        "title": "Vitamin ve Takviyeler",
+        "description": "Vücudunuzun gerçekten neye ihtiyacı olduğuna dair kanıta dayalı rehberlik — tahmin yok."
+      },
+      {
+        "title": "Fitness ve Sağlık",
+        "description": "Beslenme ve hareketi birleştiren bütünsel bir yaklaşımla tam bir sağlık."
+      },
+      {
+        "title": "Vücut Kompozisyonu",
+        "description": "Sadece tartıyla değil, vücut ölçümleriyle gerçek ilerlemenizi takip edin."
+      },
+      {
+        "title": "Sürekli Destek",
+        "description": "Vücudunuz ve hedefleriniz değiştikçe planınızı ayarlamak için düzenli kontroller."
+      }
+    ]
+  },
+  "plans": {
+    "title": "Planınızı Seçin",
+    "subtitle": "Sağlık yolculuğunuz için mükemmel planı bulun.",
+    "cta": "Tüm Planları Gör",
+    "viewDetails": "Detayları Gör",
+    "subscribe": "Abone Ol",
+    "mostPopular": "En Popüler",
+    "perMonth": "/ aylık"
+  },
+  "ctaSection": {
+    "title": "Sağlığınızı Dönüştürmeye Hazır Mısınız?",
+    "subtitle": "Bugün iletişime geçin ve kişiselleştirilmiş beslenme yolculuğunuza başlayalım.",
+    "cta": "İletişime Geç"
+  },
+  "services": {
+    "title": "Abonelik Planları",
+    "subtitle": "İhtiyaçlarınıza en uygun planı seçin. Her plan Siba Osman'dan kişiselleştirilmiş beslenme rehberliği içerir.",
+    "subscribe": "Şimdi Abone Ol",
+    "features": "Neler Dahil"
+  },
+  "subscribeForm": {
+    "title": "{tier} Planına Abone Ol",
+    "name": "Ad Soyad",
+    "namePlaceholder": "Adınızı ve soyadınızı girin",
+    "email": "E-posta Adresi",
+    "emailPlaceholder": "siz@ornek.com",
+    "phone": "Telefon Numarası",
+    "phonePlaceholder": "+90 5XX XXX XX XX",
+    "message": "Not (isteğe bağlı)",
+    "messagePlaceholder": "Özel gereksinimleriniz veya sorularınız var mı?",
+    "discountCode": "İndirim Kodu",
+    "discountCodePlaceholder": "Kodu girin",
+    "apply": "Uygula",
+    "submit": "Aboneliği Tamamla",
+    "submitting": "Gönderiliyor...",
+    "originalPrice": "Orijinal Fiyat",
+    "discount": "İndirim",
+    "finalPrice": "Toplam",
+    "success": "Abone olduğunuz için teşekkürler!",
+    "successMessage": "Abonelik talebinizi aldık. En kısa sürede sizinle iletişime geçeceğiz.",
+    "backToPlans": "Planlara Dön",
+    "invalidCode": "Geçersiz veya süresi dolmuş indirim kodu.",
+    "codeApplied": "İndirim kodu uygulandı!"
+  },
+  "contact": {
+    "title": "İletişime Geçin",
+    "subtitle": "Bir sorunuz mu var veya daha fazla bilgi mi istiyorsunuz? Bana bir mesaj gönderin, en kısa sürede size dönüş yapacağım.",
+    "name": "Ad Soyad",
+    "namePlaceholder": "Adınızı ve soyadınızı girin",
+    "email": "E-posta Adresi",
+    "emailPlaceholder": "siz@ornek.com",
+    "phone": "Telefon Numarası (isteğe bağlı)",
+    "phonePlaceholder": "+90 5XX XXX XX XX",
+    "message": "Mesaj",
+    "messagePlaceholder": "Sağlık hedeflerinizden bahsedin...",
+    "submit": "Mesaj Gönder",
+    "submitting": "Gönderiliyor...",
+    "success": "Mesaj Gönderildi!",
+    "successMessage": "İletişime geçtiğiniz için teşekkürler. En kısa sürede size dönüş yapacağım.",
+    "sendAnother": "Başka Bir Mesaj Gönder"
+  },
+  "footer": {
+    "tagline": "Daha sağlıklı bir yaşam için kişiselleştirilmiş beslenme.",
+    "rights": "Tüm hakları saklıdır.",
+    "quickLinks": "Hızlı Bağlantılar",
+    "legal": "Yasal",
+    "role": "Beslenme Uzmanı",
+    "privacy": "Gizlilik Politikası",
+    "terms": "Mesafeli Satış Sözleşmesi",
+    "returns": "İptal ve İade Koşulları",
+    "about": "Hakkımızda"
+  },
+  "about": {
+    "title": "Hakkımızda",
+    "subtitle": "Siba Osman ve sağlık hedeflerinize ulaşmanıza yardımcı olma misyonu hakkında daha fazla bilgi edinin.",
+    "whoTitle": "Biz Kimiz",
+    "whoText": "Siba Osman, kişiselleştirilmiş beslenme planları, kanıta dayalı rehberlik ve sürekli destek yoluyla bireylerin sağlık hedeflerine ulaşmalarına yardımcı olmaya adanmış sertifikalı bir beslenme uzmanıdır.",
+    "missionTitle": "Misyonumuz",
+    "missionText": "Bireylerin kendilerine özgü ihtiyaçlarına ve yaşam tarzlarına göre uyarlanmış sürdürülebilir, bilime dayalı beslenme stratejileri aracılığıyla sağlıklarının kontrolünü ele almalarını sağlamak.",
+    "contactTitle": "İletişim Bilgileri",
+    "fullName": "Ad Soyad",
+    "fullNameValue": "Siba Osman",
+    "email": "E-posta",
+    "emailValue": "[EMAIL]",
+    "phone": "Telefon",
+    "phoneValue": "[PHONE]"
+  },
+  "privacy": {
+    "title": "Gizlilik Politikası",
+    "subtitle": "İşbu gizlilik politikası, 6698 sayılı Kişisel Verilerin Korunması Kanunu (KVKK) kapsamında hazırlanmıştır.",
+    "lastUpdated": "Son güncelleme: {date}",
+    "dataController": "Veri Sorumlusu",
+    "dataControllerText": "Siba Osman (\"Veri Sorumlusu\"), kişisel verilerinizi 6698 sayılı Kişisel Verilerin Korunması Kanunu (KVKK) ve ilgili mevzuat kapsamında işlemektedir.",
+    "sections": {
+      "collection": {
+        "title": "1. Toplanan Kişisel Veriler",
+        "text": "Web sitemiz aracılığıyla KVKK kapsamında, tamamen veya kısmen otomatik olan ya da herhangi bir veri kayıt sisteminin parçası olmak kaydıyla otomatik olmayan yollarla aşağıdaki kişisel veriler toplanabilmektedir:\n\n• Kimlik bilgileri (ad, soyad)\n• İletişim bilgileri (e-posta adresi, telefon numarası)\n• Müşteri işlem bilgileri (abonelik bilgileri, hizmet tercihleri)\n• Talep/şikayet bilgileri (iletişim formu aracılığıyla gönderilen mesajlar)\n• İşlem güvenliği bilgileri (IP adresi, tarayıcı bilgileri, erişim kayıtları)"
+      },
+      "purpose": {
+        "title": "2. Kişisel Verilerin İşlenme Amaçları",
+        "text": "Kişisel verileriniz aşağıdaki amaçlarla işlenmektedir:\n\n• Hizmet abonelik sözleşmelerinin ifası ve yerine getirilmesi\n• Kişiselleştirilmiş beslenme danışmanlığı hizmetlerinin sunulması\n• Onay ve bilgilendirme iletişimlerinin gönderilmesi\n• Talep, şikayet ve sorulara yanıt verilmesi\n• Yasal ve düzenleyici yükümlülüklerin yerine getirilmesi\n• Web sitesi ve hizmet güvenliğinin sağlanması"
+      },
+      "legal": {
+        "title": "3. Kişisel Verilerin İşlenmesinin Hukuki Sebebi",
+        "text": "Kişisel verileriniz, KVKK'nın 5. ve 6. maddelerinde belirtilen aşağıdaki hukuki sebeplere dayanılarak işlenmektedir:\n\n• İlgili kişinin açık rızası\n• Bir sözleşmenin kurulması veya ifasıyla doğrudan doğruya ilgili olması kaydıyla, sözleşmenin taraflarına ait kişisel verilerin işlenmesinin gerekli olması\n• Veri sorumlusunun hukuki yükümlülüğünü yerine getirebilmesi için zorunlu olması\n• İlgili kişinin temel hak ve özgürlüklerine zarar vermemek kaydıyla, veri sorumlusunun meşru menfaatleri için veri işlenmesinin zorunlu olması"
+      },
+      "transfer": {
+        "title": "4. Kişisel Verilerin Aktarılması",
+        "text": "Kişisel verileriniz, yukarıda belirtilen amaçlar çerçevesinde ve KVKK'nın 8. ve 9. maddelerinde belirtilen koşullara uygun olarak aşağıdaki taraflara aktarılabilmektedir:\n\n• Ödeme hizmeti sağlayıcıları (ödeme işlemleri için)\n• Barındırma ve altyapı hizmet sağlayıcıları\n• Kanunun gerektirdiği durumlarda yetkili kamu kurum ve kuruluşları\n\nVerileriniz pazarlama amacıyla üçüncü taraflara satılmamakta veya paylaşılmamaktadır."
+      },
+      "storage": {
+        "title": "5. Kişisel Verilerin Saklanması ve Güvenliği",
+        "text": "Kişisel verileriniz, şifreli altyapı ve erişim kontrolleri kullanılarak güvenli bir şekilde saklanmaktadır. KVKK'nın 12. maddesi uyarınca, kişisel verilerin hukuka aykırı olarak işlenmesini önlemek, verilere hukuka aykırı olarak erişilmesini önlemek ve verilerin muhafazasını sağlamak amacıyla gerekli her türlü teknik ve idari tedbirler alınmaktadır. Kişisel veriler, işlenme amacının gerektirdiği süre boyunca veya ilgili mevzuatın öngördüğü süre kadar muhafaza edilmektedir."
+      },
+      "cookies": {
+        "title": "6. Çerezler",
+        "text": "Web sitemiz yalnızca güvenlik (CSRF koruması) ve oturum yönetimi için gerekli olan temel çerezleri kullanmaktadır. Reklam, izleme veya analitik çerezleri kullanılmamaktadır."
+      },
+      "rights": {
+        "title": "7. KVKK Kapsamındaki Haklarınız (Madde 11)",
+        "text": "İlgili kişi olarak KVKK'nın 11. maddesi uyarınca aşağıdaki haklara sahipsiniz:\n\n• Kişisel verilerinizin işlenip işlenmediğini öğrenme\n• Kişisel verileriniz işlenmişse buna ilişkin bilgi talep etme\n• Kişisel verilerinizin işlenme amacını ve bunların amacına uygun kullanılıp kullanılmadığını öğrenme\n• Yurt içinde veya yurt dışında kişisel verilerinizin aktarıldığı üçüncü kişileri bilme\n• Kişisel verilerinizin eksik veya yanlış işlenmiş olması halinde bunların düzeltilmesini isteme\n• KVKK'nın 7. maddesinde öngörülen şartlar çerçevesinde kişisel verilerinizin silinmesini veya yok edilmesini isteme\n• Kişisel verilerinizin münhasıran otomatik sistemler vasıtasıyla analiz edilmesi suretiyle aleyhinize bir sonucun ortaya çıkmasına itiraz etme\n• Kişisel verilerinizin kanuna aykırı olarak işlenmesi sebebiyle zarara uğramanız halinde zararın giderilmesini talep etme"
+      },
+      "contact": {
+        "title": "8. İletişim",
+        "text": "Kişisel verilerinize ilişkin haklarınızı kullanmak için [EMAIL] adresinden bizimle iletişime geçebilirsiniz. Talepleriniz en geç otuz gün içinde ücretsiz olarak sonuçlandırılacaktır."
+      }
+    }
+  },
+  "terms": {
+    "title": "Mesafeli Satış Sözleşmesi",
+    "subtitle": "6502 sayılı Tüketicinin Korunması Hakkında Kanun ve Mesafeli Sözleşmeler Yönetmeliği kapsamında hazırlanmıştır.",
+    "lastUpdated": "Son güncelleme: {date}",
+    "sections": {
+      "parties": {
+        "title": "Madde 1 — Taraflar",
+        "seller": "SATICI",
+        "sellerDetails": "Ad Soyad: Siba Osman\nAdres: [ADDRESS]\nTelefon: [PHONE]\nE-posta: [EMAIL]",
+        "buyer": "ALICI",
+        "buyerDetails": "Web sitesi üzerinden işbu sözleşmeyi kabul eden kişidir. Alıcının adı, adresi ve iletişim bilgileri abonelik işlemi sırasında kaydedilmektedir."
+      },
+      "definitions": {
+        "title": "Madde 2 — Tanımlar",
+        "text": "İşbu sözleşmede:\n\nSatıcı: Web sitesi üzerinden beslenme danışmanlığı hizmeti sunan Siba Osman'dır.\nAlıcı: Web sitesi üzerinden hizmet satın alan gerçek kişidir.\nHizmet: Web sitesi üzerinden sunulan kişiselleştirilmiş beslenme danışmanlığı ve abonelik planlarıdır.\nWeb Sitesi: Hizmetlerin sunulduğu internet adresidir.\nMesafeli Sözleşme: Satıcı ve Alıcı arasında, tarafların eş zamanlı fiziksel varlığı olmaksızın uzaktan iletişim araçları kullanılarak kurulan sözleşmedir."
+      },
+      "subject": {
+        "title": "Madde 3 — Konu",
+        "text": "İşbu sözleşme, Satıcının web sitesi üzerinden sunulan kişiselleştirilmiş beslenme danışmanlığı abonelik planlarının satışına ilişkin tarafların hak ve yükümlülüklerini, 6502 sayılı Tüketicinin Korunması Hakkında Kanun ve 27 Kasım 2014 tarihli Resmi Gazete'de yayımlanan Mesafeli Sözleşmeler Yönetmeliği hükümleri çerçevesinde düzenlemektedir."
+      },
+      "service": {
+        "title": "Madde 4 — Hizmet Bilgileri",
+        "text": "Abonelik planlarının detayları, özellikleri ve fiyatları (tüm vergiler dahil) web sitesinin Hizmetler sayfasında gösterilmektedir. Alıcı, aboneliği tamamlamadan önce hizmetin temel nitelikleri ve fiyatı hakkındaki bilgileri incelediğini onaylar. Varsa indirimler dahil toplam tutar, sipariş onayı öncesinde ekranda gösterilmektedir."
+      },
+      "payment": {
+        "title": "Madde 5 — Ödeme",
+        "text": "Ödeme, iyzico (iyzi Ödeme ve Elektronik Para Hizmetleri A.Ş.) tarafından sağlanan ödeme altyapısı üzerinden tahsil edilmektedir. Kabul edilen ödeme yöntemleri arasında kredi ve banka kartları (Visa, Mastercard) bulunmaktadır. Hizmet bedeli abonelik anında tahsil edilir. Kart bilgileri iyzico tarafından güvenli bir şekilde işlenmekte olup Satıcının sunucularında saklanmamaktadır."
+      },
+      "delivery": {
+        "title": "Madde 6 — Hizmetin Teslimi",
+        "text": "Dijital danışmanlık hizmeti olması sebebiyle, teslimat ödeme onayı ile birlikte başlamaktadır. Alıcıya abonelik detaylarını ve sonraki adımlara ilişkin talimatları içeren bir onay e-postası gönderilecektir. Kişiselleştirilmiş beslenme planı, abone olunan planın açıklamasında belirtilen süre içerisinde hazırlanarak teslim edilecektir."
+      },
+      "withdrawal": {
+        "title": "Madde 7 — Cayma Hakkı",
+        "text": "Mesafeli Sözleşmeler Yönetmeliği uyarınca, Alıcı hizmet sözleşmelerinde sözleşmenin kurulduğu tarihten itibaren 14 gün içinde cayma hakkına sahiptir.\n\nAncak, Yönetmeliğin 15. maddesi uyarınca, cayma süresi dolmadan önce tüketicinin onayı ile ifasına başlanan hizmetlerde cayma hakkı kullanılamaz. Kişiselleştirilmiş beslenme planı teslim edildiğinde veya danışmanlık hizmeti Alıcının onayı ile başladığında, cayma hakkından feragat edilmiş olur.\n\nCayma hakkını kullanmak için (hizmet teslimi başlamadan önce) Alıcının 14 gün içinde yukarıda belirtilen e-posta adresine yazılı olarak bildirimde bulunması gerekmektedir."
+      },
+      "general": {
+        "title": "Madde 8 — Genel Hükümler",
+        "text": "Alıcı, hizmetin temel nitelikleri ve fiyatına ilişkin ön bilgileri okuduğunu ve anladığını, gerekli elektronik onayı verdiğini beyan eder.\n\nAlıcı, işbu sözleşmeyi onayladıktan sonra burada belirtilen koşullar çerçevesinde hizmeti talep edebileceğini ve hizmet bedeli ile varsa ek ücretlerin burada belirtilen yöntemle ödeneceğini kabul, beyan ve taahhüt eder."
+      },
+      "disputes": {
+        "title": "Madde 9 — Uyuşmazlıkların Çözümü",
+        "text": "İşbu sözleşmeden doğacak uyuşmazlıklarda Alıcı, bulunduğu ildeki Tüketici Hakem Heyeti'ne veya Tüketici Mahkemesi'ne başvurabilir. Hakem heyeti ile mahkeme arasındaki parasal sınırlar Ticaret Bakanlığı tarafından her yıl belirlenmektedir. İşbu sözleşme Türkiye Cumhuriyeti kanunlarına tabidir."
+      },
+      "acceptance": {
+        "title": "Madde 10 — Yürürlük",
+        "text": "İşbu sözleşme, Alıcının web sitesi üzerinden abonelik ve ödeme işlemini tamamlaması ile yürürlüğe girer ve her iki taraf için bağlayıcıdır."
+      }
+    }
+  },
+  "returns": {
+    "title": "İptal ve İade Koşulları",
+    "subtitle": "Dijital beslenme danışmanlığı hizmetlerimize ilişkin hizmet teslimi, iptal ve iade koşulları hakkında bilgilendirme.",
+    "lastUpdated": "Son güncelleme: {date}",
+    "sections": {
+      "delivery": {
+        "title": "1. Hizmet Teslimi",
+        "text": "Beslenme danışmanlığı hizmetlerimiz dijital olarak sunulmaktadır. Başarılı ödeme onayının ardından Alıcıya 24 saat içinde kişiselleştirilmiş beslenme planına nasıl başlayacağına dair talimatları içeren bir onay e-postası gönderilecektir."
+      },
+      "timeline": {
+        "title": "2. Teslimat Süresi",
+        "text": "Kişiselleştirilmiş beslenme planı, ilk görüşmenin ardından abone olunan planın açıklamasında belirtilen süre içerisinde hazırlanarak teslim edilecektir. Sürekli destek ve takip seansları Alıcının abonelik seviyesine göre planlanmaktadır."
+      },
+      "cancellation": {
+        "title": "3. İptal Politikası",
+        "text": "Mesafeli Sözleşmeler Yönetmeliği uyarınca, Alıcı sözleşmenin kurulduğu tarihten itibaren 14 gün içinde cayma hakkına sahiptir.\n\nİptal talepleri, hizmet teslimi başlamadan önce [EMAIL] adresine yazılı olarak iletilmelidir. İptal talebi 14 günlük cayma süresi içinde yapılmış ve hizmet henüz başlamamışsa, tam iade yapılacaktır.\n\nKişiselleştirilmiş beslenme planı teslim edildiğinde veya danışmanlık hizmeti Alıcının onayı ile başladığında, Mesafeli Sözleşmeler Yönetmeliği'nin 15. maddesi uyarınca cayma hakkından feragat edilmiş olur."
+      },
+      "refunds": {
+        "title": "4. İade Koşulları",
+        "text": "İadeler aşağıdaki koşullarda işleme alınmaktadır:\n\n• Hizmet henüz başlamamışsa ve talep 14 gün içindeyse: Tam iade\n• Hizmet başlamış ancak teslimde eksiklik tespit edilmişse: Kısmi iade veya hizmetin yeniden sunulması, duruma göre değerlendirilir\n• Hizmet tamamen sunulmuşsa: İade yapılmaz\n\nİadeler, onaylanan iade talebinden itibaren 14 gün içinde orijinal ödeme yöntemiyle işleme alınır."
+      },
+      "contact": {
+        "title": "5. İptal İçin İletişim",
+        "text": "İptal veya iade talepleri için lütfen [EMAIL] adresinden bizimle iletişime geçin. 2 iş günü içinde yanıt vermeyi hedefliyoruz."
+      }
+    }
+  },
+  "validation": {
+    "nameRequired": "Ad gereklidir.",
+    "nameInvalid": "Ad yalnızca harf, boşluk, tire ve kesme işareti içerebilir.",
+    "emailRequired": "E-posta gereklidir.",
+    "emailInvalid": "Lütfen geçerli bir e-posta adresi girin.",
+    "phoneInvalid": "Lütfen geçerli bir telefon numarası girin.",
+    "messageRequired": "Mesaj gereklidir.",
+    "messageTooLong": "Mesaj 500 karakterden kısa olmalıdır.",
+    "rateLimited": "Çok fazla istek gönderildi. Lütfen birkaç dakika sonra tekrar deneyin.",
+    "genericError": "Bir hata oluştu. Lütfen tekrar deneyin."
+  }
+}
