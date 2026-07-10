@@ -106,7 +106,7 @@
   },
   "whatsapp": {
     "cta": "WhatsApp'tan Mesaj Gönder",
-    "contactPrompt": "Daha hızlı yanıt mı istiyorsunuz? Doğrudan WhatsApp'tan yazın.",
+    "contactPrompt": "Daha hızlı yanıt mı istiyorsunuz?",
     "subscribeCta": "WhatsApp'tan Bizimle Sohbet Edin"
   },
   "footer": {

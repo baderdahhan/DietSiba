@@ -106,7 +106,7 @@
   },
   "whatsapp": {
     "cta": "Message on WhatsApp",
-    "contactPrompt": "Prefer a faster reply? Message us directly on WhatsApp.",
+    "contactPrompt": "Prefer a faster reply?",
     "subscribeCta": "Chat with us on WhatsApp"
   },
   "footer": {
