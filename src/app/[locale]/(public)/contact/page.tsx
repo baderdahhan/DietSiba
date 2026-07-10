@@ -6,6 +6,8 @@ import { useTranslations, useLocale } from 'next-intl';
 import { isValidPhoneNumber } from 'libphonenumber-js';
 import { contactAction } from '@/app/actions/contact';
 import { getCsrfToken } from '@/app/actions/csrf';
+import { whatsappLink } from '@/lib/whatsapp';
+import { WhatsAppIcon } from '@/components/ui/WhatsAppIcon';
 
 type FormValues = {
   name: string;
@@ -18,6 +20,7 @@ type FormValues = {
 export default function ContactPage() {
   const t = useTranslations('contact');
   const tv = useTranslations('validation');
+  const tw = useTranslations('whatsapp');
   const locale = useLocale();
 
   const [formLoadedAt] = useState(Date.now());
@@ -92,6 +95,19 @@ export default function ContactPage() {
           </h1>
           <p className="text-muted text-lg">{t('subtitle')}</p>
         </div>
+
+        <a
+          href={whatsappLink()}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center justify-center gap-2 bg-white border border-border rounded-lg py-3 px-4 mb-6 text-sm text-foreground hover:border-green/40 transition-colors"
+        >
+          <WhatsAppIcon className="w-5 h-5 shrink-0" />
+          <span>
+            <span className="text-muted">{tw('contactPrompt')}</span>{' '}
+            <span className="font-medium text-green">{tw('cta')}</span>
+          </span>
+        </a>
 
         {success ? (
           <div className="bg-white rounded-lg shadow-sm border border-border p-8 text-center">

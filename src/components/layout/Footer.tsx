@@ -1,5 +1,7 @@
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
+import { whatsappLink } from '@/lib/whatsapp';
+import { WhatsAppIcon } from '@/components/ui/WhatsAppIcon';
 
 export function Footer() {
   const t = useTranslations();
@@ -90,6 +92,16 @@ export function Footer() {
               <br />
               {t('footer.role')}
             </p>
+
+            <a
+              href={whatsappLink()}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 inline-flex items-center gap-2 text-sm text-cream/70 hover:text-gold transition-colors"
+            >
+              <WhatsAppIcon className="w-4 h-4 shrink-0" />
+              {t('whatsapp.cta')}
+            </a>
 
             <div className="mt-6">
               <div className="flex items-center gap-3">

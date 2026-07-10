@@ -9,6 +9,8 @@ import { validateDiscountCode } from '@/app/actions/discount';
 import { getCsrfToken } from '@/app/actions/csrf';
 import { Link } from '@/i18n/navigation';
 import { Modal } from '@/components/ui/Modal';
+import { whatsappLink } from '@/lib/whatsapp';
+import { WhatsAppIcon } from '@/components/ui/WhatsAppIcon';
 
 type Tier = {
   id: string;
@@ -38,6 +40,7 @@ export function SubscribeModal({
 }) {
   const tv = useTranslations('validation');
   const ts = useTranslations('subscribeForm');
+  const tw = useTranslations('whatsapp');
   const tierName = tier.name[locale as 'en' | 'ar'] || tier.name.en;
 
   const [formLoadedAt] = useState(Date.now());
@@ -155,13 +158,24 @@ export function SubscribeModal({
               </div>
               <h3 className="font-heading text-xl text-green mb-2">{ts('success')}</h3>
               <p className="text-muted text-sm mb-6">{ts('successMessage')}</p>
-              <Link
-                href="/services"
-                onClick={onClose}
-                className="text-green text-sm font-medium hover:underline"
+              <a
+                href={whatsappLink()}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-green text-cream text-sm font-medium px-5 py-2.5 rounded-lg hover:bg-green-dark transition-colors mb-4"
               >
-                {ts('backToPlans')}
-              </Link>
+                <WhatsAppIcon className="w-4 h-4 shrink-0" />
+                {tw('subscribeCta')}
+              </a>
+              <div>
+                <Link
+                  href="/services"
+                  onClick={onClose}
+                  className="text-green text-sm font-medium hover:underline"
+                >
+                  {ts('backToPlans')}
+                </Link>
+              </div>
             </div>
           ) : (
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">

@@ -104,6 +104,11 @@
     "successMessage": "İletişime geçtiğiniz için teşekkürler. En kısa sürede size dönüş yapacağım.",
     "sendAnother": "Başka Bir Mesaj Gönder"
   },
+  "whatsapp": {
+    "cta": "WhatsApp'tan Mesaj Gönder",
+    "contactPrompt": "Daha hızlı yanıt mı istiyorsunuz? Doğrudan WhatsApp'tan yazın.",
+    "subscribeCta": "WhatsApp'tan Bizimle Sohbet Edin"
+  },
   "footer": {
     "tagline": "Daha sağlıklı bir yaşam için kişiselleştirilmiş beslenme.",
     "rights": "Tüm hakları saklıdır.",

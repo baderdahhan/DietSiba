@@ -104,6 +104,11 @@
     "successMessage": "Thank you for reaching out. I'll get back to you as soon as possible.",
     "sendAnother": "Send Another Message"
   },
+  "whatsapp": {
+    "cta": "Message on WhatsApp",
+    "contactPrompt": "Prefer a faster reply? Message us directly on WhatsApp.",
+    "subscribeCta": "Chat with us on WhatsApp"
+  },
   "footer": {
     "tagline": "Personalized nutrition for a healthier you.",
     "rights": "All rights reserved.",

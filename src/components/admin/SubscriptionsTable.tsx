@@ -5,6 +5,8 @@ import { updatePaymentStatus } from '@/app/actions/admin';
 import { resendSubscriptionEmail } from '@/app/actions/resend-email';
 import { Modal } from '@/components/ui/Modal';
 import { formatDate, formatDateTime } from '@/lib/format-date';
+import { whatsappLinkForPhone } from '@/lib/whatsapp';
+import { WhatsAppIcon } from '@/components/ui/WhatsAppIcon';
 
 type Subscription = {
   id: string;
@@ -139,7 +141,21 @@ export function SubscriptionsTable({
                     </div>
                   </td>
                   <td className="px-4 py-3 text-gray-600">{sub.email}</td>
-                  <td className="px-4 py-3 text-gray-600 hidden md:table-cell">{sub.phone}</td>
+                  <td className="px-4 py-3 text-gray-600 hidden md:table-cell">
+                    <span className="inline-flex items-center gap-1.5">
+                      {sub.phone}
+                      <a
+                        href={whatsappLinkForPhone(sub.phone)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        title="Message on WhatsApp"
+                        className="hover:opacity-80"
+                      >
+                        <WhatsAppIcon className="w-3.5 h-3.5" />
+                      </a>
+                    </span>
+                  </td>
                   <td className="px-4 py-3">{sub.subscription_tiers?.name?.en || '—'}</td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-1.5">
@@ -271,7 +287,18 @@ function SubscriptionDetail({
             </div>
             <div>
               <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Phone</p>
-              <p className="text-gray-700">{subscription.phone}</p>
+              <p className="text-gray-700 flex items-center gap-2">
+                {subscription.phone}
+                <a
+                  href={whatsappLinkForPhone(subscription.phone)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-green-600 hover:text-green-700 text-xs font-medium underline"
+                >
+                  <WhatsAppIcon className="w-3.5 h-3.5" />
+                  WhatsApp
+                </a>
+              </p>
             </div>
             <div>
               <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Price</p>
