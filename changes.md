@@ -59,6 +59,15 @@ Added a search box to both the Subscriptions and Contacts pages in the admin pan
 
 ---
 
+## 6. New / Replied filter on Contact Messages
+
+Added filter tabs (All / New / Replied) to the Contacts page in the admin panel, next to the search box, so it's easy to see at a glance which messages still need a reply and none get missed.
+
+**Files changed (pushed to GitHub):**
+- `src/components/admin/ContactsTable.tsx`
+
+---
+
 ## Local-only files (changed, but never pushed to GitHub)
 
 - **`.env.local`** — holds the real Supabase project keys and email login used to run the site on this machine. It's intentionally excluded by `.gitignore` (the `.env*.local` rule), so it never goes to GitHub. Each person/machine running this project needs to create their own copy with their own real values.
