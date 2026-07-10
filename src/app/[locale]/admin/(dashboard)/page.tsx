@@ -49,12 +49,12 @@ export default async function AdminDashboard() {
   const stats = await getStats();
 
   const cards = [
-    { label: 'Subscriptions Today', value: stats.subsToday, color: 'text-green' },
-    { label: 'Subscriptions This Week', value: stats.subsWeek, color: 'text-green' },
-    { label: 'Total Subscriptions', value: stats.subsTotal, color: 'text-gray-900' },
-    { label: 'Pending Payments', value: stats.pendingPayments, color: 'text-amber-600' },
-    { label: 'Contacts This Week', value: stats.contactsWeek, color: 'text-blue-600' },
-    { label: 'Active Discount Codes', value: stats.activeCodes, color: 'text-purple-600' },
+    { label: 'Subscriptions Today', value: stats.subsToday },
+    { label: 'Subscriptions This Week', value: stats.subsWeek },
+    { label: 'Total Subscriptions', value: stats.subsTotal },
+    { label: 'Pending Payments', value: stats.pendingPayments },
+    { label: 'Contacts This Week', value: stats.contactsWeek },
+    { label: 'Active Discount Codes', value: stats.activeCodes },
   ];
 
   return (
@@ -69,7 +69,7 @@ export default async function AdminDashboard() {
             <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">
               {card.label}
             </p>
-            <p className={`text-3xl font-semibold ${card.color}`}>
+            <p className="text-3xl font-semibold text-green">
               {card.value}
             </p>
           </div>
