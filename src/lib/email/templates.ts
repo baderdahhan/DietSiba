@@ -42,7 +42,7 @@ export function subscriptionConfirmationEmail(
       ? `<h2 style="color:${COLORS.green};margin:0 0 16px;">شكراً لاشتراكك!</h2>
 <p>مرحباً ${safeName}،</p>
 <p>شكراً لاشتراكك في خطة <strong>${safeTier}</strong>. سنتواصل معك قريباً للبدء في رحلتك الصحية.</p>
-<p style="color:${COLORS.muted};font-size:14px;">مع أطيب التحيات،<br>سيبا عثمان<br>أخصائية تغذية</p>`
+<p style="color:${COLORS.muted};font-size:14px;">مع أطيب التحيات،<br>صبا عثمان<br>أخصائية تغذية</p>`
       : `<h2 style="color:${COLORS.green};margin:0 0 16px;">Thank You for Subscribing!</h2>
 <p>Hi ${safeName},</p>
 <p>Thank you for subscribing to the <strong>${safeTier}</strong> plan. We'll contact you shortly to get started on your health journey.</p>
@@ -89,7 +89,7 @@ export function contactConfirmationEmail(
       ? `<h2 style="color:${COLORS.green};margin:0 0 16px;">شكراً لتواصلك!</h2>
 <p>مرحباً ${safeName}،</p>
 <p>لقد تلقينا رسالتك وسنعود إليك في أقرب وقت ممكن.</p>
-<p style="color:${COLORS.muted};font-size:14px;">مع أطيب التحيات،<br>سيبا عثمان<br>أخصائية تغذية</p>`
+<p style="color:${COLORS.muted};font-size:14px;">مع أطيب التحيات،<br>صبا عثمان<br>أخصائية تغذية</p>`
       : `<h2 style="color:${COLORS.green};margin:0 0 16px;">Thank You for Reaching Out!</h2>
 <p>Hi ${safeName},</p>
 <p>We've received your message and will get back to you as soon as possible.</p>
@@ -98,7 +98,7 @@ export function contactConfirmationEmail(
   return {
     subject:
       locale === 'ar'
-        ? 'شكراً لتواصلك — سيبا عثمان'
+        ? 'شكراً لتواصلك — صبا عثمان'
         : 'Thank you for reaching out — Siba Osman',
     html: baseTemplate(content, dir),
   };
@@ -117,14 +117,14 @@ export function contactReplyEmail(
       ? `<h2 style="color:${COLORS.green};margin:0 0 16px;">رد على رسالتك</h2>
 <p>مرحباً ${safeName}،</p>
 <div style="margin:16px 0;padding:12px;background:${COLORS.cream};border-radius:6px;font-size:14px;">${safeReply}</div>
-<p style="color:${COLORS.muted};font-size:14px;">مع أطيب التحيات،<br>سيبا عثمان<br>أخصائية تغذية</p>`
+<p style="color:${COLORS.muted};font-size:14px;">مع أطيب التحيات،<br>صبا عثمان<br>أخصائية تغذية</p>`
       : `<h2 style="color:${COLORS.green};margin:0 0 16px;">Reply to Your Message</h2>
 <p>Hi ${safeName},</p>
 <div style="margin:16px 0;padding:12px;background:${COLORS.cream};border-radius:6px;font-size:14px;">${safeReply}</div>
 <p style="color:${COLORS.muted};font-size:14px;">Best regards,<br>Siba Osman<br>Nutrition Specialist</p>`;
 
   return {
-    subject: locale === 'ar' ? 'رد من سيبا عثمان على رسالتك' : 'Reply from Siba Osman',
+    subject: locale === 'ar' ? 'رد من صبا عثمان على رسالتك' : 'Reply from Siba Osman',
     html: baseTemplate(content, dir),
   };
 }
