@@ -68,6 +68,16 @@ Added filter tabs (All / New / Replied) to the Contacts page in the admin panel,
 
 ---
 
+## 7. Fixed the Arabic spelling of Siba's name
+
+The Arabic text was spelling the name "سيبا" (a common but incorrect spelling), fixed to the correct "صبا" everywhere it appears: the Arabic site text (title, greeting, services blurb) and the Arabic email templates (signature, reply subject line).
+
+**Files changed (pushed to GitHub):**
+- `messages/ar.json`
+- `src/lib/email/templates.ts`
+
+---
+
 ## Local-only files (changed, but never pushed to GitHub)
 
 - **`.env.local`** — holds the real Supabase project keys and email login used to run the site on this machine. It's intentionally excluded by `.gitignore` (the `.env*.local` rule), so it never goes to GitHub. Each person/machine running this project needs to create their own copy with their own real values.
