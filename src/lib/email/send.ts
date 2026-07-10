@@ -7,7 +7,12 @@ import {
   contactReplyEmail,
 } from './templates';
 
-async function sendEmail(to: string, subject: string, html: string): Promise<boolean> {
+async function sendEmail(
+  to: string,
+  subject: string,
+  html: string,
+  replyTo?: string
+): Promise<boolean> {
   try {
     const transport = createTransport();
     await transport.sendMail({
@@ -15,6 +20,7 @@ async function sendEmail(to: string, subject: string, html: string): Promise<boo
       to,
       subject,
       html,
+      ...(replyTo ? { replyTo } : {}),
     });
     return true;
   } catch (error) {
@@ -45,7 +51,7 @@ export async function sendSubscriptionEmails(data: {
   const results = await Promise.allSettled([
     sendEmail(data.email, lead.subject, lead.html),
     ADMIN_EMAIL
-      ? sendEmail(ADMIN_EMAIL, admin.subject, admin.html)
+      ? sendEmail(ADMIN_EMAIL, admin.subject, admin.html, data.email)
       : Promise.resolve(true),
   ]);
 
@@ -84,7 +90,7 @@ export async function sendContactEmails(data: {
   const results = await Promise.allSettled([
     sendEmail(data.email, lead.subject, lead.html),
     ADMIN_EMAIL
-      ? sendEmail(ADMIN_EMAIL, admin.subject, admin.html)
+      ? sendEmail(ADMIN_EMAIL, admin.subject, admin.html, data.email)
       : Promise.resolve(true),
   ]);
 
