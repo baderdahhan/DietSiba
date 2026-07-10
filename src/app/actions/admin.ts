@@ -5,6 +5,7 @@ import { createServiceClient } from '@/lib/supabase/server';
 import { getAdminUser } from '@/lib/supabase/admin';
 import { revalidatePath } from 'next/cache';
 import { logAudit } from '@/lib/audit';
+import { sendContactReplyEmail } from '@/lib/email/send';
 
 async function requireAdmin() {
   let user = null;
@@ -242,6 +243,45 @@ export async function setPopularTier(id: string) {
 
   await logAudit(admin.email!, 'set_popular', 'subscription_tier', id);
   revalidatePricing();
+}
+
+export async function replyToContact(contactId: string, message: string) {
+  const admin = await requireAdmin();
+  const parsed = z.object({
+    id: z.string().uuid(),
+    message: z.string().trim().min(1).max(2000),
+  }).safeParse({ id: contactId, message });
+
+  if (!parsed.success) throw new Error('Invalid input');
+
+  const supabase = createServiceClient();
+  const { data: contact } = await supabase
+    .from('contact_messages')
+    .select('name, email, locale')
+    .eq('id', parsed.data.id)
+    .single();
+
+  if (!contact) throw new Error('Contact not found');
+
+  const sent = await sendContactReplyEmail({
+    name: contact.name,
+    email: contact.email,
+    locale: contact.locale as 'en' | 'ar',
+    replyMessage: parsed.data.message,
+  });
+
+  if (!sent) throw new Error('Failed to send reply email');
+
+  const { error } = await supabase
+    .from('contact_messages')
+    .update({ admin_reply: parsed.data.message, replied_at: new Date().toISOString() })
+    .eq('id', parsed.data.id);
+
+  if (error) throw new Error('Failed to save reply');
+
+  await logAudit(admin.email!, 'reply_contact', 'contact_message', parsed.data.id);
+  revalidatePath('/en/admin/contacts');
+  revalidatePath('/ar/admin/contacts');
 }
 
 function revalidatePricing() {

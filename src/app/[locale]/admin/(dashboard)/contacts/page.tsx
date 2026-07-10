@@ -10,13 +10,15 @@ type ContactMessage = {
   locale: string;
   created_at: string;
   email_sent: boolean;
+  admin_reply: string | null;
+  replied_at: string | null;
 };
 
 async function getContacts(): Promise<ContactMessage[]> {
   const supabase = createServiceClient();
   const { data, error } = await supabase
     .from('contact_messages')
-    .select('id, name, email, phone, message, locale, created_at, email_sent')
+    .select('id, name, email, phone, message, locale, created_at, email_sent, admin_reply, replied_at')
     .order('created_at', { ascending: false });
 
   if (error) return [];

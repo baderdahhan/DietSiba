@@ -4,6 +4,7 @@ import {
   subscriptionAdminNotification,
   contactConfirmationEmail,
   contactAdminNotification,
+  contactReplyEmail,
 } from './templates';
 
 async function sendEmail(to: string, subject: string, html: string): Promise<boolean> {
@@ -50,6 +51,19 @@ export async function sendSubscriptionEmails(data: {
 
   const leadSent = results[0].status === 'fulfilled' && results[0].value === true;
   return leadSent;
+}
+
+export async function sendContactReplyEmail(data: {
+  name: string;
+  email: string;
+  locale: 'en' | 'ar';
+  replyMessage: string;
+}): Promise<boolean> {
+  const reply = contactReplyEmail(data.locale, {
+    name: data.name,
+    replyMessage: data.replyMessage,
+  });
+  return sendEmail(data.email, reply.subject, reply.html);
 }
 
 export async function sendContactEmails(data: {

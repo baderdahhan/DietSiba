@@ -104,6 +104,31 @@ export function contactConfirmationEmail(
   };
 }
 
+export function contactReplyEmail(
+  locale: 'en' | 'ar',
+  data: { name: string; replyMessage: string }
+) {
+  const safeName = escapeHtml(data.name);
+  const safeReply = escapeHtml(data.replyMessage).replace(/\n/g, '<br>');
+  const dir = locale === 'ar' ? 'rtl' : 'ltr';
+
+  const content =
+    locale === 'ar'
+      ? `<h2 style="color:${COLORS.green};margin:0 0 16px;">رد على رسالتك</h2>
+<p>مرحباً ${safeName}،</p>
+<div style="margin:16px 0;padding:12px;background:${COLORS.cream};border-radius:6px;font-size:14px;">${safeReply}</div>
+<p style="color:${COLORS.muted};font-size:14px;">مع أطيب التحيات،<br>سيبا عثمان<br>أخصائية تغذية</p>`
+      : `<h2 style="color:${COLORS.green};margin:0 0 16px;">Reply to Your Message</h2>
+<p>Hi ${safeName},</p>
+<div style="margin:16px 0;padding:12px;background:${COLORS.cream};border-radius:6px;font-size:14px;">${safeReply}</div>
+<p style="color:${COLORS.muted};font-size:14px;">Best regards,<br>Siba Osman<br>Nutrition Specialist</p>`;
+
+  return {
+    subject: locale === 'ar' ? 'رد من سيبا عثمان على رسالتك' : 'Reply from Siba Osman',
+    html: baseTemplate(content, dir),
+  };
+}
+
 export function contactAdminNotification(data: {
   name: string;
   email: string;

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Modal } from '@/components/ui/Modal';
 import { resendContactEmail } from '@/app/actions/resend-email';
+import { replyToContact } from '@/app/actions/admin';
 import { formatDate, formatDateTime } from '@/lib/format-date';
 
 type Contact = {
@@ -14,6 +15,8 @@ type Contact = {
   locale: string;
   created_at: string;
   email_sent: boolean;
+  admin_reply: string | null;
+  replied_at: string | null;
 };
 
 export function ContactsTable({ contacts }: { contacts: Contact[] }) {
@@ -35,6 +38,9 @@ export function ContactsTable({ contacts }: { contacts: Contact[] }) {
                 <span className="font-medium text-sm">{contact.name}</span>
                 {!contact.email_sent && (
                   <span className="w-2 h-2 rounded-full bg-red-400 shrink-0" />
+                )}
+                {contact.replied_at && (
+                  <span className="text-[10px] font-medium text-green-700 bg-green-100 rounded-full px-1.5 py-0.5">Replied</span>
                 )}
               </div>
               <span className="text-xs text-gray-400">{formatDate(contact.created_at)}</span>
@@ -77,6 +83,9 @@ export function ContactsTable({ contacts }: { contacts: Contact[] }) {
                       {contact.name}
                       {!contact.email_sent && (
                         <span className="w-2 h-2 rounded-full bg-red-400 shrink-0" title="Email not sent" />
+                      )}
+                      {contact.replied_at && (
+                        <span className="text-[10px] font-medium text-green-700 bg-green-100 rounded-full px-1.5 py-0.5">Replied</span>
                       )}
                     </div>
                   </td>
@@ -121,6 +130,14 @@ function ContactDetail({
 }) {
   const [resending, setResending] = useState(false);
   const [resendSuccess, setResendSuccess] = useState(false);
+  const [replyText, setReplyText] = useState('');
+  const [sendingReply, setSendingReply] = useState(false);
+  const [replyError, setReplyError] = useState<string | null>(null);
+  const [lastReply, setLastReply] = useState<{ message: string; repliedAt: string } | null>(
+    contact.admin_reply && contact.replied_at
+      ? { message: contact.admin_reply, repliedAt: contact.replied_at }
+      : null
+  );
 
   async function handleResendEmail() {
     setResending(true);
@@ -131,6 +148,20 @@ function ContactDetail({
       alert('Failed to send email');
     }
     setResending(false);
+  }
+
+  async function handleSendReply() {
+    if (!replyText.trim()) return;
+    setSendingReply(true);
+    setReplyError(null);
+    try {
+      await replyToContact(contact.id, replyText.trim());
+      setLastReply({ message: replyText.trim(), repliedAt: new Date().toISOString() });
+      setReplyText('');
+    } catch {
+      setReplyError('Failed to send reply. Please try again.');
+    }
+    setSendingReply(false);
   }
 
   return (
@@ -207,6 +238,43 @@ function ContactDetail({
           <div className="bg-gray-50 rounded-lg p-4 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed break-all">
             {contact.message}
           </div>
+        </div>
+
+        {lastReply && (
+          <div className="mt-5">
+            <p className="text-xs text-gray-400 uppercase tracking-wider mb-2">
+              Your Reply &middot; {formatDateTime(lastReply.repliedAt)}
+            </p>
+            <div className="bg-green-50 border border-green-100 rounded-lg p-4 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">
+              {lastReply.message}
+            </div>
+          </div>
+        )}
+
+        <div className="mt-5">
+          <p className="text-xs text-gray-400 uppercase tracking-wider mb-2">
+            {lastReply ? 'Send Another Reply' : 'Reply'}
+          </p>
+          <textarea
+            value={replyText}
+            onChange={(e) => setReplyText(e.target.value)}
+            rows={4}
+            placeholder={`Write a reply to ${contact.name}...`}
+            className="w-full rounded-lg border border-gray-200 p-3 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green/30 focus:border-green"
+          />
+          <div className="flex items-center justify-between mt-2">
+            <span className="text-xs text-gray-400">
+              Sent to {contact.email}, from Siba Osman&apos;s email.
+            </span>
+            <button
+              onClick={handleSendReply}
+              disabled={sendingReply || !replyText.trim()}
+              className="text-sm bg-green text-white px-4 py-1.5 rounded-lg font-medium disabled:opacity-50 hover:bg-green-dark transition-colors"
+            >
+              {sendingReply ? 'Sending...' : 'Send Reply'}
+            </button>
+          </div>
+          {replyError && <p className="text-xs text-red-500 mt-2">{replyError}</p>}
         </div>
       </div>
     </Modal>
