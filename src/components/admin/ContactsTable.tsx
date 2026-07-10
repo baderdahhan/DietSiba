@@ -22,28 +22,50 @@ type Contact = {
 export function ContactsTable({ contacts }: { contacts: Contact[] }) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [search, setSearch] = useState('');
+  const [filter, setFilter] = useState<'all' | 'new' | 'replied'>('all');
 
-  const filtered = contacts.filter((c) => {
-    const q = search.trim().toLowerCase();
-    if (!q) return true;
-    return (
-      c.name.toLowerCase().includes(q) ||
-      c.email.toLowerCase().includes(q) ||
-      (c.phone || '').toLowerCase().includes(q)
-    );
-  });
+  const filtered = contacts
+    .filter((c) => {
+      if (filter === 'new') return !c.replied_at;
+      if (filter === 'replied') return !!c.replied_at;
+      return true;
+    })
+    .filter((c) => {
+      const q = search.trim().toLowerCase();
+      if (!q) return true;
+      return (
+        c.name.toLowerCase().includes(q) ||
+        c.email.toLowerCase().includes(q) ||
+        (c.phone || '').toLowerCase().includes(q)
+      );
+    });
 
   const selected = contacts.find((c) => c.id === selectedId);
 
   return (
     <div>
-      <div className="mb-4">
+      <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-4">
+        <div className="flex gap-2 overflow-x-auto pb-1">
+          {(['all', 'new', 'replied'] as const).map((f) => (
+            <button
+              key={f}
+              onClick={() => setFilter(f)}
+              className={`px-3 py-1.5 rounded text-xs font-medium transition-colors capitalize shrink-0 ${
+                filter === f
+                  ? 'bg-green text-white'
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              }`}
+            >
+              {f}
+            </button>
+          ))}
+        </div>
         <input
           type="text"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search by name, email, or phone..."
-          className="sm:w-72 w-full rounded-lg border border-gray-200 px-3 py-1.5 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green/30 focus:border-green"
+          className="sm:ml-auto sm:w-72 w-full rounded-lg border border-gray-200 px-3 py-1.5 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green/30 focus:border-green"
         />
       </div>
 
