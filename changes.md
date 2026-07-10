@@ -40,6 +40,15 @@ The admin can now write a reply directly inside a contact message's detail view 
 
 ---
 
+## 4. Admin notification emails now reply straight to the customer
+
+When Siba gets an email notifying her of a new subscription or a new contact message, hitting "Reply" in her own email app (Gmail, Outlook, etc.) now goes straight to that customer's email address — not back to the site's own email. This works from her regular inbox, no need to open the admin panel.
+
+**Files changed (pushed to GitHub):**
+- `src/lib/email/send.ts`
+
+---
+
 ## Local-only files (changed, but never pushed to GitHub)
 
 - **`.env.local`** — holds the real Supabase project keys and email login used to run the site on this machine. It's intentionally excluded by `.gitignore` (the `.env*.local` rule), so it never goes to GitHub. Each person/machine running this project needs to create their own copy with their own real values.
