@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Modal } from '@/components/ui/Modal';
 import { resendContactEmail } from '@/app/actions/resend-email';
+import { formatDate, formatDateTime } from '@/lib/format-date';
 
 type Contact = {
   id: string;
@@ -36,7 +37,7 @@ export function ContactsTable({ contacts }: { contacts: Contact[] }) {
                   <span className="w-2 h-2 rounded-full bg-red-400 shrink-0" />
                 )}
               </div>
-              <span className="text-xs text-gray-400">{new Date(contact.created_at).toLocaleDateString()}</span>
+              <span className="text-xs text-gray-400">{formatDate(contact.created_at)}</span>
             </div>
             <p className="text-xs text-gray-500 mb-1">{contact.email}</p>
             <p className="text-xs text-gray-400 italic">
@@ -85,7 +86,7 @@ export function ContactsTable({ contacts }: { contacts: Contact[] }) {
                     {(() => { const words = contact.message.split(/\s+/); return words.length > 3 ? words.slice(0, 3).join(' ') + '...' : words.join(' '); })()}
                   </td>
                   <td className="px-4 py-3 text-gray-500 text-xs whitespace-nowrap hidden lg:table-cell">
-                    {new Date(contact.created_at).toLocaleDateString()}
+                    {formatDate(contact.created_at)}
                   </td>
                 </tr>
               ))}
@@ -138,7 +139,7 @@ function ContactDetail({
         <div>
           <h2 className="text-base font-semibold text-gray-900">{contact.name}</h2>
           <p className="text-xs text-gray-500 mt-0.5">
-            {new Date(contact.created_at).toLocaleString()}
+            {formatDateTime(contact.created_at)}
           </p>
         </div>
         <button
@@ -167,7 +168,7 @@ function ContactDetail({
           </div>
           <div>
             <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Date</p>
-            <p className="text-gray-700">{new Date(contact.created_at).toLocaleString()}</p>
+            <p className="text-gray-700">{formatDateTime(contact.created_at)}</p>
           </div>
         </div>
 

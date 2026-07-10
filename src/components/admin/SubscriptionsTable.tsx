@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { updatePaymentStatus } from '@/app/actions/admin';
 import { resendSubscriptionEmail } from '@/app/actions/resend-email';
 import { Modal } from '@/components/ui/Modal';
+import { formatDate, formatDateTime } from '@/lib/format-date';
 
 type Subscription = {
   id: string;
@@ -72,7 +73,7 @@ export function SubscriptionsTable({
             </div>
             <div className="flex items-center justify-between text-xs text-gray-500">
               <span>{sub.subscription_tiers?.name?.en || '—'} &middot; {sub.price_charged} TRY</span>
-              <span>{new Date(sub.created_at).toLocaleDateString()}</span>
+              <span>{formatDate(sub.created_at)}</span>
             </div>
             {sub.discount_codes && (
               <div className="mt-1.5">
@@ -135,7 +136,7 @@ export function SubscriptionsTable({
                   </td>
                   <td className="px-4 py-3"><StatusBadge status={sub.payment_status} /></td>
                   <td className="px-4 py-3 text-gray-500 text-xs hidden lg:table-cell">
-                    {new Date(sub.created_at).toLocaleDateString()}
+                    {formatDate(sub.created_at)}
                   </td>
                 </tr>
               ))}
@@ -235,7 +236,7 @@ function SubscriptionDetail({
           <div>
             <h2 className="text-base font-semibold text-gray-900">{subscription.name}</h2>
             <p className="text-xs text-gray-500 mt-0.5">
-              {subscription.subscription_tiers?.name?.en || '—'} &middot; {new Date(subscription.created_at).toLocaleDateString()}
+              {subscription.subscription_tiers?.name?.en || '—'} &middot; {formatDate(subscription.created_at)}
             </p>
           </div>
           <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-gray-200 text-gray-400 hover:text-gray-600 transition-colors">
@@ -269,7 +270,7 @@ function SubscriptionDetail({
             </div>
             <div>
               <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Date</p>
-              <p className="text-gray-700">{new Date(subscription.created_at).toLocaleString()}</p>
+              <p className="text-gray-700">{formatDateTime(subscription.created_at)}</p>
             </div>
           </div>
 
@@ -364,7 +365,7 @@ function SubscriptionDetail({
                         <span className="font-medium capitalize">{h.type}</span>
                         {h.tier && <span className="text-gray-400"> &middot; {h.tier}</span>}
                       </span>
-                      <span className="text-gray-400">{new Date(h.created_at).toLocaleDateString()}</span>
+                      <span className="text-gray-400">{formatDate(h.created_at)}</span>
                     </div>
                   ))
                 )}

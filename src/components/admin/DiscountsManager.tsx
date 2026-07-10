@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { createDiscountCode, toggleDiscountCode, deleteDiscountCode } from '@/app/actions/admin';
+import { formatDate } from '@/lib/format-date';
 
 type DiscountCode = {
   id: string;
@@ -156,7 +157,7 @@ export function DiscountsManager({ codes }: { codes: DiscountCode[] }) {
               {c.expires_at && (
                 <div>
                   <span className="block text-gray-400">Expires</span>
-                  {new Date(c.expires_at).toLocaleDateString()}
+                  {formatDate(c.expires_at)}
                 </div>
               )}
             </div>
@@ -210,7 +211,7 @@ export function DiscountsManager({ codes }: { codes: DiscountCode[] }) {
                     {c.used_count}{c.max_uses !== null ? ` / ${c.max_uses}` : ''}
                   </td>
                   <td className="px-4 py-3 text-xs text-gray-500">
-                    {c.expires_at ? new Date(c.expires_at).toLocaleDateString() : '—'}
+                    {c.expires_at ? formatDate(c.expires_at) : '—'}
                   </td>
                   <td className="px-4 py-3">
                     <span

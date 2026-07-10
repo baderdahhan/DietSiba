@@ -1,4 +1,5 @@
 import { createServiceClient } from '@/lib/supabase/server';
+import { formatDate } from '@/lib/format-date';
 
 type AuditEntry = {
   id: number;
@@ -71,7 +72,7 @@ function timeAgo(date: string): string {
   if (hours < 24) return `${hours}h ago`;
   const days = Math.floor(hours / 24);
   if (days < 7) return `${days}d ago`;
-  return new Date(date).toLocaleDateString();
+  return formatDate(date);
 }
 
 export default async function AuditLogPage() {
