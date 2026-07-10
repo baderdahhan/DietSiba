@@ -21,13 +21,35 @@ type Contact = {
 
 export function ContactsTable({ contacts }: { contacts: Contact[] }) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [search, setSearch] = useState('');
+
+  const filtered = contacts.filter((c) => {
+    const q = search.trim().toLowerCase();
+    if (!q) return true;
+    return (
+      c.name.toLowerCase().includes(q) ||
+      c.email.toLowerCase().includes(q) ||
+      (c.phone || '').toLowerCase().includes(q)
+    );
+  });
+
   const selected = contacts.find((c) => c.id === selectedId);
 
   return (
     <div>
+      <div className="mb-4">
+        <input
+          type="text"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Search by name, email, or phone..."
+          className="sm:w-72 w-full rounded-lg border border-gray-200 px-3 py-1.5 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green/30 focus:border-green"
+        />
+      </div>
+
       {/* Mobile: card layout */}
       <div className="sm:hidden space-y-3">
-        {contacts.map((contact) => (
+        {filtered.map((contact) => (
           <div
             key={contact.id}
             onClick={() => setSelectedId(contact.id)}
@@ -51,9 +73,9 @@ export function ContactsTable({ contacts }: { contacts: Contact[] }) {
             </p>
           </div>
         ))}
-        {contacts.length === 0 && (
+        {filtered.length === 0 && (
           <div className="bg-white rounded-lg border border-gray-200 p-8 text-center text-gray-400 text-sm">
-            No contact messages yet.
+            {contacts.length === 0 ? 'No contact messages yet.' : 'No messages match your search.'}
           </div>
         )}
       </div>
@@ -72,7 +94,7 @@ export function ContactsTable({ contacts }: { contacts: Contact[] }) {
               </tr>
             </thead>
             <tbody>
-              {contacts.map((contact) => (
+              {filtered.map((contact) => (
                 <tr
                   key={contact.id}
                   onClick={() => setSelectedId(contact.id)}
@@ -99,10 +121,10 @@ export function ContactsTable({ contacts }: { contacts: Contact[] }) {
                   </td>
                 </tr>
               ))}
-              {contacts.length === 0 && (
+              {filtered.length === 0 && (
                 <tr>
                   <td colSpan={5} className="px-4 py-8 text-center text-gray-400">
-                    No contact messages yet.
+                    {contacts.length === 0 ? 'No contact messages yet.' : 'No messages match your search.'}
                   </td>
                 </tr>
               )}

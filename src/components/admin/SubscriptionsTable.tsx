@@ -28,30 +28,47 @@ export function SubscriptionsTable({
 }) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [filter, setFilter] = useState<string>('all');
+  const [search, setSearch] = useState('');
 
-  const filtered =
-    filter === 'all'
-      ? subscriptions
-      : subscriptions.filter((s) => s.payment_status === filter);
+  const filtered = subscriptions
+    .filter((s) => filter === 'all' || s.payment_status === filter)
+    .filter((s) => {
+      const q = search.trim().toLowerCase();
+      if (!q) return true;
+      return (
+        s.name.toLowerCase().includes(q) ||
+        s.email.toLowerCase().includes(q) ||
+        s.phone.toLowerCase().includes(q)
+      );
+    });
 
   const selected = subscriptions.find((s) => s.id === selectedId);
 
   return (
     <div>
-      <div className="flex gap-2 mb-4 overflow-x-auto pb-1">
-        {['all', 'pending', 'paid', 'failed', 'cancelled'].map((f) => (
-          <button
-            key={f}
-            onClick={() => setFilter(f)}
-            className={`px-3 py-1.5 rounded text-xs font-medium transition-colors capitalize shrink-0 ${
-              filter === f
-                ? 'bg-green text-white'
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-            }`}
-          >
-            {f}
-          </button>
-        ))}
+      <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-4">
+        <div className="flex gap-2 overflow-x-auto pb-1">
+          {['all', 'pending', 'paid', 'failed', 'cancelled'].map((f) => (
+            <button
+              key={f}
+              onClick={() => setFilter(f)}
+              className={`px-3 py-1.5 rounded text-xs font-medium transition-colors capitalize shrink-0 ${
+                filter === f
+                  ? 'bg-green text-white'
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              }`}
+            >
+              {f}
+            </button>
+          ))}
+        </div>
+        <input
+          type="text"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Search by name, email, or phone..."
+          className="sm:ml-auto sm:w-72 w-full rounded-lg border border-gray-200 px-3 py-1.5 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green/30 focus:border-green"
+        />
       </div>
 
       {/* Mobile: card layout */}
