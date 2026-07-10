@@ -49,6 +49,16 @@ When Siba gets an email notifying her of a new subscription or a new contact mes
 
 ---
 
+## 5. Search box in Subscriptions and Contacts
+
+Added a search box to both the Subscriptions and Contacts pages in the admin panel. Typing a name, email, or phone number now filters the list instantly. On Subscriptions, it works together with the existing status filter (all/pending/paid/failed/cancelled).
+
+**Files changed (pushed to GitHub):**
+- `src/components/admin/SubscriptionsTable.tsx`
+- `src/components/admin/ContactsTable.tsx`
+
+---
+
 ## Local-only files (changed, but never pushed to GitHub)
 
 - **`.env.local`** — holds the real Supabase project keys and email login used to run the site on this machine. It's intentionally excluded by `.gitignore` (the `.env*.local` rule), so it never goes to GitHub. Each person/machine running this project needs to create their own copy with their own real values.
