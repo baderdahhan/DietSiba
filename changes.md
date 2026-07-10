@@ -78,6 +78,28 @@ The Arabic text was spelling the name "سيبا" (a common but incorrect spellin
 
 ---
 
+## 8. Added WhatsApp contact in four places
+
+Added a way to reach Siba directly on WhatsApp (not a floating button, just text/icon links) in:
+- The footer, next to her name
+- The Contact page, as a quick alternative above the form
+- The "thank you" screen right after subscribing to a plan
+- The admin panel, next to each customer's phone number in Subscriptions and Contacts, so whoever manages the site can message that specific lead directly
+
+Every link uses the real WhatsApp logo (`src/components/ui/WhatsAppIcon.tsx`) and a shared helper (`src/lib/whatsapp.ts`) to build the `wa.me` links, so the number only needs to be set in one place.
+
+**Files changed (pushed to GitHub):**
+- `src/lib/whatsapp.ts` (new)
+- `src/components/ui/WhatsAppIcon.tsx` (new)
+- `src/components/layout/Footer.tsx`
+- `src/app/[locale]/(public)/contact/page.tsx`
+- `src/components/services/SubscribeModal.tsx`
+- `src/components/admin/SubscriptionsTable.tsx`
+- `src/components/admin/ContactsTable.tsx`
+- `messages/en.json`, `messages/ar.json`, `messages/tr.json`
+
+---
+
 ## Local-only files (changed, but never pushed to GitHub)
 
 - **`.env.local`** — holds the real Supabase project keys and email login used to run the site on this machine. It's intentionally excluded by `.gitignore` (the `.env*.local` rule), so it never goes to GitHub. Each person/machine running this project needs to create their own copy with their own real values.
