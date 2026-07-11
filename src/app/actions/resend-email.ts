@@ -5,6 +5,7 @@ import { getAdminUser } from '@/lib/supabase/admin';
 import { createServiceClient } from '@/lib/supabase/server';
 import { sendSubscriptionEmails, sendContactEmails } from '@/lib/email/send';
 import { logAudit } from '@/lib/audit';
+import { localized, type LocalizedText } from '@/lib/types';
 
 export async function resendSubscriptionEmail(subscriptionId: string) {
   const admin = await getAdminUser();
@@ -20,15 +21,15 @@ export async function resendSubscriptionEmail(subscriptionId: string) {
 
   if (!sub) throw new Error('Subscription not found');
 
-  const tierData = sub.subscription_tiers as unknown as { name: { en: string; ar: string } } | null;
-  const tierName = tierData?.name?.[sub.locale as 'en' | 'ar'] || tierData?.name?.en || 'Plan';
+  const tierData = sub.subscription_tiers as unknown as { name: LocalizedText } | null;
+  const tierName = localized(tierData?.name, sub.locale) || 'Plan';
 
   const sent = await sendSubscriptionEmails({
     name: sub.name,
     email: sub.email,
     phone: sub.phone,
     tierName,
-    locale: sub.locale as 'en' | 'ar',
+    locale: sub.locale,
   });
 
   if (!sent) throw new Error('Failed to send email');
@@ -60,7 +61,7 @@ export async function resendContactEmail(contactId: string) {
     email: contact.email,
     phone: contact.phone || '',
     message: contact.message || '',
-    locale: contact.locale as 'en' | 'ar',
+    locale: contact.locale,
   });
 
   if (!sent) throw new Error('Failed to send email');

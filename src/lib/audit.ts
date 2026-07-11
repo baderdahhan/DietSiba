@@ -1,5 +1,5 @@
 import { createServiceClient } from './supabase/server';
-import { revalidatePath } from 'next/cache';
+import { revalidateForAllLocales } from './revalidate';
 
 export async function logAudit(
   adminEmail: string,
@@ -17,8 +17,7 @@ export async function logAudit(
       target_id: targetId || null,
       details: details || null,
     });
-    revalidatePath('/en/admin/audit-log');
-    revalidatePath('/ar/admin/audit-log');
+    revalidateForAllLocales('/admin/audit-log');
   } catch (e) {
     console.error('Audit log failed:', e);
   }

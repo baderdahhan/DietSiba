@@ -2,6 +2,11 @@ import { redirect } from 'next/navigation';
 import { getAdminUser } from '@/lib/supabase/admin';
 import { AdminNav } from '@/components/admin/AdminNav';
 
+// The auth check below reads cookies inside a try/catch, which would swallow
+// Next's dynamic-rendering bailout and freeze these routes as static
+// redirects at build time. Force every admin page to render per-request.
+export const dynamic = 'force-dynamic';
+
 export default async function DashboardLayout({
   children,
   params: { locale },

@@ -1,6 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 import { Link, usePathname } from '@/i18n/navigation';
 import { useState } from 'react';
 import { LanguageSwitcher } from './LanguageSwitcher';
@@ -21,9 +22,12 @@ export function Header() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-20">
           <Link href="/" className="flex items-center gap-3 shrink-0">
-            <img
+            <Image
               src="/logo1.png"
               alt="Siba Osman"
+              width={56}
+              height={56}
+              priority
               className="h-10 sm:h-14 w-auto"
             />
           </Link>

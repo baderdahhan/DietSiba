@@ -168,6 +168,41 @@ Since payment isn't handled through iyzico/card processing anymore (it's arrange
 
 ---
 
+## 16. Bader changes — full codebase review + fixes (12.07.2026)
+
+A complete scan of the project found and fixed several production blockers before hosting:
+
+**Admin panel would not have worked on the live site.** The admin pages were being "frozen" at build time, so on a real deployment every admin page would have permanently bounced back to the login screen (it only worked on this machine because dev mode renders every request live). Admin pages now always render per-request with a live login check.
+
+**Turkish visitors couldn't submit any form.** The site added Turkish as a language, but the form validation only accepted English/Arabic — so anyone on the Turkish site who clicked "Subscribe" or sent a contact message got a silent failure and the lead was lost. Fixed, and Turkish customers now also receive their confirmation/reply emails in Turkish (new Turkish email copy — worth having Siba read it once). Turkish pages also now refresh when prices are edited in the admin panel (before, only the English/Arabic pages did).
+
+**Closed a security hole in the database.** The database function that creates subscriptions was callable by anyone on the internet with the site's public key, bypassing all the spam/rate-limit protection. Locked down so only the server can call it.
+
+**The whole site is now much faster.** It turned out no page was actually being pre-built — every visit rendered the page from scratch, including a database call. Public pages are now pre-built and served instantly (measured: ~7.5 seconds → under 0.3 seconds per page on a test server).
+
+**Smaller fixes:**
+- The hidden anti-spam trap field in both forms was accidentally disabled by a naming clash — works again now.
+- Privacy Policy and Terms pages were showing today's date as "last updated" (misleading on legal documents) — now a fixed real revision date, updated by hand when the text changes.
+- Removed the returns/refund page, the leftover iyzico/Visa/Mastercard icon files, and their translations (payment is via bank transfer now, no card provider involved).
+- Admin Subscriptions and Contacts lists are now paginated (50 per page) so they stay fast as data grows.
+- Logos now go through Next.js image optimization.
+- Cleaned up duplicated code: shared validation patterns, shared pricing-tier types, one shared error-handling helper for both public forms.
+
+**Files changed (pushed to GitHub):**
+- `src/app/[locale]/admin/(dashboard)/layout.tsx`, `.../page.tsx` (admin fix)
+- `src/lib/validation.ts`, `src/lib/revalidate.ts` (new), `src/lib/email/templates.ts`, `src/lib/email/send.ts`, `src/app/actions/*.ts` (Turkish support)
+- `supabase/migrations/008_lock_down_functions.sql` (new — **must be run once in the Supabase SQL Editor**)
+- `src/app/[locale]/layout.tsx` + public pages (pre-building/speed fix)
+- `src/components/services/SubscribeModal.tsx`, `src/app/[locale]/(public)/contact/page.tsx` (honeypot + shared helpers)
+- `src/lib/patterns.ts`, `src/lib/types.ts`, `src/lib/form-result.ts`, `src/hooks/useCsrfToken.ts`, `src/components/forms/HoneypotField.tsx`, `src/components/admin/PaginationNav.tsx` (all new)
+- `src/components/layout/Header.tsx`, `Footer.tsx` (image optimization)
+- Deleted: `src/app/[locale]/(public)/returns/`, `public/payment/`
+- `messages/en.json`, `ar.json`, `tr.json` (removed returns keys)
+
+*(Also noted, not code problems: this development machine's antivirus/proxy is blocking secure connections to Supabase, which is why pages load slowly and show no pricing tiers locally — the live site won't have this issue. And the project runs on Next.js 14, whose newer security patches only ship in Next 16; upgrading is worth planning later.)*
+
+---
+
 ## Local-only files (changed, but never pushed to GitHub)
 
 - **`.env.local`** — holds the real Supabase project keys and email login used to run the site on this machine. It's intentionally excluded by `.gitignore` (the `.env*.local` rule), so it never goes to GitHub. Each person/machine running this project needs to create their own copy with their own real values.

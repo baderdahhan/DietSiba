@@ -1,7 +1,8 @@
 import { useTranslations } from 'next-intl';
-import { getLocale, getTranslations } from 'next-intl/server';
+import { getLocale, getTranslations, setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
 import { createServiceClient } from '@/lib/supabase/server';
+import { localized } from '@/lib/types';
 
 function HeroSection() {
   const t = useTranslations('hero');
@@ -129,7 +130,7 @@ async function PlansTeaser() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
           {tierList.map((tier) => {
-            const tierName = tier.name[locale as 'en' | 'ar'] || tier.name.en;
+            const tierName = localized(tier.name, locale);
             return (
               <div
                 key={tier.slug}
@@ -193,7 +194,12 @@ function CTASection() {
   );
 }
 
-export default async function HomePage() {
+export default async function HomePage({
+  params: { locale },
+}: {
+  params: { locale: string };
+}) {
+  setRequestLocale(locale);
   return (
     <>
       <HeroSection />

@@ -1,12 +1,16 @@
 import { z } from 'zod';
 import { isValidPhoneNumber } from 'libphonenumber-js';
+import { NAME_PATTERN } from './patterns';
+import { routing } from '@/i18n/routing';
+
+export const localeSchema = z.enum(routing.locales);
 
 export const nameSchema = z
   .string()
   .trim()
   .min(2, 'nameRequired')
   .max(100, 'nameInvalid')
-  .regex(/^[\p{L}\p{M}\s'.\-]+$/u, 'nameInvalid');
+  .regex(NAME_PATTERN, 'nameInvalid');
 
 export const emailSchema = z
   .string()
@@ -58,7 +62,7 @@ export const subscribeFormSchema = z.object({
   message: messageSchema,
   tierId: z.string().uuid(),
   discountCode: discountCodeSchema,
-  locale: z.enum(['en', 'ar']),
+  locale: localeSchema,
   honeypot: z.string(),
   formLoadedAt: z.number(),
 });
@@ -68,7 +72,7 @@ export const contactFormSchema = z.object({
   email: emailSchema,
   phone: phoneOptionalSchema,
   message: messageRequiredSchema,
-  locale: z.enum(['en', 'ar']),
+  locale: localeSchema,
   honeypot: z.string(),
   formLoadedAt: z.number(),
 });

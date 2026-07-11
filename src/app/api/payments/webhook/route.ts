@@ -2,7 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 
 /**
  * Stubbed payment webhook endpoint.
- * Ready for implementation once Siba is approved with a payment provider (iyzico, PayTR, etc.).
+ * Currently unused — payments are collected manually via bank transfer and
+ * marked as paid in the admin panel. Kept in case an online payment
+ * provider is integrated later.
  *
  * Integration steps when ready:
  * 1. Verify the webhook signature using the provider's secret key.
@@ -27,7 +29,7 @@ export async function POST(_request: NextRequest) {
   //   .from('subscriptions')
   //   .update({
   //     payment_status: status === 'success' ? 'paid' : 'failed',
-  //     payment_provider: 'iyzico', // or whichever provider
+  //     payment_provider: 'provider-name',
   //     payment_reference: transactionId,
   //   })
   //   .eq('id', referenceId);

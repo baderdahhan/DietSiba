@@ -3,7 +3,7 @@
 import { z } from 'zod';
 import { createServiceClient } from '@/lib/supabase/server';
 import { getAdminUser } from '@/lib/supabase/admin';
-import { revalidatePath } from 'next/cache';
+import { revalidateForAllLocales } from '@/lib/revalidate';
 import { logAudit } from '@/lib/audit';
 import { sendContactReplyEmail } from '@/lib/email/send';
 
@@ -40,10 +40,7 @@ export async function updatePaymentStatus(subscriptionId: string, status: string
 
   if (error) throw new Error('Failed to update status');
   await logAudit(admin.email!, 'update_payment_status', 'subscription', parsed.data.id, { status: parsed.data.status });
-  revalidatePath('/en/admin/subscriptions');
-  revalidatePath('/ar/admin/subscriptions');
-  revalidatePath('/en/admin');
-  revalidatePath('/ar/admin');
+  revalidateForAllLocales('/admin/subscriptions', '/admin');
 }
 
 export async function createDiscountCode(data: {
@@ -82,8 +79,7 @@ export async function createDiscountCode(data: {
     throw new Error('Failed to create discount code');
   }
   await logAudit(admin.email!, 'create_discount', 'discount_code', undefined, { code: parsed.data.code.toUpperCase() });
-  revalidatePath('/en/admin/discounts');
-  revalidatePath('/ar/admin/discounts');
+  revalidateForAllLocales('/admin/discounts');
 }
 
 export async function toggleDiscountCode(id: string, isActive: boolean) {
@@ -98,8 +94,7 @@ export async function toggleDiscountCode(id: string, isActive: boolean) {
 
   if (error) throw new Error('Failed to update discount code');
   await logAudit(admin.email!, isActive ? 'activate_discount' : 'deactivate_discount', 'discount_code', id);
-  revalidatePath('/en/admin/discounts');
-  revalidatePath('/ar/admin/discounts');
+  revalidateForAllLocales('/admin/discounts');
 }
 
 export async function deleteDiscountCode(id: string) {
@@ -114,8 +109,7 @@ export async function deleteDiscountCode(id: string) {
 
   if (error) throw new Error('Failed to delete discount code');
   await logAudit(admin.email!, 'delete_discount', 'discount_code', id);
-  revalidatePath('/en/admin/discounts');
-  revalidatePath('/ar/admin/discounts');
+  revalidateForAllLocales('/admin/discounts');
 }
 
 const tierUpdateSchema = z.object({
@@ -266,7 +260,7 @@ export async function replyToContact(contactId: string, message: string) {
   const sent = await sendContactReplyEmail({
     name: contact.name,
     email: contact.email,
-    locale: contact.locale as 'en' | 'ar',
+    locale: contact.locale,
     replyMessage: parsed.data.message,
   });
 
@@ -280,15 +274,9 @@ export async function replyToContact(contactId: string, message: string) {
   if (error) throw new Error('Failed to save reply');
 
   await logAudit(admin.email!, 'reply_contact', 'contact_message', parsed.data.id);
-  revalidatePath('/en/admin/contacts');
-  revalidatePath('/ar/admin/contacts');
+  revalidateForAllLocales('/admin/contacts');
 }
 
 function revalidatePricing() {
-  revalidatePath('/en/admin/pricing');
-  revalidatePath('/ar/admin/pricing');
-  revalidatePath('/en/services');
-  revalidatePath('/ar/services');
-  revalidatePath('/en');
-  revalidatePath('/ar');
+  revalidateForAllLocales('/admin/pricing', '/services', '/');
 }

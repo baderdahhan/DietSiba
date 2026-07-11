@@ -1,19 +1,11 @@
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { createServiceClient } from '@/lib/supabase/server';
 import { TierCard } from '@/components/services/TierCard';
+import type { Tier } from '@/lib/types';
 
-type Tier = {
-  id: string;
-  slug: string;
-  name: { en: string; ar: string };
-  price: number;
-  currency: string;
-  features: Array<{ en: string; ar: string }>;
-  sort_order: number;
-  is_popular: boolean;
-};
+type TierRow = Tier & { sort_order: number; is_popular: boolean };
 
-async function getTiers(): Promise<Tier[]> {
+async function getTiers(): Promise<TierRow[]> {
   const supabase = createServiceClient();
   const { data, error } = await supabase
     .from('subscription_tiers')
@@ -22,7 +14,7 @@ async function getTiers(): Promise<Tier[]> {
     .order('sort_order');
 
   if (error || !data) return [];
-  return data as Tier[];
+  return data as TierRow[];
 }
 
 export default async function ServicesPage({
@@ -30,6 +22,7 @@ export default async function ServicesPage({
 }: {
   params: { locale: string };
 }) {
+  setRequestLocale(locale);
   const t = await getTranslations('services');
   const tiers = await getTiers();
 

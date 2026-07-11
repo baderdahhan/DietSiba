@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
-import { getMessages, getTranslations } from 'next-intl/server';
+import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
 
@@ -27,9 +27,13 @@ export default async function LocaleLayout({
   children: React.ReactNode;
   params: { locale: string };
 }) {
-  if (!routing.locales.includes(locale as 'en' | 'ar')) {
+  if (!(routing.locales as readonly string[]).includes(locale)) {
     notFound();
   }
+
+  // Opt into static rendering — without this, next-intl renders every
+  // page dynamically on each request.
+  setRequestLocale(locale);
 
   const messages = await getMessages();
 

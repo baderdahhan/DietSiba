@@ -34,7 +34,7 @@ export async function sendSubscriptionEmails(data: {
   email: string;
   phone: string;
   tierName: string;
-  locale: 'en' | 'ar';
+  locale: string;
 }): Promise<boolean> {
   const lead = subscriptionConfirmationEmail(data.locale, {
     name: data.name,
@@ -62,7 +62,7 @@ export async function sendSubscriptionEmails(data: {
 export async function sendContactReplyEmail(data: {
   name: string;
   email: string;
-  locale: 'en' | 'ar';
+  locale: string;
   replyMessage: string;
 }): Promise<boolean> {
   const reply = contactReplyEmail(data.locale, {
@@ -77,7 +77,7 @@ export async function sendContactEmails(data: {
   email: string;
   phone: string;
   message: string;
-  locale: 'en' | 'ar';
+  locale: string;
 }): Promise<boolean> {
   const lead = contactConfirmationEmail(data.locale, { name: data.name });
   const admin = contactAdminNotification({

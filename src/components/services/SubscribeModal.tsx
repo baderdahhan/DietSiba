@@ -1,24 +1,20 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
 import { isValidPhoneNumber } from 'libphonenumber-js';
 import { subscribeAction } from '@/app/actions/subscribe';
 import { validateDiscountCode } from '@/app/actions/discount';
-import { getCsrfToken } from '@/app/actions/csrf';
+import { useCsrfToken } from '@/hooks/useCsrfToken';
+import { handleActionResult } from '@/lib/form-result';
+import { NAME_PATTERN, EMAIL_PATTERN } from '@/lib/patterns';
+import { HoneypotField } from '@/components/forms/HoneypotField';
+import { localized, type Tier } from '@/lib/types';
 import { Link } from '@/i18n/navigation';
 import { Modal } from '@/components/ui/Modal';
 import { whatsappLink } from '@/lib/whatsapp';
 import { WhatsAppIcon } from '@/components/ui/WhatsAppIcon';
-
-type Tier = {
-  id: string;
-  slug: string;
-  name: { en: string; ar: string };
-  price: number;
-  currency: string;
-};
 
 type FormValues = {
   name: string;
@@ -41,10 +37,10 @@ export function SubscribeModal({
   const tv = useTranslations('validation');
   const ts = useTranslations('subscribeForm');
   const tw = useTranslations('whatsapp');
-  const tierName = tier.name[locale as 'en' | 'ar'] || tier.name.en;
+  const tierName = localized(tier.name, locale);
 
   const [formLoadedAt] = useState(Date.now());
-  const [csrfToken, setCsrfToken] = useState('');
+  const { csrfToken } = useCsrfToken();
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [serverError, setServerError] = useState('');
@@ -54,10 +50,6 @@ export function SubscribeModal({
     value?: number;
   } | null>(null);
   const [discountChecking, setDiscountChecking] = useState(false);
-
-  useEffect(() => {
-    getCsrfToken().then(setCsrfToken);
-  }, []);
 
   const {
     register,
@@ -106,24 +98,13 @@ export function SubscribeModal({
         formLoadedAt,
       });
 
-      if (!result) {
-        setServerError(tv('genericError'));
-      } else if (result.success) {
-        setSuccess(true);
-      } else if (result.fieldErrors) {
-        Object.entries(result.fieldErrors).forEach(([field, msg]) => {
-          let translated = msg;
-          try { translated = tv(msg); } catch { /* use raw message as fallback */ }
-          setError(field as keyof FormValues, { message: translated });
-        });
-      } else {
-        const errorKey = result.error || 'genericError';
-        try {
-          setServerError(tv(errorKey));
-        } catch {
-          setServerError(result.error || tv('genericError'));
-        }
-      }
+      handleActionResult(result, {
+        t: tv,
+        onSuccess: () => setSuccess(true),
+        onFieldError: (field, message) =>
+          setError(field as keyof FormValues, { message }),
+        onServerError: setServerError,
+      });
     } catch {
       setServerError(tv('genericError'));
     }
@@ -179,10 +160,7 @@ export function SubscribeModal({
             </div>
           ) : (
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-              {/* Honeypot - hidden from humans */}
-              <div style={{ position: 'absolute', left: '-9999px', opacity: 0, height: 0, overflow: 'hidden' }} aria-hidden="true">
-                <input type="text" {...register('honeypot')} tabIndex={-1} autoComplete="off" name="website" />
-              </div>
+              <HoneypotField registration={register('honeypot')} />
 
               <div>
                 <label className="block text-sm font-medium text-foreground mb-1">
@@ -192,10 +170,7 @@ export function SubscribeModal({
                   type="text"
                   {...register('name', {
                     required: tv('nameRequired'),
-                    pattern: {
-                      value: /^[\p{L}\p{M}\s'.\-]+$/u,
-                      message: tv('nameInvalid'),
-                    },
+                    pattern: { value: NAME_PATTERN, message: tv('nameInvalid') },
                     minLength: { value: 2, message: tv('nameRequired') },
                     maxLength: { value: 100, message: tv('nameInvalid') },
                   })}
@@ -215,10 +190,7 @@ export function SubscribeModal({
                   type="email"
                   {...register('email', {
                     required: tv('emailRequired'),
-                    pattern: {
-                      value: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/,
-                      message: tv('emailInvalid'),
-                    },
+                    pattern: { value: EMAIL_PATTERN, message: tv('emailInvalid') },
                   })}
                   placeholder={ts('emailPlaceholder')}
                   className="w-full px-3 py-2.5 rounded-lg border border-border bg-cream/50 text-sm focus:outline-none focus:ring-2 focus:ring-green/30 focus:border-green"

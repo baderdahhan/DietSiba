@@ -1,14 +1,23 @@
 import type { Metadata } from 'next';
-import { getTranslations } from 'next-intl/server';
-import { formatDate } from '@/lib/format-date';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 export const metadata: Metadata = {
   title: 'Gizlilik Politikası',
 };
 
+// Real revision date of the policy text (dd.mm.yyyy). Update when the
+// content changes — do not compute from the current date, or the page
+// would falsely claim it was updated today.
+const LAST_UPDATED = '12.07.2026';
+
 type Section = { title: string; text: string };
 
-export default async function PrivacyPage() {
+export default async function PrivacyPage({
+  params: { locale },
+}: {
+  params: { locale: string };
+}) {
+  setRequestLocale(locale);
   const t = await getTranslations({ locale: 'tr', namespace: 'privacy' });
   const sections = t.raw('sections') as Record<string, Section>;
 
@@ -20,7 +29,7 @@ export default async function PrivacyPage() {
             {t('title')}
           </h1>
           <p className="text-muted max-w-2xl mx-auto">{t('subtitle')}</p>
-          <p className="text-muted text-sm mt-2">{t('lastUpdated', { date: formatDate(new Date()) })}</p>
+          <p className="text-muted text-sm mt-2">{t('lastUpdated', { date: LAST_UPDATED })}</p>
         </div>
 
         <div className="bg-white rounded-xl p-6 sm:p-8 border border-border space-y-8">

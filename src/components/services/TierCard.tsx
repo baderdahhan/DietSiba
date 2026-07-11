@@ -3,15 +3,7 @@
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { SubscribeModal } from './SubscribeModal';
-
-type Tier = {
-  id: string;
-  slug: string;
-  name: { en: string; ar: string };
-  price: number;
-  currency: string;
-  features: Array<{ en: string; ar: string }>;
-};
+import { localized, type Tier } from '@/lib/types';
 
 export function TierCard({
   tier,
@@ -24,10 +16,8 @@ export function TierCard({
 }) {
   const t = useTranslations();
   const [showModal, setShowModal] = useState(false);
-  const tierName = tier.name[locale as 'en' | 'ar'] || tier.name.en;
-  const features = tier.features.map(
-    (f) => f[locale as 'en' | 'ar'] || f.en
-  );
+  const tierName = localized(tier.name, locale);
+  const features = tier.features.map((f) => localized(f, locale));
 
   return (
     <>

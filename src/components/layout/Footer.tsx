@@ -1,4 +1,5 @@
 import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
 import { whatsappLink } from '@/lib/whatsapp';
 import { WhatsAppIcon } from '@/components/ui/WhatsAppIcon';
@@ -11,9 +12,11 @@ export function Footer() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
-            <img
+            <Image
               src="/logo1.png"
               alt="Siba Osman"
+              width={48}
+              height={48}
               className="h-12 w-auto brightness-0 invert mb-4"
             />
             <p className="text-cream/70 text-sm">{t('footer.tagline')}</p>
