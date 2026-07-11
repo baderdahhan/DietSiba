@@ -133,6 +133,15 @@ Every admin action (changing a payment status, editing a price, deleting a disco
 
 ---
 
+## 12. Removed payment icons and the returns policy link from the footer
+
+Removed the iyzico/Visa/Mastercard payment icons and the "Cancellation & Return Policy" link from the footer's Legal section. The `/returns` page itself still exists, it's just no longer linked from the footer.
+
+**Files changed (pushed to GitHub):**
+- `src/components/layout/Footer.tsx`
+
+---
+
 ## Local-only files (changed, but never pushed to GitHub)
 
 - **`.env.local`** — holds the real Supabase project keys and email login used to run the site on this machine. It's intentionally excluded by `.gitignore` (the `.env*.local` rule), so it never goes to GitHub. Each person/machine running this project needs to create their own copy with their own real values.
