@@ -142,6 +142,32 @@ Removed the iyzico/Visa/Mastercard payment icons and the "Cancellation & Return 
 
 ---
 
+## 13. Filled in real content for the Privacy Policy and Terms pages
+
+The Privacy Policy and Terms (Distance Selling Agreement) pages used to just show a placeholder ("content coming soon"). They now show the real legal text — Turkish KVKK-compliant privacy terms and a proper Distance Selling Agreement, always shown in Turkish regardless of which site language a visitor has selected (since that's the legally relevant one). Looked at adding a mandatory "I agree to the Terms" checkbox to the subscribe form as an extra safeguard, but decided to keep it simple for now — the Terms and Privacy Policy links stay in the footer, same as before.
+
+**Files changed (pushed to GitHub):**
+- `src/app/[locale]/(public)/privacy/page.tsx`
+- `src/app/[locale]/(public)/terms/page.tsx`
+
+---
+
+## 14. Legal text updated to match the real payment method + real contact info added
+
+Since payment isn't handled through iyzico/card processing anymore (it's arranged directly over WhatsApp), removed the now-inaccurate mentions of an automatic card payment gateway from both legal pages. Also filled in Siba's real phone number and city in the Terms page's seller details (email is still a placeholder, pending).
+
+**Files changed (pushed to GitHub):**
+- `messages/tr.json`
+
+---
+
+## 15. Added "Developed by Goldena" credit to the footer
+
+**Files changed (pushed to GitHub):**
+- `src/components/layout/Footer.tsx`
+
+---
+
 ## Local-only files (changed, but never pushed to GitHub)
 
 - **`.env.local`** — holds the real Supabase project keys and email login used to run the site on this machine. It's intentionally excluded by `.gitignore` (the `.env*.local` rule), so it never goes to GitHub. Each person/machine running this project needs to create their own copy with their own real values.
