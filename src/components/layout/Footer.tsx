@@ -64,14 +64,6 @@ export function Footer() {
                   {t('footer.privacy')}
                 </Link>
               </li>
-              <li>
-                <Link
-                  href="/terms"
-                  className="text-sm text-cream/70 hover:text-gold transition-colors"
-                >
-                  {t('footer.terms')}
-                </Link>
-              </li>
             </ul>
           </div>
 
@@ -97,8 +89,9 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-10 pt-6 border-t border-cream/20 text-center text-xs text-cream/50">
-          &copy; {new Date().getFullYear()} Siba Osman. {t('footer.rights')}
+        <div className="mt-10 pt-6 border-t border-cream/20 text-center text-xs text-cream/50 space-y-1">
+          <p>&copy; {new Date().getFullYear()} Siba Osman. {t('footer.rights')}</p>
+          <p>Developed by Goldena</p>
         </div>
       </div>
     </footer>

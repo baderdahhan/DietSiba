@@ -133,7 +133,7 @@
     "email": "E-posta",
     "emailValue": "[EMAIL]",
     "phone": "Telefon",
-    "phoneValue": "[PHONE]"
+    "phoneValue": "+90 534 918 76 66"
   },
   "privacy": {
     "title": "Gizlilik Politikası",
@@ -184,7 +184,7 @@
       "parties": {
         "title": "Madde 1 — Taraflar",
         "seller": "SATICI",
-        "sellerDetails": "Ad Soyad: Siba Osman\nAdres: [ADDRESS]\nTelefon: [PHONE]\nE-posta: [EMAIL]",
+        "sellerDetails": "Ad Soyad: Siba Osman\nAdres: Mersin, Türkiye\nTelefon: +90 534 918 76 66\nE-posta: [EMAIL]",
         "buyer": "ALICI",
         "buyerDetails": "Web sitesi üzerinden işbu sözleşmeyi kabul eden kişidir. Alıcının adı, adresi ve iletişim bilgileri abonelik işlemi sırasında kaydedilmektedir."
       },
@@ -202,7 +202,7 @@
       },
       "payment": {
         "title": "Madde 5 — Ödeme",
-        "text": "Ödeme, iyzico (iyzi Ödeme ve Elektronik Para Hizmetleri A.Ş.) tarafından sağlanan ödeme altyapısı üzerinden tahsil edilmektedir. Kabul edilen ödeme yöntemleri arasında kredi ve banka kartları (Visa, Mastercard) bulunmaktadır. Hizmet bedeli abonelik anında tahsil edilir. Kart bilgileri iyzico tarafından güvenli bir şekilde işlenmekte olup Satıcının sunucularında saklanmamaktadır."
+        "text": "Ödeme, web sitesi üzerinden otomatik bir ödeme altyapısı ile değil, Satıcı ile doğrudan iletişim yoluyla gerçekleştirilmektedir. Alıcı, abonelik talebini tamamladıktan sonra WhatsApp üzerinden Satıcı ile iletişime geçer ve ödeme, taraflar arasında karşılıklı olarak belirlenen yöntemle tahsil edilir. Web sitesi üzerinden herhangi bir kredi kartı veya banka kartı bilgisi toplanmamakta ve saklanmamaktadır."
       },
       "delivery": {
         "title": "Madde 6 — Hizmetin Teslimi",
