@@ -100,6 +100,19 @@ Every link uses the real WhatsApp logo (`src/components/ui/WhatsAppIcon.tsx`) an
 
 ---
 
+## 9. Mobile-tested the WhatsApp feature and fixed a copy issue
+
+Actually tested the WhatsApp links (footer, contact page, subscribe success screen) on a real mobile screen size. Everything displayed correctly with no layout issues, but the Contact page banner read redundantly ("Message us directly on WhatsApp. Message on WhatsApp") — shortened the prompt text so it doesn't repeat itself, in all three languages.
+
+**Files changed (pushed to GitHub):**
+- `messages/en.json`
+- `messages/ar.json`
+- `messages/tr.json`
+
+*(Also added `playwright` as a dev-only testing tool to check this — it doesn't affect the live site.)*
+
+---
+
 ## Local-only files (changed, but never pushed to GitHub)
 
 - **`.env.local`** — holds the real Supabase project keys and email login used to run the site on this machine. It's intentionally excluded by `.gitignore` (the `.env*.local` rule), so it never goes to GitHub. Each person/machine running this project needs to create their own copy with their own real values.
