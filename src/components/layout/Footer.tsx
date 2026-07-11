@@ -72,14 +72,6 @@ export function Footer() {
                   {t('footer.terms')}
                 </Link>
               </li>
-              <li>
-                <Link
-                  href="/returns"
-                  className="text-sm text-cream/70 hover:text-gold transition-colors"
-                >
-                  {t('footer.returns')}
-                </Link>
-              </li>
             </ul>
           </div>
 
@@ -102,26 +94,6 @@ export function Footer() {
               <WhatsAppIcon className="w-4 h-4 shrink-0" />
               {t('whatsapp.cta')}
             </a>
-
-            <div className="mt-6">
-              <div className="flex items-center gap-3">
-                <img
-                  src="/payment/iyzico.svg"
-                  alt="iyzico"
-                  className="h-6 w-auto"
-                />
-                <img
-                  src="/payment/visa.svg"
-                  alt="Visa"
-                  className="h-6 w-auto"
-                />
-                <img
-                  src="/payment/mastercard.svg"
-                  alt="Mastercard"
-                  className="h-6 w-auto"
-                />
-              </div>
-            </div>
           </div>
         </div>
 
