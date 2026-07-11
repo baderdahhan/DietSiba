@@ -113,6 +113,26 @@ Actually tested the WhatsApp links (footer, contact page, subscribe success scre
 
 ---
 
+## 10. Fixed "Set as Popular" throwing an error
+
+Clicking "Set as Popular" on a pricing tier in the admin panel failed with a generic "Failed to update" error. The underlying database function was trying to update every row in the pricing table at once, and the database blocks updates like that unless they're explicit about it. Adjusted the function so it explicitly confirms it means to touch every row.
+
+**Files changed (pushed to GitHub):**
+- `supabase/migrations/007_fix_set_popular_tier.sql` (new — needs to be run once in the Supabase SQL Editor, same as the others)
+
+---
+
+## 11. Activity log now updates immediately
+
+Every admin action (changing a payment status, editing a price, deleting a discount code, etc.) writes an entry to the Activity page, but the page itself wasn't being told to refresh — so a new entry only showed up after a manual page reload. Fixed centrally, so every action that logs to Activity now refreshes that page automatically.
+
+**Files changed (pushed to GitHub):**
+- `src/lib/audit.ts`
+
+*(Also changed the local dev server to run on port 80 instead of 3000, just for convenience — no effect on the live site.)*
+
+---
+
 ## Local-only files (changed, but never pushed to GitHub)
 
 - **`.env.local`** — holds the real Supabase project keys and email login used to run the site on this machine. It's intentionally excluded by `.gitignore` (the `.env*.local` rule), so it never goes to GitHub. Each person/machine running this project needs to create their own copy with their own real values.
