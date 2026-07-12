@@ -7,6 +7,7 @@ import { isSpamSubmission } from '@/lib/spam';
 import { createServiceClient } from '@/lib/supabase/server';
 import { getClientIp } from '@/lib/get-ip';
 import { sendContactEmails } from '@/lib/email/send';
+import { revalidatePath } from 'next/cache';
 
 export type ContactResult = {
   success: boolean;
@@ -79,6 +80,11 @@ export async function contactAction(
         .update({ email_sent: emailSent })
         .eq('id', inserted.id);
     }
+
+    revalidatePath('/en/admin/contacts');
+    revalidatePath('/ar/admin/contacts');
+    revalidatePath('/en/admin');
+    revalidatePath('/ar/admin');
 
     return { success: true };
   } catch (e) {

@@ -8,6 +8,7 @@ import { createServiceClient } from '@/lib/supabase/server';
 import { getClientIp } from '@/lib/get-ip';
 import { sendSubscriptionEmails } from '@/lib/email/send';
 import { localized } from '@/lib/types';
+import { revalidatePath } from 'next/cache';
 
 export type SubscribeResult = {
   success: boolean;
@@ -100,6 +101,11 @@ export async function subscribeAction(
         .update({ email_sent: emailSent })
         .eq('id', subId);
     }
+
+    revalidatePath('/en/admin/subscriptions');
+    revalidatePath('/ar/admin/subscriptions');
+    revalidatePath('/en/admin');
+    revalidatePath('/ar/admin');
 
     return { success: true };
   } catch (e) {

@@ -9,7 +9,14 @@ export function HoneypotField({ registration }: { registration: UseFormRegisterR
       style={{ position: 'absolute', left: '-9999px', opacity: 0, height: 0, overflow: 'hidden' }}
       aria-hidden="true"
     >
-      <input type="text" {...registration} tabIndex={-1} autoComplete="off" />
+      <input
+        type="text"
+        {...registration}
+        tabIndex={-1}
+        autoComplete="off"
+        readOnly
+        onFocus={(e) => e.target.removeAttribute('readonly')}
+      />
     </div>
   );
 }
