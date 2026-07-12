@@ -117,7 +117,6 @@
     "role": "Beslenme Uzmanı",
     "privacy": "Gizlilik Politikası",
     "terms": "Mesafeli Satış Sözleşmesi",
-    "returns": "İptal ve İade Koşulları",
     "about": "Hakkımızda"
   },
   "about": {
@@ -223,33 +222,6 @@
       "acceptance": {
         "title": "Madde 10 — Yürürlük",
         "text": "İşbu sözleşme, Alıcının web sitesi üzerinden abonelik ve ödeme işlemini tamamlaması ile yürürlüğe girer ve her iki taraf için bağlayıcıdır."
-      }
-    }
-  },
-  "returns": {
-    "title": "İptal ve İade Koşulları",
-    "subtitle": "Dijital beslenme danışmanlığı hizmetlerimize ilişkin hizmet teslimi, iptal ve iade koşulları hakkında bilgilendirme.",
-    "lastUpdated": "Son güncelleme: {date}",
-    "sections": {
-      "delivery": {
-        "title": "1. Hizmet Teslimi",
-        "text": "Beslenme danışmanlığı hizmetlerimiz dijital olarak sunulmaktadır. Başarılı ödeme onayının ardından Alıcıya 24 saat içinde kişiselleştirilmiş beslenme planına nasıl başlayacağına dair talimatları içeren bir onay e-postası gönderilecektir."
-      },
-      "timeline": {
-        "title": "2. Teslimat Süresi",
-        "text": "Kişiselleştirilmiş beslenme planı, ilk görüşmenin ardından abone olunan planın açıklamasında belirtilen süre içerisinde hazırlanarak teslim edilecektir. Sürekli destek ve takip seansları Alıcının abonelik seviyesine göre planlanmaktadır."
-      },
-      "cancellation": {
-        "title": "3. İptal Politikası",
-        "text": "Mesafeli Sözleşmeler Yönetmeliği uyarınca, Alıcı sözleşmenin kurulduğu tarihten itibaren 14 gün içinde cayma hakkına sahiptir.\n\nİptal talepleri, hizmet teslimi başlamadan önce Sebaosman111@hotmail.com adresine yazılı olarak iletilmelidir. İptal talebi 14 günlük cayma süresi içinde yapılmış ve hizmet henüz başlamamışsa, tam iade yapılacaktır.\n\nKişiselleştirilmiş beslenme planı teslim edildiğinde veya danışmanlık hizmeti Alıcının onayı ile başladığında, Mesafeli Sözleşmeler Yönetmeliği'nin 15. maddesi uyarınca cayma hakkından feragat edilmiş olur."
-      },
-      "refunds": {
-        "title": "4. İade Koşulları",
-        "text": "İadeler aşağıdaki koşullarda işleme alınmaktadır:\n\n• Hizmet henüz başlamamışsa ve talep 14 gün içindeyse: Tam iade\n• Hizmet başlamış ancak teslimde eksiklik tespit edilmişse: Kısmi iade veya hizmetin yeniden sunulması, duruma göre değerlendirilir\n• Hizmet tamamen sunulmuşsa: İade yapılmaz\n\nİadeler, onaylanan iade talebinden itibaren 14 gün içinde orijinal ödeme yöntemiyle işleme alınır."
-      },
-      "contact": {
-        "title": "5. İptal İçin İletişim",
-        "text": "İptal veya iade talepleri için lütfen Sebaosman111@hotmail.com adresinden bizimle iletişime geçin. 2 iş günü içinde yanıt vermeyi hedefliyoruz."
       }
     }
   },

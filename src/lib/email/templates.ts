@@ -1,5 +1,7 @@
 import { escapeHtml } from './escape';
 
+export type EmailLocale = 'en' | 'ar' | 'tr';
+
 const COLORS = {
   green: '#4A5D3A',
   gold: '#C2A14D',
@@ -8,9 +10,24 @@ const COLORS = {
   muted: '#6B6B6B',
 };
 
-function baseTemplate(content: string, dir: 'ltr' | 'rtl' = 'ltr') {
+const SIGNATURES: Record<EmailLocale, string> = {
+  en: 'Best regards,<br>Siba Osman<br>Nutrition Specialist',
+  ar: 'مع أطيب التحيات،<br>صبا عثمان<br>أخصائية تغذية',
+  tr: 'Saygılarımızla,<br>Siba Osman<br>Beslenme Uzmanı',
+};
+
+function dirFor(locale: EmailLocale): 'ltr' | 'rtl' {
+  return locale === 'ar' ? 'rtl' : 'ltr';
+}
+
+function normalizeLocale(locale: string): EmailLocale {
+  return locale === 'ar' || locale === 'tr' ? locale : 'en';
+}
+
+function baseTemplate(content: string, locale: EmailLocale = 'en') {
+  const dir = dirFor(locale);
   return `<!DOCTYPE html>
-<html dir="${dir}" lang="${dir === 'rtl' ? 'ar' : 'en'}">
+<html dir="${dir}" lang="${locale}">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width"></head>
 <body style="margin:0;padding:0;background:${COLORS.cream};font-family:Arial,sans-serif;color:${COLORS.text};direction:${dir};">
 <table width="100%" cellpadding="0" cellspacing="0" style="background:${COLORS.cream};padding:32px 16px;">
@@ -29,31 +46,45 @@ function baseTemplate(content: string, dir: 'ltr' | 'rtl' = 'ltr') {
 </body></html>`;
 }
 
+function signedBody(locale: EmailLocale, heading: string, body: string) {
+  return `<h2 style="color:${COLORS.green};margin:0 0 16px;">${heading}</h2>
+${body}
+<p style="color:${COLORS.muted};font-size:14px;">${SIGNATURES[locale]}</p>`;
+}
+
 export function subscriptionConfirmationEmail(
-  locale: 'en' | 'ar',
+  rawLocale: string,
   data: { name: string; tierName: string }
 ) {
+  const locale = normalizeLocale(rawLocale);
   const safeName = escapeHtml(data.name);
   const safeTier = escapeHtml(data.tierName);
-  const dir = locale === 'ar' ? 'rtl' : 'ltr';
 
-  const content =
-    locale === 'ar'
-      ? `<h2 style="color:${COLORS.green};margin:0 0 16px;">شكراً لاشتراكك!</h2>
-<p>مرحباً ${safeName}،</p>
-<p>شكراً لاشتراكك في خطة <strong>${safeTier}</strong>. سنتواصل معك قريباً للبدء في رحلتك الصحية.</p>
-<p style="color:${COLORS.muted};font-size:14px;">مع أطيب التحيات،<br>صبا عثمان<br>أخصائية تغذية</p>`
-      : `<h2 style="color:${COLORS.green};margin:0 0 16px;">Thank You for Subscribing!</h2>
-<p>Hi ${safeName},</p>
-<p>Thank you for subscribing to the <strong>${safeTier}</strong> plan. We'll contact you shortly to get started on your health journey.</p>
-<p style="color:${COLORS.muted};font-size:14px;">Best regards,<br>Siba Osman<br>Nutrition Specialist</p>`;
+  const copy: Record<EmailLocale, { subject: string; heading: string; body: string }> = {
+    en: {
+      subject: `Thank you for subscribing to ${data.tierName}`,
+      heading: 'Thank You for Subscribing!',
+      body: `<p>Hi ${safeName},</p>
+<p>Thank you for subscribing to the <strong>${safeTier}</strong> plan. We'll contact you shortly to get started on your health journey.</p>`,
+    },
+    ar: {
+      subject: `شكراً لاشتراكك في خطة ${data.tierName}`,
+      heading: 'شكراً لاشتراكك!',
+      body: `<p>مرحباً ${safeName}،</p>
+<p>شكراً لاشتراكك في خطة <strong>${safeTier}</strong>. سنتواصل معك قريباً للبدء في رحلتك الصحية.</p>`,
+    },
+    tr: {
+      subject: `${data.tierName} planına aboneliğiniz için teşekkürler`,
+      heading: 'Aboneliğiniz İçin Teşekkürler!',
+      body: `<p>Merhaba ${safeName},</p>
+<p><strong>${safeTier}</strong> planına abone olduğunuz için teşekkür ederiz. Sağlıklı yaşam yolculuğunuza başlamak için kısa süre içinde sizinle iletişime geçeceğiz.</p>`,
+    },
+  };
 
+  const c = copy[locale];
   return {
-    subject:
-      locale === 'ar'
-        ? `شكراً لاشتراكك في خطة ${data.tierName}`
-        : `Thank you for subscribing to ${data.tierName}`,
-    html: baseTemplate(content, dir),
+    subject: c.subject,
+    html: baseTemplate(signedBody(locale, c.heading, c.body), locale),
   };
 }
 
@@ -77,55 +108,69 @@ export function subscriptionAdminNotification(data: {
   };
 }
 
-export function contactConfirmationEmail(
-  locale: 'en' | 'ar',
-  data: { name: string }
-) {
+export function contactConfirmationEmail(rawLocale: string, data: { name: string }) {
+  const locale = normalizeLocale(rawLocale);
   const safeName = escapeHtml(data.name);
-  const dir = locale === 'ar' ? 'rtl' : 'ltr';
 
-  const content =
-    locale === 'ar'
-      ? `<h2 style="color:${COLORS.green};margin:0 0 16px;">شكراً لتواصلك!</h2>
-<p>مرحباً ${safeName}،</p>
-<p>لقد تلقينا رسالتك وسنعود إليك في أقرب وقت ممكن.</p>
-<p style="color:${COLORS.muted};font-size:14px;">مع أطيب التحيات،<br>صبا عثمان<br>أخصائية تغذية</p>`
-      : `<h2 style="color:${COLORS.green};margin:0 0 16px;">Thank You for Reaching Out!</h2>
-<p>Hi ${safeName},</p>
-<p>We've received your message and will get back to you as soon as possible.</p>
-<p style="color:${COLORS.muted};font-size:14px;">Best regards,<br>Siba Osman<br>Nutrition Specialist</p>`;
+  const copy: Record<EmailLocale, { subject: string; heading: string; body: string }> = {
+    en: {
+      subject: 'Thank you for reaching out — Siba Osman',
+      heading: 'Thank You for Reaching Out!',
+      body: `<p>Hi ${safeName},</p>
+<p>We've received your message and will get back to you as soon as possible.</p>`,
+    },
+    ar: {
+      subject: 'شكراً لتواصلك — صبا عثمان',
+      heading: 'شكراً لتواصلك!',
+      body: `<p>مرحباً ${safeName}،</p>
+<p>لقد تلقينا رسالتك وسنعود إليك في أقرب وقت ممكن.</p>`,
+    },
+    tr: {
+      subject: 'Bize ulaştığınız için teşekkürler — Siba Osman',
+      heading: 'Bize Ulaştığınız İçin Teşekkürler!',
+      body: `<p>Merhaba ${safeName},</p>
+<p>Mesajınızı aldık ve en kısa sürede size geri döneceğiz.</p>`,
+    },
+  };
 
+  const c = copy[locale];
   return {
-    subject:
-      locale === 'ar'
-        ? 'شكراً لتواصلك — صبا عثمان'
-        : 'Thank you for reaching out — Siba Osman',
-    html: baseTemplate(content, dir),
+    subject: c.subject,
+    html: baseTemplate(signedBody(locale, c.heading, c.body), locale),
   };
 }
 
 export function contactReplyEmail(
-  locale: 'en' | 'ar',
+  rawLocale: string,
   data: { name: string; replyMessage: string }
 ) {
+  const locale = normalizeLocale(rawLocale);
   const safeName = escapeHtml(data.name);
   const safeReply = escapeHtml(data.replyMessage).replace(/\n/g, '<br>');
-  const dir = locale === 'ar' ? 'rtl' : 'ltr';
+  const replyBox = `<div style="margin:16px 0;padding:12px;background:${COLORS.cream};border-radius:6px;font-size:14px;">${safeReply}</div>`;
 
-  const content =
-    locale === 'ar'
-      ? `<h2 style="color:${COLORS.green};margin:0 0 16px;">رد على رسالتك</h2>
-<p>مرحباً ${safeName}،</p>
-<div style="margin:16px 0;padding:12px;background:${COLORS.cream};border-radius:6px;font-size:14px;">${safeReply}</div>
-<p style="color:${COLORS.muted};font-size:14px;">مع أطيب التحيات،<br>صبا عثمان<br>أخصائية تغذية</p>`
-      : `<h2 style="color:${COLORS.green};margin:0 0 16px;">Reply to Your Message</h2>
-<p>Hi ${safeName},</p>
-<div style="margin:16px 0;padding:12px;background:${COLORS.cream};border-radius:6px;font-size:14px;">${safeReply}</div>
-<p style="color:${COLORS.muted};font-size:14px;">Best regards,<br>Siba Osman<br>Nutrition Specialist</p>`;
+  const copy: Record<EmailLocale, { subject: string; heading: string; greeting: string }> = {
+    en: {
+      subject: 'Reply from Siba Osman',
+      heading: 'Reply to Your Message',
+      greeting: `<p>Hi ${safeName},</p>`,
+    },
+    ar: {
+      subject: 'رد من صبا عثمان على رسالتك',
+      heading: 'رد على رسالتك',
+      greeting: `<p>مرحباً ${safeName}،</p>`,
+    },
+    tr: {
+      subject: 'Siba Osman’dan mesajınıza yanıt',
+      heading: 'Mesajınıza Yanıt',
+      greeting: `<p>Merhaba ${safeName},</p>`,
+    },
+  };
 
+  const c = copy[locale];
   return {
-    subject: locale === 'ar' ? 'رد من صبا عثمان على رسالتك' : 'Reply from Siba Osman',
-    html: baseTemplate(content, dir),
+    subject: c.subject,
+    html: baseTemplate(signedBody(locale, c.heading, `${c.greeting}${replyBox}`), locale),
   };
 }
 

@@ -7,6 +7,7 @@ import { isSpamSubmission } from '@/lib/spam';
 import { createServiceClient } from '@/lib/supabase/server';
 import { getClientIp } from '@/lib/get-ip';
 import { sendSubscriptionEmails } from '@/lib/email/send';
+import { localized } from '@/lib/types';
 
 export type SubscribeResult = {
   success: boolean;
@@ -83,8 +84,7 @@ export async function subscribeAction(
       .eq('id', data.tierId)
       .single();
 
-    const tierName =
-      tier?.name?.[data.locale as keyof typeof tier.name] || 'Plan';
+    const tierName = localized(tier?.name, data.locale) || 'Plan';
 
     const emailSent = await sendSubscriptionEmails({
       name: data.name,

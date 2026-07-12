@@ -1,11 +1,14 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslations, useLocale } from 'next-intl';
 import { isValidPhoneNumber } from 'libphonenumber-js';
 import { contactAction } from '@/app/actions/contact';
-import { getCsrfToken } from '@/app/actions/csrf';
+import { useCsrfToken } from '@/hooks/useCsrfToken';
+import { handleActionResult } from '@/lib/form-result';
+import { NAME_PATTERN, EMAIL_PATTERN } from '@/lib/patterns';
+import { HoneypotField } from '@/components/forms/HoneypotField';
 import { whatsappLink } from '@/lib/whatsapp';
 import { WhatsAppIcon } from '@/components/ui/WhatsAppIcon';
 
@@ -24,14 +27,10 @@ export default function ContactPage() {
   const locale = useLocale();
 
   const [formLoadedAt] = useState(Date.now());
-  const [csrfToken, setCsrfToken] = useState('');
+  const { csrfToken, refresh: refreshCsrfToken } = useCsrfToken();
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [serverError, setServerError] = useState('');
-
-  useEffect(() => {
-    getCsrfToken().then(setCsrfToken);
-  }, []);
 
   const {
     register,
@@ -60,25 +59,16 @@ export default function ContactPage() {
         formLoadedAt,
       });
 
-      if (!result) {
-        setServerError(tv('genericError'));
-      } else if (result.success) {
-        setSuccess(true);
-        reset();
-      } else if (result.fieldErrors) {
-        Object.entries(result.fieldErrors).forEach(([field, msg]) => {
-          let translated = msg;
-          try { translated = tv(msg); } catch { /* use raw message as fallback */ }
-          setError(field as keyof FormValues, { message: translated });
-        });
-      } else {
-        const errorKey = result.error || 'genericError';
-        try {
-          setServerError(tv(errorKey));
-        } catch {
-          setServerError(result.error || tv('genericError'));
-        }
-      }
+      handleActionResult(result, {
+        t: tv,
+        onSuccess: () => {
+          setSuccess(true);
+          reset();
+        },
+        onFieldError: (field, message) =>
+          setError(field as keyof FormValues, { message }),
+        onServerError: setServerError,
+      });
     } catch {
       setServerError(tv('genericError'));
     }
@@ -131,7 +121,7 @@ export default function ContactPage() {
             <button
               onClick={() => {
                 setSuccess(false);
-                getCsrfToken().then(setCsrfToken);
+                refreshCsrfToken();
               }}
               className="text-green text-sm font-medium hover:underline"
             >
@@ -143,10 +133,7 @@ export default function ContactPage() {
             onSubmit={handleSubmit(onSubmit)}
             className="bg-white rounded-lg shadow-sm border border-border p-6 sm:p-8 space-y-5"
           >
-            {/* Honeypot */}
-            <div style={{ position: 'absolute', left: '-9999px', opacity: 0, height: 0, overflow: 'hidden' }} aria-hidden="true">
-              <input type="text" {...register('honeypot')} tabIndex={-1} autoComplete="off" name="website" />
-            </div>
+            <HoneypotField registration={register('honeypot')} />
 
             <div>
               <label className="block text-sm font-medium text-foreground mb-1">
@@ -156,10 +143,7 @@ export default function ContactPage() {
                 type="text"
                 {...register('name', {
                   required: tv('nameRequired'),
-                  pattern: {
-                    value: /^[\p{L}\p{M}\s'.\-]+$/u,
-                    message: tv('nameInvalid'),
-                  },
+                  pattern: { value: NAME_PATTERN, message: tv('nameInvalid') },
                   minLength: { value: 2, message: tv('nameRequired') },
                   maxLength: { value: 100, message: tv('nameInvalid') },
                 })}
@@ -179,10 +163,7 @@ export default function ContactPage() {
                 type="email"
                 {...register('email', {
                   required: tv('emailRequired'),
-                  pattern: {
-                    value: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/,
-                    message: tv('emailInvalid'),
-                  },
+                  pattern: { value: EMAIL_PATTERN, message: tv('emailInvalid') },
                 })}
                 placeholder={t('emailPlaceholder')}
                 className="w-full px-3 py-2.5 rounded-lg border border-border bg-cream/50 text-sm focus:outline-none focus:ring-2 focus:ring-green/30 focus:border-green"

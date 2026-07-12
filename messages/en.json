@@ -116,8 +116,7 @@
     "legal": "Legal",
     "role": "Nutrition Specialist",
     "privacy": "Privacy Policy",
-    "terms": "Distance Selling Agreement",
-    "returns": "Cancellation & Return Policy"
+    "terms": "Distance Selling Agreement"
   },
   "validation": {
     "nameRequired": "Name is required.",

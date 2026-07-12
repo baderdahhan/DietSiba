@@ -1,7 +1,5 @@
 import { createServiceClient } from '@/lib/supabase/server';
 
-export const revalidate = 30;
-
 async function getStats() {
   const supabase = createServiceClient();
   const now = new Date();
