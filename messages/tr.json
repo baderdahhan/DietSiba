@@ -131,7 +131,7 @@
     "fullName": "Ad Soyad",
     "fullNameValue": "Siba Osman",
     "email": "E-posta",
-    "emailValue": "[EMAIL]",
+    "emailValue": "Sebaosman111@hotmail.com",
     "phone": "Telefon",
     "phoneValue": "+90 534 918 76 66"
   },
@@ -172,7 +172,7 @@
       },
       "contact": {
         "title": "8. İletişim",
-        "text": "Kişisel verilerinize ilişkin haklarınızı kullanmak için [EMAIL] adresinden bizimle iletişime geçebilirsiniz. Talepleriniz en geç otuz gün içinde ücretsiz olarak sonuçlandırılacaktır."
+        "text": "Kişisel verilerinize ilişkin haklarınızı kullanmak için Sebaosman111@hotmail.com adresinden bizimle iletişime geçebilirsiniz. Talepleriniz en geç otuz gün içinde ücretsiz olarak sonuçlandırılacaktır."
       }
     }
   },
@@ -184,7 +184,7 @@
       "parties": {
         "title": "Madde 1 — Taraflar",
         "seller": "SATICI",
-        "sellerDetails": "Ad Soyad: Siba Osman\nAdres: Mersin, Türkiye\nTelefon: +90 534 918 76 66\nE-posta: [EMAIL]",
+        "sellerDetails": "Ad Soyad: Siba Osman\nAdres: Mersin, Türkiye\nTelefon: +90 534 918 76 66\nE-posta: Sebaosman111@hotmail.com",
         "buyer": "ALICI",
         "buyerDetails": "Web sitesi üzerinden işbu sözleşmeyi kabul eden kişidir. Alıcının adı, adresi ve iletişim bilgileri abonelik işlemi sırasında kaydedilmektedir."
       },
@@ -241,7 +241,7 @@
       },
       "cancellation": {
         "title": "3. İptal Politikası",
-        "text": "Mesafeli Sözleşmeler Yönetmeliği uyarınca, Alıcı sözleşmenin kurulduğu tarihten itibaren 14 gün içinde cayma hakkına sahiptir.\n\nİptal talepleri, hizmet teslimi başlamadan önce [EMAIL] adresine yazılı olarak iletilmelidir. İptal talebi 14 günlük cayma süresi içinde yapılmış ve hizmet henüz başlamamışsa, tam iade yapılacaktır.\n\nKişiselleştirilmiş beslenme planı teslim edildiğinde veya danışmanlık hizmeti Alıcının onayı ile başladığında, Mesafeli Sözleşmeler Yönetmeliği'nin 15. maddesi uyarınca cayma hakkından feragat edilmiş olur."
+        "text": "Mesafeli Sözleşmeler Yönetmeliği uyarınca, Alıcı sözleşmenin kurulduğu tarihten itibaren 14 gün içinde cayma hakkına sahiptir.\n\nİptal talepleri, hizmet teslimi başlamadan önce Sebaosman111@hotmail.com adresine yazılı olarak iletilmelidir. İptal talebi 14 günlük cayma süresi içinde yapılmış ve hizmet henüz başlamamışsa, tam iade yapılacaktır.\n\nKişiselleştirilmiş beslenme planı teslim edildiğinde veya danışmanlık hizmeti Alıcının onayı ile başladığında, Mesafeli Sözleşmeler Yönetmeliği'nin 15. maddesi uyarınca cayma hakkından feragat edilmiş olur."
       },
       "refunds": {
         "title": "4. İade Koşulları",
@@ -249,7 +249,7 @@
       },
       "contact": {
         "title": "5. İptal İçin İletişim",
-        "text": "İptal veya iade talepleri için lütfen [EMAIL] adresinden bizimle iletişime geçin. 2 iş günü içinde yanıt vermeyi hedefliyoruz."
+        "text": "İptal veya iade talepleri için lütfen Sebaosman111@hotmail.com adresinden bizimle iletişime geçin. 2 iş günü içinde yanıt vermeyi hedefliyoruz."
       }
     }
   },
