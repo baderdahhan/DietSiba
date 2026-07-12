@@ -203,6 +203,34 @@ A complete scan of the project found and fixed several production blockers befor
 
 ---
 
+## 17. New subscriptions/messages weren't showing up in the admin panel without a manual refresh
+
+Same root cause as the earlier Activity Log fix, but on the public-facing forms this time: submitting the Subscribe or Contact form saved correctly to the database, but the admin Subscriptions/Contacts/Dashboard pages weren't told to refresh, so a new entry only appeared after a manual page reload. Fixed the same way — both forms now tell the admin pages to refresh themselves right after a successful submission.
+
+**Files changed (pushed to GitHub):**
+- `src/app/actions/subscribe.ts`
+- `src/app/actions/contact.ts`
+
+---
+
+## 18. Fixed a false "spam" rejection caused by browser autofill
+
+Some real subscribe/contact submissions were being silently discarded (the visitor saw "Thank you", but nothing was saved) — traced it to the browser's autofill filling in the hidden anti-spam trap field along with the visible Phone Number field, which made the form look like it was filled out by a bot. Made the trap field ignore autofill (it only becomes writable if a real person actually clicks into it, which never happens since it's invisible), while still catching actual bots.
+
+**Files changed (pushed to GitHub):**
+- `src/components/forms/HoneypotField.tsx`
+
+---
+
+## 19. Filled in the last missing contact detail on the legal pages
+
+Item 14 left the email placeholder pending — it's now filled in with the real address (`Sebaosman111@hotmail.com`) everywhere it appears on the Privacy Policy and Terms pages.
+
+**Files changed (pushed to GitHub):**
+- `messages/tr.json`
+
+---
+
 ## Local-only files (changed, but never pushed to GitHub)
 
 - **`.env.local`** — holds the real Supabase project keys and email login used to run the site on this machine. It's intentionally excluded by `.gitignore` (the `.env*.local` rule), so it never goes to GitHub. Each person/machine running this project needs to create their own copy with their own real values.
