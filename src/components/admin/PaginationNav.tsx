@@ -22,7 +22,7 @@ export function PaginationNav({
   return (
     <div className="flex items-center justify-between mt-4">
       {page > 1 ? (
-        <Link href={`${basePath}?page=${page - 1}`} className={linkClass}>
+        <Link href={`${basePath}?page=${page - 1}`} prefetch={false} className={linkClass}>
           ← Previous
         </Link>
       ) : (
@@ -32,7 +32,7 @@ export function PaginationNav({
         Page {page} of {totalPages} · {total} total
       </span>
       {page < totalPages ? (
-        <Link href={`${basePath}?page=${page + 1}`} className={linkClass}>
+        <Link href={`${basePath}?page=${page + 1}`} prefetch={false} className={linkClass}>
           Next →
         </Link>
       ) : (

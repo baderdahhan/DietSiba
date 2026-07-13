@@ -34,7 +34,7 @@ export function AdminNav({ email, locale }: { email: string; locale: string }) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-14">
           <div className="flex items-center gap-6">
-            <Link href={`/${locale}/admin`} className="font-semibold text-green text-sm">
+            <Link href={`/${locale}/admin`} prefetch={false} className="font-semibold text-green text-sm">
               Siba Admin
             </Link>
             <div className="hidden sm:flex items-center gap-1">
@@ -42,6 +42,7 @@ export function AdminNav({ email, locale }: { email: string; locale: string }) {
                 <Link
                   key={item.href}
                   href={item.href}
+                  prefetch={false}
                   className={`px-3 py-1.5 rounded text-xs font-medium transition-colors ${
                     pathname === item.href
                       ? 'bg-green text-white'
@@ -87,6 +88,7 @@ export function AdminNav({ email, locale }: { email: string; locale: string }) {
               <Link
                 key={item.href}
                 href={item.href}
+                prefetch={false}
                 onClick={() => setMenuOpen(false)}
                 className={`block px-3 py-2 rounded text-sm font-medium transition-colors ${
                   pathname === item.href
