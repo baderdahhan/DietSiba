@@ -1,4 +1,4 @@
-export const WHATSAPP_NUMBER = '905523066066';
+export const WHATSAPP_NUMBER = '905349187666';
 
 export function whatsappLink(message?: string): string {
   return whatsappLinkForPhone(WHATSAPP_NUMBER, message);
