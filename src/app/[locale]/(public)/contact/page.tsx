@@ -148,7 +148,7 @@ export default function ContactPage() {
                   maxLength: { value: 100, message: tv('nameInvalid') },
                 })}
                 placeholder={t('namePlaceholder')}
-                className="w-full px-3 py-2.5 rounded-lg border border-border bg-cream/50 text-sm focus:outline-none focus:ring-2 focus:ring-green/30 focus:border-green"
+                className="w-full px-3 py-2.5 rounded-lg border border-border bg-cream/50 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-green/30 focus:border-green"
               />
               {errors.name && (
                 <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>
@@ -166,7 +166,7 @@ export default function ContactPage() {
                   pattern: { value: EMAIL_PATTERN, message: tv('emailInvalid') },
                 })}
                 placeholder={t('emailPlaceholder')}
-                className="w-full px-3 py-2.5 rounded-lg border border-border bg-cream/50 text-sm focus:outline-none focus:ring-2 focus:ring-green/30 focus:border-green"
+                className="w-full px-3 py-2.5 rounded-lg border border-border bg-cream/50 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-green/30 focus:border-green"
               />
               {errors.email && (
                 <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>
@@ -175,16 +175,17 @@ export default function ContactPage() {
 
             <div>
               <label className="block text-sm font-medium text-foreground mb-1">
-                {t('phone')}
+                {t('phone')} <span className="text-red-500">*</span>
               </label>
               <input
                 type="tel"
                 {...register('phone', {
+                  required: tv('phoneInvalid'),
                   validate: (val) =>
-                    !val || isValidPhoneNumber(val, 'TR') || tv('phoneInvalid'),
+                    isValidPhoneNumber(val, 'TR') || tv('phoneInvalid'),
                 })}
                 placeholder={t('phonePlaceholder')}
-                className="w-full px-3 py-2.5 rounded-lg border border-border bg-cream/50 text-sm focus:outline-none focus:ring-2 focus:ring-green/30 focus:border-green"
+                className="w-full px-3 py-2.5 rounded-lg border border-border bg-cream/50 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-green/30 focus:border-green"
               />
               {errors.phone && (
                 <p className="text-red-500 text-xs mt-1">{errors.phone.message}</p>
@@ -202,7 +203,7 @@ export default function ContactPage() {
                 })}
                 rows={5}
                 placeholder={t('messagePlaceholder')}
-                className="w-full px-3 py-2.5 rounded-lg border border-border bg-cream/50 text-sm focus:outline-none focus:ring-2 focus:ring-green/30 focus:border-green resize-none"
+                className="w-full px-3 py-2.5 rounded-lg border border-border bg-cream/50 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-green/30 focus:border-green resize-none"
               />
               {errors.message && (
                 <p className="text-red-500 text-xs mt-1">{errors.message.message}</p>

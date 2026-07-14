@@ -94,7 +94,7 @@
     "namePlaceholder": "Adınızı ve soyadınızı girin",
     "email": "E-posta Adresi",
     "emailPlaceholder": "siz@ornek.com",
-    "phone": "Telefon Numarası (isteğe bağlı)",
+    "phone": "Telefon Numarası",
     "phonePlaceholder": "+90 5XX XXX XX XX",
     "message": "Mesaj",
     "messagePlaceholder": "Sağlık hedeflerinizden bahsedin...",

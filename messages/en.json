@@ -94,7 +94,7 @@
     "namePlaceholder": "Enter your full name",
     "email": "Email Address",
     "emailPlaceholder": "you@example.com",
-    "phone": "Phone Number (optional)",
+    "phone": "Phone Number",
     "phonePlaceholder": "+90 5XX XXX XX XX",
     "message": "Message",
     "messagePlaceholder": "Tell me about your health goals...",

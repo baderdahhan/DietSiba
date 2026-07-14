@@ -175,7 +175,7 @@ export function SubscribeModal({
                     maxLength: { value: 100, message: tv('nameInvalid') },
                   })}
                   placeholder={ts('namePlaceholder')}
-                  className="w-full px-3 py-2.5 rounded-lg border border-border bg-cream/50 text-sm focus:outline-none focus:ring-2 focus:ring-green/30 focus:border-green"
+                  className="w-full px-3 py-2.5 rounded-lg border border-border bg-cream/50 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-green/30 focus:border-green"
                 />
                 {errors.name && (
                   <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>
@@ -193,7 +193,7 @@ export function SubscribeModal({
                     pattern: { value: EMAIL_PATTERN, message: tv('emailInvalid') },
                   })}
                   placeholder={ts('emailPlaceholder')}
-                  className="w-full px-3 py-2.5 rounded-lg border border-border bg-cream/50 text-sm focus:outline-none focus:ring-2 focus:ring-green/30 focus:border-green"
+                  className="w-full px-3 py-2.5 rounded-lg border border-border bg-cream/50 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-green/30 focus:border-green"
                 />
                 {errors.email && (
                   <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>
@@ -212,7 +212,7 @@ export function SubscribeModal({
                       isValidPhoneNumber(val, 'TR') || tv('phoneInvalid'),
                   })}
                   placeholder={ts('phonePlaceholder')}
-                  className="w-full px-3 py-2.5 rounded-lg border border-border bg-cream/50 text-sm focus:outline-none focus:ring-2 focus:ring-green/30 focus:border-green"
+                  className="w-full px-3 py-2.5 rounded-lg border border-border bg-cream/50 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-green/30 focus:border-green"
                 />
                 {errors.phone && (
                   <p className="text-red-500 text-xs mt-1">{errors.phone.message}</p>
@@ -229,7 +229,7 @@ export function SubscribeModal({
                   })}
                   rows={3}
                   placeholder={ts('messagePlaceholder')}
-                  className="w-full px-3 py-2.5 rounded-lg border border-border bg-cream/50 text-sm focus:outline-none focus:ring-2 focus:ring-green/30 focus:border-green resize-none"
+                  className="w-full px-3 py-2.5 rounded-lg border border-border bg-cream/50 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-green/30 focus:border-green resize-none"
                 />
                 {errors.message && (
                   <p className="text-red-500 text-xs mt-1">{errors.message.message}</p>
@@ -245,7 +245,7 @@ export function SubscribeModal({
                     type="text"
                     {...register('discountCode')}
                     placeholder={ts('discountCodePlaceholder')}
-                    className="flex-1 px-3 py-2.5 rounded-lg border border-border bg-cream/50 text-sm focus:outline-none focus:ring-2 focus:ring-green/30 focus:border-green uppercase"
+                    className="flex-1 px-3 py-2.5 rounded-lg border border-border bg-cream/50 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-green/30 focus:border-green uppercase"
                   />
                   <button
                     type="button"

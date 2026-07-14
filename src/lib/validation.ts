@@ -25,14 +25,6 @@ export const phoneSchema = z
   .trim()
   .refine((val) => isValidPhoneNumber(val, 'TR'), 'phoneInvalid');
 
-export const phoneOptionalSchema = z
-  .string()
-  .trim()
-  .refine(
-    (val) => val === '' || isValidPhoneNumber(val, 'TR'),
-    'phoneInvalid'
-  );
-
 export const messageSchema = z
   .string()
   .trim()
@@ -70,7 +62,7 @@ export const subscribeFormSchema = z.object({
 export const contactFormSchema = z.object({
   name: nameSchema,
   email: emailSchema,
-  phone: phoneOptionalSchema,
+  phone: phoneSchema,
   message: messageRequiredSchema,
   locale: localeSchema,
   honeypot: z.string(),
