@@ -15,7 +15,7 @@ export async function resendSubscriptionEmail(subscriptionId: string) {
   const supabase = createServiceClient();
   const { data: sub } = await supabase
     .from('subscriptions')
-    .select('id, name, email, phone, locale, tier_id, subscription_tiers(name)')
+    .select('id, name, email, phone, message, locale, tier_id, subscription_tiers(name)')
     .eq('id', subscriptionId)
     .single();
 
@@ -30,6 +30,7 @@ export async function resendSubscriptionEmail(subscriptionId: string) {
     phone: sub.phone,
     tierName,
     locale: sub.locale,
+    message: sub.message ?? undefined,
   });
 
   if (!sent) throw new Error('Failed to send email');

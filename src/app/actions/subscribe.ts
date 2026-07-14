@@ -93,6 +93,7 @@ export async function subscribeAction(
       phone: data.phone,
       tierName,
       locale: data.locale,
+      message: data.message,
     });
 
     if (subId) {

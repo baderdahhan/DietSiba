@@ -93,6 +93,7 @@ export function subscriptionAdminNotification(data: {
   email: string;
   phone: string;
   tierName: string;
+  message?: string;
 }) {
   const content = `<h2 style="color:${COLORS.green};margin:0 0 16px;">New Subscription</h2>
 <table style="width:100%;font-size:14px;">
@@ -100,7 +101,8 @@ export function subscriptionAdminNotification(data: {
 <tr><td style="padding:6px 0;color:${COLORS.muted};"><strong>Email:</strong></td><td>${escapeHtml(data.email)}</td></tr>
 <tr><td style="padding:6px 0;color:${COLORS.muted};"><strong>Phone:</strong></td><td>${escapeHtml(data.phone)}</td></tr>
 <tr><td style="padding:6px 0;color:${COLORS.muted};"><strong>Plan:</strong></td><td>${escapeHtml(data.tierName)}</td></tr>
-</table>`;
+</table>
+${data.message ? `<div style="margin-top:16px;padding:12px;background:${COLORS.cream};border-radius:6px;font-size:14px;white-space:pre-wrap;">${escapeHtml(data.message)}</div>` : ''}`;
 
   return {
     subject: `New subscription: ${data.tierName} – ${data.name}`,

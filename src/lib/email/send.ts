@@ -35,6 +35,7 @@ export async function sendSubscriptionEmails(data: {
   phone: string;
   tierName: string;
   locale: string;
+  message?: string;
 }): Promise<boolean> {
   const lead = subscriptionConfirmationEmail(data.locale, {
     name: data.name,
@@ -46,6 +47,7 @@ export async function sendSubscriptionEmails(data: {
     email: data.email,
     phone: data.phone,
     tierName: data.tierName,
+    message: data.message,
   });
 
   const results = await Promise.allSettled([
