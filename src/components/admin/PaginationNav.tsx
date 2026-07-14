@@ -1,5 +1,3 @@
-import Link from 'next/link';
-
 export function PaginationNav({
   page,
   pageSize,
@@ -22,9 +20,9 @@ export function PaginationNav({
   return (
     <div className="flex items-center justify-between mt-4">
       {page > 1 ? (
-        <Link href={`${basePath}?page=${page - 1}`} prefetch={false} className={linkClass}>
+        <a href={`${basePath}?page=${page - 1}`} className={linkClass}>
           ← Previous
-        </Link>
+        </a>
       ) : (
         <span className={disabledClass}>← Previous</span>
       )}
@@ -32,9 +30,9 @@ export function PaginationNav({
         Page {page} of {totalPages} · {total} total
       </span>
       {page < totalPages ? (
-        <Link href={`${basePath}?page=${page + 1}`} prefetch={false} className={linkClass}>
+        <a href={`${basePath}?page=${page + 1}`} className={linkClass}>
           Next →
-        </Link>
+        </a>
       ) : (
         <span className={disabledClass}>Next →</span>
       )}

@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 
@@ -34,15 +33,14 @@ export function AdminNav({ email, locale }: { email: string; locale: string }) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-14">
           <div className="flex items-center gap-6">
-            <Link href={`/${locale}/admin`} prefetch={false} className="font-semibold text-green text-sm">
+            <a href={`/${locale}/admin`} className="font-semibold text-green text-sm">
               Siba Admin
-            </Link>
+            </a>
             <div className="hidden sm:flex items-center gap-1">
               {navItems.map((item) => (
-                <Link
+                <a
                   key={item.href}
                   href={item.href}
-                  prefetch={false}
                   className={`px-3 py-1.5 rounded text-xs font-medium transition-colors ${
                     pathname === item.href
                       ? 'bg-green text-white'
@@ -50,7 +48,7 @@ export function AdminNav({ email, locale }: { email: string; locale: string }) {
                   }`}
                 >
                   {item.label}
-                </Link>
+                </a>
               ))}
             </div>
           </div>
@@ -85,11 +83,9 @@ export function AdminNav({ email, locale }: { email: string; locale: string }) {
         <div className="sm:hidden border-t border-gray-100 bg-white">
           <div className="px-4 py-3 space-y-1">
             {navItems.map((item) => (
-              <Link
+              <a
                 key={item.href}
                 href={item.href}
-                prefetch={false}
-                onClick={() => setMenuOpen(false)}
                 className={`block px-3 py-2 rounded text-sm font-medium transition-colors ${
                   pathname === item.href
                     ? 'bg-green text-white'
@@ -97,7 +93,7 @@ export function AdminNav({ email, locale }: { email: string; locale: string }) {
                 }`}
               >
                 {item.label}
-              </Link>
+              </a>
             ))}
             <div className="pt-2 mt-2 border-t border-gray-100">
               <p className="px-3 py-1 text-xs text-gray-400">{email}</p>
