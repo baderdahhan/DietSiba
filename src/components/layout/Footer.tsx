@@ -91,25 +91,27 @@ export function Footer() {
               {t('footer.role')}
             </p>
 
-            <a
-              href={whatsappLink()}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-4 inline-flex items-center gap-2 text-sm text-cream/70 hover:text-gold transition-colors"
-            >
-              <WhatsAppIcon className="w-4 h-4 shrink-0" />
-              {t('whatsapp.cta')}
-            </a>
+            <div className="mt-4 flex flex-col items-start gap-2">
+              <a
+                href={whatsappLink()}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-sm text-cream/70 hover:text-gold transition-colors"
+              >
+                <WhatsAppIcon className="w-4 h-4 shrink-0" />
+                {t('whatsapp.cta')}
+              </a>
 
-            <a
-              href={INSTAGRAM_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-2 inline-flex items-center gap-2 text-sm text-cream/70 hover:text-gold transition-colors"
-            >
-              <InstagramIcon className="w-4 h-4 shrink-0" />
-              {t('instagram.cta')}
-            </a>
+              <a
+                href={INSTAGRAM_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-sm text-cream/70 hover:text-gold transition-colors"
+              >
+                <InstagramIcon className="w-4 h-4 shrink-0" />
+                {t('instagram.cta')}
+              </a>
+            </div>
           </div>
         </div>
 
