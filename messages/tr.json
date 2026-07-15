@@ -109,6 +109,9 @@
     "contactPrompt": "Daha hızlı yanıt mı istiyorsunuz?",
     "subscribeCta": "WhatsApp'tan Bizimle Sohbet Edin"
   },
+  "instagram": {
+    "cta": "Instagram'da Takip Et"
+  },
   "footer": {
     "tagline": "Daha sağlıklı bir yaşam için kişiselleştirilmiş beslenme.",
     "rights": "Tüm hakları saklıdır.",

@@ -109,6 +109,9 @@
     "contactPrompt": "Prefer a faster reply?",
     "subscribeCta": "Chat with us on WhatsApp"
   },
+  "instagram": {
+    "cta": "Follow on Instagram"
+  },
   "footer": {
     "tagline": "Personalized nutrition for a healthier you.",
     "rights": "All rights reserved.",

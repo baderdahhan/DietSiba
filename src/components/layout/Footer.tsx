@@ -3,6 +3,9 @@ import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
 import { whatsappLink } from '@/lib/whatsapp';
 import { WhatsAppIcon } from '@/components/ui/WhatsAppIcon';
+import { InstagramIcon } from '@/components/ui/InstagramIcon';
+
+const INSTAGRAM_URL = 'https://www.instagram.com/withdietitiansiba';
 
 export function Footer() {
   const t = useTranslations();
@@ -96,6 +99,16 @@ export function Footer() {
             >
               <WhatsAppIcon className="w-4 h-4 shrink-0" />
               {t('whatsapp.cta')}
+            </a>
+
+            <a
+              href={INSTAGRAM_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-2 inline-flex items-center gap-2 text-sm text-cream/70 hover:text-gold transition-colors"
+            >
+              <InstagramIcon className="w-4 h-4 shrink-0" />
+              {t('instagram.cta')}
             </a>
           </div>
         </div>
