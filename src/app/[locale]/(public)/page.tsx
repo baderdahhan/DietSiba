@@ -4,6 +4,8 @@ import { Link } from '@/i18n/navigation';
 import { createServiceClient } from '@/lib/supabase/server';
 import { localized } from '@/lib/types';
 
+export const revalidate = 0;
+
 function HeroSection() {
   const t = useTranslations('hero');
 
@@ -148,12 +150,20 @@ async function PlansTeaser() {
                 <h3 className="font-heading text-xl text-green text-center mb-2">
                   {tierName}
                 </h3>
-                <p className="text-center text-3xl font-heading text-green font-semibold mb-1">
-                  {tier.price} <span className="text-sm text-muted font-body">{tier.currency}</span>
-                </p>
-                <p className="text-center text-xs text-muted mb-6">
-                  {t('perMonth')}
-                </p>
+                {tier.price === 0 ? (
+                  <p className="text-center text-3xl font-heading text-green font-semibold mb-7">
+                    {t('free')}
+                  </p>
+                ) : (
+                  <>
+                    <p className="text-center text-3xl font-heading text-green font-semibold mb-1">
+                      {tier.price} <span className="text-sm text-muted font-body">{tier.currency}</span>
+                    </p>
+                    <p className="text-center text-xs text-muted mb-6">
+                      {t('perMonth')}
+                    </p>
+                  </>
+                )}
                 <Link
                   href="/services"
                   className={`block text-center py-2.5 rounded-lg text-sm font-medium transition-colors ${

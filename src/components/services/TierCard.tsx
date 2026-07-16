@@ -38,11 +38,19 @@ export function TierCard({
           {tierName}
         </h3>
         <div className="text-center mb-6">
-          <span className="text-4xl font-heading text-green font-semibold">
-            {tier.price}
-          </span>
-          <span className="text-sm text-muted ms-1">{tier.currency}</span>
-          <p className="text-xs text-muted mt-1">{t('plans.perMonth')}</p>
+          {tier.price === 0 ? (
+            <span className="text-4xl font-heading text-green font-semibold">
+              {t('plans.free')}
+            </span>
+          ) : (
+            <>
+              <span className="text-4xl font-heading text-green font-semibold">
+                {tier.price}
+              </span>
+              <span className="text-sm text-muted ms-1">{tier.currency}</span>
+              <p className="text-xs text-muted mt-1">{t('plans.perMonth')}</p>
+            </>
+          )}
         </div>
 
         <div className="flex-1 mb-6">

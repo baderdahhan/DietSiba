@@ -3,6 +3,8 @@ import { createServiceClient } from '@/lib/supabase/server';
 import { TierCard } from '@/components/services/TierCard';
 import type { Tier } from '@/lib/types';
 
+export const revalidate = 0;
+
 type TierRow = Tier & { sort_order: number; is_popular: boolean };
 
 async function getTiers(): Promise<TierRow[]> {

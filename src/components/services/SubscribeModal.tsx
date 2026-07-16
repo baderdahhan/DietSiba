@@ -37,6 +37,7 @@ export function SubscribeModal({
   const tv = useTranslations('validation');
   const ts = useTranslations('subscribeForm');
   const tw = useTranslations('whatsapp');
+  const tp = useTranslations('plans');
   const tierName = localized(tier.name, locale);
 
   const [formLoadedAt] = useState(Date.now());
@@ -283,7 +284,7 @@ export function SubscribeModal({
                 )}
                 <div className="flex justify-between font-semibold text-green">
                   <span>{ts('finalPrice')}</span>
-                  <span>{finalPrice()} {tier.currency}</span>
+                  <span>{finalPrice() === 0 ? tp('free') : `${finalPrice()} ${tier.currency}`}</span>
                 </div>
               </div>
 
