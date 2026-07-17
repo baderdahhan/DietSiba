@@ -231,6 +231,17 @@ Item 14 left the email placeholder pending — it's now filled in with the real 
 
 ---
 
+## 20. Switched WhatsApp to the new business number
+
+Siba got a dedicated business number for WhatsApp, separate from her personal one. All WhatsApp links on the site (footer, Contact page, subscribe "thank you" screen) now open a chat with the new number `+90 501 629 81 16` instead of the old `+90 534 918 76 66`. Only one line needed changing, since every link builds from the single shared constant.
+
+Note: the old number still appears as Siba's visible contact number on the About page and in the Terms page's seller details — left unchanged on purpose, assuming that's still her real contact number. Say the word if those should switch to the new number too.
+
+**Files changed (pushed to GitHub):**
+- `src/lib/whatsapp.ts`
+
+---
+
 ## Local-only files (changed, but never pushed to GitHub)
 
 - **`.env.local`** — holds the real Supabase project keys and email login used to run the site on this machine. It's intentionally excluded by `.gitignore` (the `.env*.local` rule), so it never goes to GitHub. Each person/machine running this project needs to create their own copy with their own real values.
